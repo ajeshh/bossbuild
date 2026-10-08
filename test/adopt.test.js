@@ -23,6 +23,7 @@ import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { project, cleanup } from './helpers.js';
+import { recordManaged } from '../src/managed.js';
 
 after(cleanup);
 const BIN = join(BOSS_ROOT, 'bin', 'boss');
@@ -229,7 +230,7 @@ test('REGRESSION: adopt then sync --apply leaves the founder\'s own agent and sk
   boss(['adopt', '--apply', '--mode', 'mvp'], dir);
   const preview = boss(['sync'], dir);
   assert.doesNotMatch(preview, /(unclaimed|changed).*(tester|smoke)/, 'sync must not plan to change their files');
-  assert.match(preview, /2 of yours, left alone since adopt/);
+  assert.match(preview, /2 of yours, left alone \(since adopt\)/);
   boss(['sync', '--apply'], dir);
   assert.equal(readFileSync(join(dir, '.claude/agents/tester.md'), 'utf8'), '# MY OWN tester\n');
   assert.equal(readFileSync(join(dir, '.claude/skills/smoke/SKILL.md'), 'utf8'), '# MY OWN smoke\n');
@@ -262,4 +263,25 @@ test('the preview says records found where BOSS looks, and a RESUME named after 
   const out = boss(['adopt'], dir);
   assert.match(out, /docs\/ideas\/IDEA-\*\.md \(2\) — found where BOSS looks/);
   assert.doesNotMatch(out, /docs\/pm\/labs/);
+});
+
+test('REGRESSION: a repo adopted before `theirs` existed — sync works it out from git and leaves them', () => {
+  const dir = project({
+    'package.json': '{"name":"myapp"}',
+    '.claude/agents/tester.md': '# MY OWN tester\n',
+    '.claude/skills/smoke/SKILL.md': '# MY OWN smoke\n',
+  });
+  const git = (...a) => execFileSync('git', ['-c', 'user.email=a@b', '-c', 'user.name=t', ...a], { cwd: dir, encoding: 'utf8' });
+  git('init', '-q'); git('add', '-A'); git('commit', '-qm', 'mine');
+  boss(['adopt', '--apply', '--mode', 'mvp'], dir);
+  // What an adopt from before the fix left behind: no `theirs`, and their files stamped as BOSS's.
+  const mp = join(dir, '.boss', 'manifest.json');
+  const m = JSON.parse(readFileSync(mp, 'utf8')); delete m.theirs; writeFileSync(mp, JSON.stringify(m));
+  recordManaged(dir, ['.claude/agents/tester.md', '.claude/skills/smoke/SKILL.md']
+    .map((rel) => ({ rel: join(...rel.split('/')), text: readFileSync(join(dir, rel), 'utf8') })));
+  git('add', '-A'); git('commit', '-qm', 'adopt');
+  assert.match(boss(['sync'], dir), /2 of yours, left alone \(in git before BOSS was adopted\)/);
+  boss(['sync', '--apply'], dir);
+  assert.equal(readFileSync(join(dir, '.claude/agents/tester.md'), 'utf8'), '# MY OWN tester\n');
+  assert.ok(JSON.parse(readFileSync(mp, 'utf8')).theirs, 'the record is kept once worked out');
 });

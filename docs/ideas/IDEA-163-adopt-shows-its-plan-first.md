@@ -240,8 +240,10 @@ bytes as BOSS's, unedited, and `boss sync --apply` overwrites them. Repro: a rep
       (files and whole skill folders), keeps them out of the managed stamp, and `boss sync` never plans
       them — it says *N of yours, left alone since adopt*. Was: adopt passes the skipped paths to `stampManaged`'s exclude (the mechanism sync already
       uses for edited files). Test: adopt → sync preview does not list them; sync --apply leaves them.
-- [ ] Already-adopted repos carry the wrong stamps. Remediation needs its own reproduce: can sync tell a
-      stamp that never matched a BOSS template from a real one?
+- [x] Already-adopted repos carry the wrong stamps. Reproduced (old adopt, new sync → still `~ changed`).
+      Fixed: for an adopted stamp with no `theirs`, sync reads git — what was under `.claude/` before the
+      commit that added `.boss/manifest.json` (or at HEAD, uncommitted) is theirs — and keeps the record.
+      Not covered: founder files that were never committed before adopt.
 
 ## dhun's answers, and its check of the preview (2026-10-08)
 

@@ -6,6 +6,7 @@ import {
   readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync,
 } from 'node:fs';
 import { join, dirname, sep } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import {
   STAGES_DIR, bossVersion, resolveStageId,
 } from './paths.js';
@@ -591,8 +592,11 @@ export function planSync(projectDir, stamp) {
     || ((f.kind === 'skill' || f.kind === 'skill-resource') && skillGone(f.name)));
   // What the repo already had when it was adopted (`stamp.theirs`, IDEA-163) is theirs: never planned.
   // Recorded as BOSS's, their own tester.md and smoke/SKILL.md were overwritten on the first sync.
-  const theirFiles = new Set(((stamp.theirs || {}).files || []));
-  const theirSkills = new Set(((stamp.theirs || {}).skills || []));
+  // A repo adopted before that record existed gets it from git instead (theirsFromGit).
+  const inferred = stamp.adopted && !stamp.theirs ? theirsFromGit(projectDir) : null;
+  const theirsRec = stamp.theirs || inferred || {};
+  const theirFiles = new Set(theirsRec.files || []);
+  const theirSkills = new Set(theirsRec.skills || []);
   const isTheirs = (f) => ((f.kind === 'skill' || f.kind === 'skill-resource') && theirSkills.has(f.name.split('/')[0]))
     || theirFiles.has(f.rel.split(sep).join('/'));
   const theirsKept = new Set();
@@ -645,6 +649,7 @@ export function planSync(projectDir, stamp) {
   return {
     entries,
     theirs: [...theirsKept],
+    ...(inferred ? { theirsInferred: inferred } : {}),
     layers,
     pin: stamp.bossVersion,
     current,
@@ -653,6 +658,24 @@ export function planSync(projectDir, stamp) {
     orphans: planOrphans(projectDir, stamp, layers),
     ignore: planIgnoreRules(layers, projectDir),
   };
+}
+
+// For a repo adopted before adopt recorded `theirs`: what was under `.claude/` in git before BOSS's
+// manifest first appeared there (or at HEAD, if the adopt was never committed) predates BOSS, so it
+// is the founder's. No git, or no history to read → null, and sync behaves as it always did.
+export function theirsFromGit(projectDir) {
+  const git = (...a) => execFileSync('git', a, { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  try {
+    const added = git('log', '--diff-filter=A', '--format=%H', '--', '.boss/manifest.json').split('\n').filter(Boolean).pop();
+    let tree = 'HEAD';
+    if (added) {
+      try { tree = git('rev-parse', '--verify', '-q', `${added}^`); } catch { return null; }   // adopted in the first commit: nothing before it
+    }
+    const paths = git('ls-tree', '-r', '--name-only', tree, '--', '.claude').split('\n').filter(Boolean);
+    const skills = [...new Set(paths.map((p) => (/^\.claude\/skills\/([^/]+)\/SKILL\.md$/.exec(p) || [])[1]).filter(Boolean))];
+    const files = paths.filter((p) => !p.startsWith('.claude/skills/'));
+    return { files, skills };
+  } catch { return null; }
 }
 
 // Apply a plan: write new/changed files and return the canonicalized stamp
@@ -826,7 +849,8 @@ export function cmdSync(args) {
   if (plan.settings?.unparseable) console.log(`    ${warn('!')} ${plan.settings.unparseable}\n`);
   if ((plan.theirs || []).length) {
     const t = plan.theirs;
-    console.log(`    ${dim(`= ${t.length} of yours, left alone since adopt: ${t.slice(0, 4).join(', ')}${t.length > 4 ? ' …' : ''}`)}\n`);
+    const why = plan.theirsInferred ? 'in git before BOSS was adopted' : 'since adopt';
+    console.log(`    ${dim(`= ${t.length} of yours, left alone (${why}): ${t.slice(0, 4).join(', ')}${t.length > 4 ? ' …' : ''}`)}\n`);
   }
 
   if (!changed.length && !settingsChanged) {
@@ -947,6 +971,8 @@ export function cmdSync(args) {
   }
 
   const { written, skipped, backupDir, removed, stamp: next } = applySync(process.cwd(), plan, stamp, { remove, force, keepMine });
+  // A record worked out from git is kept, so the next sync doesn't have to read history again.
+  if (plan.theirsInferred && !next.theirs) next.theirs = plan.theirsInferred;
   writeStamp(process.cwd(), next);
   registerProject({
     name: next.name, path: process.cwd(), stage: next.stage, mode: next.mode, bossVersion: next.bossVersion,
