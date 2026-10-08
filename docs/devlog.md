@@ -36,6 +36,11 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
   On landing, IDEA-154's bullet also slid into the stamp. Unreleased is rebuilt (25 bullets, no text
   lost, checked by diff) and 0.331.0 equals its stamp commit `fb20e1ef` again. The site's What's new had
   been showing that unreleased work as released; `gen:site` re-run.
+- **CI red after the push, fixed:** ubuntu/node 24 failed *at least one loop is open on the demo*.
+  `renderDemo` copied the records with copy-time mtimes and `outpaced_by` compares mtimes; once IDEA-149
+  closed the other loops, the one left open hung on copy order. Reproduced (equal mtimes → 0 signals);
+  the copy now takes each record's `created:`/`date:` (`fa1f2efd`), four loops open every run, CI green
+  on all six. The demo's learning page had been showing a copy-order signal.
 - **Surprises:** a worktree's `npm run check` stops at a stale-ledger finding for the gitignored `regrade`
   skill (absent from worktrees), so the `&&` chain never reached `check:backlog`. IDEA-154's missing
   `proof:` only surfaced on main. A stray bullet in a stamped block passes every check.
