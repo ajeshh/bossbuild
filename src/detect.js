@@ -102,9 +102,35 @@ function scanRepo(dir) {
       if (DEPLOY.includes(e.name)) found.deploy.push(e.name);
     }
   } catch { /* unreadable root — the walk below reports what it can */ }
+  // A monorepo keeps its manifests a level or two down (`app/package.json`, `app/src-tauri/Cargo.toml`)
+  // — read as Quickstart with "no build manifest" before (IDEA-163). Named with their folder.
+  for (const pkg of packageDirs(dir)) {
+    if (!pkg) continue;
+    for (const m of MANIFESTS) if (existsSync(join(dir, pkg, m))) found.manifests.push(`${pkg}/${m}`);
+  }
 
   walk(dir, 0);
   return found;
+}
+
+// Folders holding a build manifest: the root (`''`), then up to two levels down. Bounded and
+// sorted, so a big tree costs a few dozen readdirs, never a walk.
+export function packageDirs(dir, maxDepth = 2) {
+  const out = [];
+  const has = (d) => MANIFESTS.some((m) => existsSync(join(dir, d, m)));
+  if (has('')) out.push('');
+  const visit = (rel, depth) => {
+    if (depth > maxDepth) return;
+    let entries = [];
+    try { entries = readdirSync(join(dir, rel), { withFileTypes: true }); } catch { return; }
+    for (const e of entries.filter((x) => x.isDirectory() && !SKIP_DIRS.has(x.name) && !x.name.startsWith('.')).sort((a, b) => a.name.localeCompare(b.name))) {
+      const r = rel ? `${rel}/${e.name}` : e.name;
+      if (has(r)) out.push(r);
+      visit(r, depth + 1);
+    }
+  };
+  visit('', 1);
+  return out;
 }
 
 // The threshold that separates "a repo with a couple of scratch files" from "a real build."
@@ -163,10 +189,17 @@ const SOURCE_ROOTS = [
 ];
 
 export function inferSourceGlobs(dir) {
-  const found = SOURCE_ROOTS.filter((r) => {
-    try { return statSync(join(dir, r)).isDirectory(); } catch { return false; }
-  });
-  return found.length ? found.map((r) => `${r}/**`) : null;
+  const isDir = (p) => { try { return statSync(join(dir, p)).isDirectory(); } catch { return false; } };
+  const found = SOURCE_ROOTS.filter(isDir);
+  // A monorepo's code sits inside its packages (`app/src`, `app/src-tauri/src`): look there too, so
+  // the conscience isn't left saying it could not look at a repo that has code (IDEA-163).
+  for (const pkg of packageDirs(dir)) {
+    if (!pkg) continue;
+    for (const r of SOURCE_ROOTS) if (isDir(`${pkg}/${r}`)) found.push(`${pkg}/${r}`);
+  }
+  // A root already covered by another (`app/src` under `app`) adds nothing.
+  const roots = [...new Set(found)].filter((r, _, all) => !all.some((o) => o !== r && r.startsWith(`${o}/`)));
+  return roots.length ? roots.map((r) => `${r}/**`) : null;
 }
 
 export function detectStage(dir) {

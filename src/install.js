@@ -5,7 +5,7 @@
 
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, delimiter, basename, dirname, relative, sep } from 'node:path';
-import { execSync } from 'node:child_process';
+import { execSync, execFileSync } from 'node:child_process';
 import { homedir } from 'node:os';
 import { bossVersion, STAGE_ORDER, resolveStageId, BOSS_HOME } from './paths.js';
 import { stageVars, applyStage, readStageManifest, recordIgnoreOffered, applyStageSafe, planStageSafe, gitignoreRulesToAdd, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock } from './scaffold.js';
@@ -63,6 +63,27 @@ function previewUnlock(stamp) {
   console.log(`\n  ${bold(`boss unlock ${modeWord(next)}`)} ${dim('when you are — it never blocks.')}\n`);
 }
 
+// What to call the project. The folder name was wrong in a worktree (`dhun-boss` baked into every
+// template and the registry, IDEA-163): the git remote's repo name first, then the main checkout's
+// folder (the common git dir's parent), then this folder. `package.json` never — a monorepo has none
+// at the root, or several.
+function projectName(dir) {
+  const run = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  try {
+    const url = run('remote', 'get-url', 'origin');
+    const m = /([^/:]+?)(?:\.git)?\/?$/.exec(url);
+    if (m && m[1]) return { name: m[1], from: 'the git remote' };
+  } catch { /* no remote */ }
+  try {
+    const common = resolve(dir, run('rev-parse', '--git-common-dir'));
+    if (basename(common) === '.git') {
+      const main = basename(dirname(common));
+      if (main && main !== basename(dir)) return { name: main, from: 'the main checkout, not this worktree' };
+    }
+  } catch { /* not a git repo */ }
+  return { name: basename(dir), from: 'this folder' };
+}
+
 // The commit adopt started from — the reconcile's baseline (IDEA-163). Git already keeps the before;
 // what was missing is a fixed point to compare against. `dirty` = uncommitted work the baseline won't hold.
 function gitBaseline(dir) {
@@ -76,7 +97,7 @@ function gitBaseline(dir) {
 // The plan `boss adopt --apply` would carry out, computed by the same steps and written nowhere.
 // It answers the three things someone with a working repo asks first: where do I stand, what
 // do you add, and what of mine do you touch. Then what BOSS can't see, and how to take less.
-function previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shippedBefore, named }) {
+function previewAdopt({ targetDir, name, nameFrom, stageId, manifest, chain, detected, shippedBefore, named }) {
   const rel = (f) => relative(targetDir, f).split(sep).join('/');
   const planned = new Set();
   const kept = new Set();
@@ -105,6 +126,7 @@ function previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shi
   console.log(`\n  ${bold('boss adopt')} — what BOSS would do to ${bold(name)}. ${dim('Nothing is written yet.')}`);
 
   console.log(`\n  ${bold('Where you stand')}`);
+  console.log(`    called ${bold(name)} ${dim(`— from ${nameFrom}`)}`);
   console.log(`    ${manifest.name} mode${named ? dim(' — the mode you named') : ''}`);
   if (detected) console.log(`    ${dim('read from your repo:')} ${detected.why.join(' · ')}`);
   if (detected && detected.beyond) console.log(`    ${warn('▸')} this looks past MVP — shipped and tested. ${dim("BOSS won't climb past MVP on its own; `boss unlock v1` later if you want it.")}`);
@@ -456,7 +478,7 @@ export function cmdAdopt(args) {
   try { manifest = readStageManifest(stageId); }
   catch { return fail(`mode '${flags.mode}' isn't authored yet.`); }
 
-  const name = basename(targetDir);
+  const { name, from: nameFrom } = projectName(targetDir);
 
   // 1. Non-destructive scaffold of the FULL chain up to the target mode — adopting
   //    at MVP must also lay down Quickstart's foundation (welcome/boss/idea/...),
@@ -476,7 +498,7 @@ export function cmdAdopt(args) {
   const shippedBefore = Boolean(detected && detected.beyond);
   // Preview first, like `boss sync` and `boss remove`: adopt was the one door that wrote on its
   // first run, into a repo that already had its own way of working (IDEA-163, EVID-006).
-  if (!flags.apply) return previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shippedBefore, named: Boolean(flags.mode) });
+  if (!flags.apply) return previewAdopt({ targetDir, name, nameFrom, stageId, manifest, chain, detected, shippedBefore, named: Boolean(flags.mode) });
   const baseline = gitBaseline(targetDir);   // read before anything is written
   // The founder's files a template path collides with, read before anything is written. They are
   // theirs, never BOSS's: stamping them as managed recorded their bytes as an unedited BOSS file, and

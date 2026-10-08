@@ -19,8 +19,8 @@
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { join, basename } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { project, cleanup } from './helpers.js';
 import { recordManaged } from '../src/managed.js';
@@ -301,4 +301,31 @@ test('a clean adopt records theirs as empty, so sync never guesses from git', ()
   const dir = project({ 'package.json': '{"name":"myapp"}' });
   boss(['adopt', '--apply'], dir);
   assert.deepEqual(JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8')).theirs, { files: [], skills: [] });
+});
+
+test('a monorepo with its manifests a level down reads as a real build, and its source is found', () => {
+  const files = { 'README.md': '# mono\n', 'dhun/package.json': '{"name":"dhun"}', 'dhun/src-tauri/Cargo.toml': '[package]\nname = "dhun"\n' };
+  for (let i = 0; i < 6; i++) files[`dhun/src/f${i}.ts`] = `export const a${i} = 1;\n`;
+  files['dhun/src-tauri/src/main.rs'] = 'fn main() {}\n';
+  const dir = project(files);
+  const out = boss(['adopt'], dir);
+  assert.match(out, /MVP mode/);
+  assert.match(out, /dhun\/package\.json \+ dhun\/src-tauri\/Cargo\.toml/);
+  boss(['adopt', '--apply'], dir);
+  const cfg = JSON.parse(readFileSync(join(dir, '.boss', 'config.json'), 'utf8'));
+  assert.deepEqual(cfg.sourceGlobs, ['dhun/src/**', 'dhun/src-tauri/src/**']);
+});
+
+test('the project is named from the git remote, and from the main checkout inside a worktree', () => {
+  const dir = project({ 'package.json': '{"name":"something-else"}' });
+  const git = (cwd, ...a) => execFileSync('git', ['-c', 'user.email=a@b', '-c', 'user.name=t', ...a], { cwd, encoding: 'utf8' });
+  git(dir, 'init', '-q'); git(dir, 'add', '-A'); git(dir, 'commit', '-qm', 'i');
+  git(dir, 'remote', 'add', 'origin', 'git@github.com:DhunFM/dhun.git');
+  assert.match(boss(['adopt'], dir), /called dhun — from the git remote/);
+  git(dir, 'remote', 'remove', 'origin');
+  const wt = join(dir, '..', `${basename(dir)}-boss`);
+  git(dir, 'worktree', 'add', '-q', wt);
+  try {
+    assert.match(boss(['adopt'], wt), new RegExp(`called ${basename(dir)} — from the main checkout`));
+  } finally { rmSync(wt, { recursive: true, force: true }); }
 });

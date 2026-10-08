@@ -9,7 +9,7 @@ relates: IDEA-005, IDEA-073, IDEA-118, IDEA-162, IDEA-153
 proof: test/adopt.test.js
 proof_note: S1 (the preview) ships with its test; S2 and choosing parts are still open
 gist: `boss adopt` says what it found and what it would change before it changes anything, and an adopted repo's own record layout is read instead of ignored.
-next: land (waits on the 0.332.0 stamp on main); then the Basement as bare --apply, then monorepo detection and identity
+next: land (waits on the 0.332.0 stamp on main); then agent overlap and .gitattributes; the Basement once DEC-024 is on main
 ---
 
 # IDEA-163 — Adopt shows its plan first
@@ -174,9 +174,9 @@ worktree practice). Nothing of dhun's was overwritten — and dhun would still h
       triggers overlap the repo's own, and agents stay out of a bare `--apply`.
 - [ ] **Same-named skills.** dhun's `/smoke`, `/close`, `/log`, `/board`, `/design-review` were kept
       (copy-if-absent) — right — but the preview should say *yours wins* for each, by name.
-- [ ] **Detection misread a monorepo.** `package.json` and `Cargo.toml` in subfolders → Quickstart, "no
+- [x] **Detection misread a monorepo.** `package.json` and `Cargo.toml` in subfolders → Quickstart, "no
       build manifest". Manifests one level down count.
-- [ ] **The worktree's folder name became the project's name** (`dhun-boss`) in files and the registry.
+- [x] **The worktree's folder name became the project's name** (`dhun-boss`) in files and the registry.
       Name it from the main worktree, or the package.
 - [ ] **`.gitattributes` would renormalize line endings on 36 files**, a migration's data CSV among them.
       The preview must flag a `.gitattributes` against a repo with history; never laid down silently.
@@ -206,9 +206,9 @@ slot, `boss map` shows the repo's own skill descriptions. New beyond the list ab
       where a specialist owns the words, and say so. The four builders matter; the mentors are additive.
 - [ ] **"Nothing of yours overwritten" is asserted, not computed** — the summary should come from a diff
       of what was touched. `.gitattributes`: detect CRLF with `git ls-files --eol` and skip or exempt.
-- [ ] **Source globs are blind to a monorepo too** — `inferSourceGlobs` returned nothing, so the
+- [x] **Source globs are blind to a monorepo too** — `inferSourceGlobs` returned nothing, so the
       conscience reports it could not look at the code. Per-package roots (extends IDEA-073).
-- [ ] **Identity:** name from `git rev-parse --git-common-dir`'s toplevel or the remote, or ask (IDEA-161's family).
+- [x] **Identity:** name from `git rev-parse --git-common-dir`'s toplevel or the remote, or ask (IDEA-161's family).
 - [ ] **`boss remove` misattributes:** files skipped as collisions are stamped as managed, so the remove
       preview lists the repo's own `tester.md`, `close/SKILL.md` as *BOSS files you edited*. It should list
       every adopt side effect, kept ones too, with why.
