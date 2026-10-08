@@ -30,9 +30,9 @@ judgment is the model's, in isolation. ([Anthropic on hooks](https://code.claude
 - **Unit tests — the deterministic floor.** **566 cases**, zero-dep (`node:test`), covering the state
   projections, the scaffold's non-destructive guarantees, and the CLI contract. Several are marked
   `REGRESSION` and name the shipped bug they lock. Cheapest of the three; runs first.
-- **Gate evals — deterministic, conscience-specific.** **161 cases / 0 failures**, asserting the
+- **Gate evals — deterministic, conscience-specific.** **167 cases / 0 failures**, asserting the
   predicate machinery fires (and stays silent) exactly when it should. Pure structural facts, no model.
-- **Judgment evals — LLM-as-judge, calibrated, GRADED.** **50 golden-transcript cases** across the
+- **Judgment evals — LLM-as-judge, calibrated, GRADED.** **58 golden-transcript cases** across the
   semantic moments (drift / caution / capture / humane / sustaining), each judged by a *separate* model pass with
   examples of the judge being wrong, and recorded as `GRADED` against human labels. The judge never sees
   the conscience's own reasoning — only the transcript. ([demystifying evals](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents): *"read the transcripts!"*)
