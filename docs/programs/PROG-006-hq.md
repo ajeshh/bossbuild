@@ -146,11 +146,26 @@ never asked of it — no `intent` field, no cell gating. What that changes, for 
   Q1 items 6 and 7. IDEA-163 holds `--take` and a default parts set until Q1 is decided.
 - **Q4. ✅ Answered (Ajesh, 2026-10-08):** notes with no project yet live in `~/.boss/inbox/`;
   assigning one moves it into that project's `boss inbox`, or onto its row's *next* if it has no BOSS.
-- **Q6. Does a Mailroom project get the Basement?** Ajesh leans yes — always, or offered — and wants the
-  case argued both ways before deciding.
-- **Q7. The door.** Ajesh: adopt makes sense for an existing project; should a bare adopt install the
-  whole of BOSS, or not? Note IDEA-163 Q7 already made a bare `adopt --apply` take only the Basement.
-  Open: one verb for every room (`adopt` asks which) or a separate `track`; what `boss new` defaults to.
+- **Q6. ✅ Answered (Ajesh, 2026-10-08): the building is one cumulative ladder, Basement first.**
+  *"as you go up the level, including the previous levels make it easier to remember… if they are
+  using AI then isnt it better to first create the right container the right way?"* So:
+  **Basement → Mailroom → Desk → Floor → Boardroom**, each floor carrying every floor below. A tracked
+  project always has the Basement; the Mailroom is no longer zero-write. Open edge, Q8.
+- **Q7. ✅ Direction (Ajesh, 2026-10-08): a door, then an elevator.** *"its like moving up a floor by the
+  lift, you start in the basement and then go up, each time you go up you get all the perks of the
+  previous floor… helping people id when they are crossing a threshold and being intentional."*
+  - **The door** (`boss adopt` for an existing folder, `boss new` / `/boss` for a new one) is how you
+    enter: always the Basement, then you ride to the floor you came for. Nothing defaults to the top.
+  - **The elevator** moves a project up later, one deliberate command, with the same preview adopt
+    shows. BOSS **names a threshold when it sees one** — once, never a nag — and the founder decides.
+    Modes already do this (`boss unlock`, `src/readiness.js`); floors reuse that reading.
+- **Q8. A repo you don't own.** With the Basement always included, tracking a client's or employer's
+  repo writes files there. Does HQ need a way to *see* a folder without bringing it into the
+  building (a visitor in the lobby), or is that case out?
+- **Q9. "The Floor" collides.** Every level is now a floor, so the building room's name is ambiguous
+  (*"move it to the Floor"* vs *"which floor"*). Rename it (Workshop?) or keep.
+- **Q10. The elevator's command and its thresholds.** One verb (`boss up`?) or `boss unlock` grown to
+  floors; and what signal names each threshold (Mailroom→Desk, Desk→Floor, Floor→Boardroom).
 
 
 ## Log
