@@ -189,3 +189,16 @@ test('the no-list comes back first — out of scope, not adopted, a program\'s r
   assert.doesNotMatch(text, /- …/, 'the template placeholder is not a decision');
   assert.ok(text.indexOf('refunds') < text.indexOf('pay with a card'), 'the no comes before the open work');
 });
+
+test('a FEAT kept as a folder per record, in the project\'s own layout.records, is read at session start (IDEA-163)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'ws-layout-'));
+  mkdirSync(join(dir, 'docs', 'features', 'FEAT-001-login'), { recursive: true });
+  mkdirSync(join(dir, '.boss'), { recursive: true });
+  writeFileSync(join(dir, '.boss', 'config.json'), JSON.stringify({ layout: { records: ['docs/features'] } }));
+  writeFileSync(join(dir, 'docs', 'features', 'FEAT-001-login', 'README.md'),
+    '---\nid: FEAT-001\nstatus: building\n---\n# FEAT-001 — Login\n\n## Acceptance criteria\n- [ ] a user can sign in\n');
+  const s = workingState(dir);
+  assert.ok(s, 'a FEAT in build is said');
+  assert.match(s.text, /docs\/features\/FEAT-001-login\/README\.md \(building\)/);
+  assert.match(s.text, /a user can sign in/);
+});

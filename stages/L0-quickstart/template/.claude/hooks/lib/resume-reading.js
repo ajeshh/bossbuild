@@ -22,9 +22,10 @@
 // nothing, and the caller says nothing.
 
 import { execFileSync } from 'node:child_process';
-import { readdirSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseFrontmatter } from './yaml.js';
+import { recordFiles } from './record-files.js';
 
 export const COLD_DAYS = 14;        // in flight with no commit naming it for this long → gone cold (Ajesh, 2026-10-07)
 const STALL_EDITS = 2;              // edited this many times since the last tick, with work left → stalled
@@ -33,11 +34,8 @@ const NAMED_SCAN = 20000;           // commits searched for the newest one namin
 const NEXT_CAP = 140;
 const DAY = 86400000;
 
-const IDEAS = 'docs/ideas';
-const PROGRAMS = 'docs/programs';
 
 const read = (p) => { try { return readFileSync(p, 'utf8').replace(/\r\n?/g, '\n'); } catch { return null; } };
-const list = (d) => { try { return readdirSync(d).sort(); } catch { return []; } };
 const git = (cwd, args, input) => execFileSync('git', args, {
   cwd, input, ...(input == null ? { encoding: 'utf8' } : {}), maxBuffer: 64 * 1024 * 1024, // no encoding → a Buffer (cat-file sizes are bytes)
   stdio: [input == null ? 'ignore' : 'pipe', 'pipe', 'ignore'],
@@ -126,21 +124,16 @@ export function direction(points, { now = Date.now() } = {}) {
 
 function records(projectDir) {
   const out = [];
-  const take = (dir, re) => {
-    for (const name of list(join(projectDir, dir))) {
-      if (!re.test(name)) continue;
-      const rel = `${dir}/${name}`;
-      const text = read(join(projectDir, rel));
-      if (!text) continue;
-      const fm = parseFrontmatter(text) || {};
-      const id = String(fm.id || (/^([A-Z]+-\d+)/.exec(name) || [])[1] || '').trim().toUpperCase();
-      if (!id) continue;
-      const title = ((/^#\s+(.+)$/m.exec(text) || [])[1] || id).replace(new RegExp(`^${id}\\s*[—–:-]\\s*`), '').trim();
-      out.push({ id, rel, title, fm, status: base(fm.status), program: /^PROG-\d+$/i.test(String(fm.program || '').trim()) ? String(fm.program).trim().toUpperCase() : null, ...readRecord(text) });
-    }
-  };
-  take(IDEAS, /^(IDEA|FEAT)-\d+.*\.md$/);
-  take(PROGRAMS, /^PROG-\d+.*\.md$/);
+  // Wherever this project keeps them, flat or a folder per record (record-files.js, IDEA-163).
+  for (const { rel, name } of recordFiles(projectDir, ['IDEA', 'FEAT', 'PROG'])) {
+    const text = read(join(projectDir, rel));
+    if (!text) continue;
+    const fm = parseFrontmatter(text) || {};
+    const id = String(fm.id || (/^([A-Z]+-\d+)/.exec(name) || [])[1] || '').trim().toUpperCase();
+    if (!id) continue;
+    const title = ((/^#\s+(.+)$/m.exec(text) || [])[1] || id).replace(new RegExp(`^${id}\\s*[—–:-]\\s*`), '').trim();
+    out.push({ id, rel, title, fm, status: base(fm.status), program: /^PROG-\d+$/i.test(String(fm.program || '').trim()) ? String(fm.program).trim().toUpperCase() : null, ...readRecord(text) });
+  }
   return out;
 }
 

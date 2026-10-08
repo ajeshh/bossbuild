@@ -175,6 +175,7 @@ test('bare adopt writes nothing and says what it would add, change and not see',
   assert.match(out, /Nothing is written yet/);
   assert.match(out, /CLAUDE\.md\s+a marked BOSS block/);
   assert.match(out, /\.gitignore\s+\d+ rule\(s\) added/);
+  assert.match(out, /Where you keep things/);
   assert.match(out, /docs\/features\/FEAT-\*\/README\.md \(2\)/);
   assert.doesNotMatch(out, /docs\/design/, 'a file named after a FEAT without its frontmatter is not a record');
   assert.match(out, /boss adopt --apply/);
@@ -197,4 +198,23 @@ test('adopt records the commit it started from, and the preview names it', () =>
   assert.match(boss(['adopt'], dir), /1 uncommitted change\(s\)\. Commit first/);
   boss(['adopt', '--apply'], dir);
   assert.equal(JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8')).adoptedFrom, sha);
+});
+
+test('a repo that keeps FEATs in a folder per record: adopt notes the folder, and the board reads them there', () => {
+  const dir = project({
+    'package.json': '{"name":"myapp"}',
+    'docs/features/FEAT-001-login/README.md': '---\nid: FEAT-001\nstatus: building\n---\n# FEAT-001 — Login\n\n## Acceptance criteria\n- [ ] a user can sign in\n',
+  });
+  boss(['adopt', '--apply'], dir);
+  const cfg = JSON.parse(readFileSync(join(dir, '.boss', 'config.json'), 'utf8'));
+  assert.deepEqual(cfg.layout, { records: ['docs/features'] });
+  assert.match(boss(['board', '--next'], dir), /FEAT-001/, 'the board sees the FEAT in build');
+  assert.doesNotMatch(boss(['id', 'FEAT'], dir), /FEAT-001/, 'boss id does not hand out a taken number');
+});
+
+test('boss id counts a folder-per-record anywhere under docs/, with no layout set', () => {
+  const dir = project({ 'docs/specs/FEAT-001-login/README.md': '---\nid: FEAT-001\n---\n# Login\n' });
+  mkdirSync(join(dir, '.boss'), { recursive: true });
+  writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({ stage: 'L1-mvp', mode: 'MVP', installedLayers: ['L0-quickstart', 'L1-mvp'] }));
+  assert.match(boss(['id', 'FEAT'], dir), /FEAT-002/);
 });

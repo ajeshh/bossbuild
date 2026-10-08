@@ -148,10 +148,10 @@ function previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shi
 
   const unread = unreadRecords(targetDir);
   if (unread.length) {
-    console.log(`\n  ${bold("What it can't see")}`);
-    for (const u of unread) console.log(`    ${warn('!')} ${u.pattern} ${dim(`(${u.count})`)}`);
-    console.log(`    ${dim('BOSS reads each kind of record as a flat file in one folder (FEATs and IDEAs in docs/ideas/).')}`);
-    console.log(`    ${dim("These stay where they are, and the board and session start won't show them yet.")}`);
+    console.log(`\n  ${bold('Where you keep things')}`);
+    for (const u of unread) console.log(`    ${u.pattern} ${dim(`(${u.count})`)}`);
+    console.log(`    ${dim(`BOSS reads them where they are — the board, boss id and session start included — and`)}`);
+    console.log(`    ${dim(`notes the folder${unread.length > 1 ? 's' : ''} in .boss/config.json (layout.records). Nothing is moved.`)}`);
   }
 
   console.log(`\n  ${bold('Taking less')}`);
@@ -546,10 +546,13 @@ export function cmdAdopt(args) {
     // "nobody has said", and the conscience can then report honestly that it could not look.
     // A key written as a guess would make a wrong answer look like the founder's own decision.
     const sourceGlobs = inferSourceGlobs(targetDir);
+    // Where this repo keeps its records, as the preview said (IDEA-163). Absent when nothing was found.
+    const records = [...new Set(unreadRecords(targetDir).map((u) => u.dir))];
     writeFileSync(cfgPath, JSON.stringify({
       // license: null — undecided, and BOSS doesn't decide it (DEC-011). See `boss new` above.
       github: 'ask', visibility: 'private', license: null, cohort: null,
       ...(sourceGlobs ? { sourceGlobs } : {}),
+      ...(records.length ? { layout: { records } } : {}),
       // `shareUp` and `aiNative` dropped v0.252.0 — nothing read either. See `boss new` above.
     }, null, 2) + '\n');
   }

@@ -56,6 +56,11 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   Nothing is written until `boss adopt --apply`, the same way `boss sync` and `boss remove` already
   work. If you script adopt, add `--apply`. Adopt also records the commit it started from, so what you
   had stays something you can compare against; the preview asks you to commit first if you haven't.
+- **BOSS reads your records where you keep them.** A repo that keeps each feature in its own folder,
+  like `docs/features/FEAT-001-login/README.md`, used to show *nothing in flight* on the board and at
+  session start, and `boss id` could hand out a number already taken. Now records are read flat or as
+  a folder per record, `boss id` counts them wherever they sit under `docs/`, and `boss adopt` notes the
+  folders it found in `.boss/config.json` (`layout.records`) — said in the preview first, nothing moved.
 - **`boss board --next` says how close each piece of work is, in words, and where to pick it up.** It
   used to list what was in build and say "finish it". Now each piece says whether questions are still
   open (*uphill*) or only known work is left (*downhill*), and which way it has been going: *8 → 4 open

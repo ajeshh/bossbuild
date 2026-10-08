@@ -20,21 +20,20 @@
 // past it the host swaps the text for a file path and a 2,000-character preview), and never throws:
 // any surprise returns null and the caller says nothing.
 
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseFrontmatter } from './yaml.js';
+import { recordFiles, recordFile } from './record-files.js';
 
 export const STATE_CAP = 4000;      // the whole block
 const LINE_CAP = 220;               // one item
 const ITEMS_CAP = 6;                // per list; the rest are counted and pointed at
 const MAX_BUILDING = 2;             // FEATs in full; more are named
 
-const IDEAS = 'docs/ideas';
 const PROGRAMS = 'docs/programs';
 const LEGACY = '.claude/rules/feature-context.md';
 
 const read = (p) => { try { return readFileSync(p, 'utf8').replace(/\r\n?/g, '\n'); } catch { return null; } };
-const list = (d) => { try { return readdirSync(d).sort(); } catch { return []; } };
 const clip = (s) => { const t = s.replace(/\s+/g, ' ').trim(); return t.length > LINE_CAP ? `${t.slice(0, LINE_CAP - 1).trimEnd()}…` : t; };
 const bodyOf = (text) => text.replace(/^---\n[\s\S]*?\n---\n/, '');
 // A template's own example lines — `- [ ] (task — what…)`, `- (the question · …)`, `- [ ] …` — are not work.
@@ -90,11 +89,6 @@ function listLines(label, items, path) {
   return [`  ${label}:`, ...shown, ...(more ? [`    - +${more} more in ${path}`] : [])];
 }
 
-function recordFile(projectDir, id) {
-  const dir = /^PROG-/i.test(id) ? PROGRAMS : IDEAS;
-  const f = list(join(projectDir, dir)).find((n) => n.toUpperCase().startsWith(`${id.toUpperCase()}-`) || n.toUpperCase() === `${id.toUpperCase()}.MD`);
-  return f ? `${dir}/${f}` : null;
-}
 
 function load(projectDir, rel) {
   const text = read(join(projectDir, rel));
@@ -167,8 +161,7 @@ export function workingState(projectDir, { worktree = null } = {}) {
     }
     let named = [];
     if (!records.length) {
-      const building = list(join(projectDir, IDEAS)).filter((n) => /^FEAT-\d+.*\.md$/.test(n))
-        .map((n) => `${IDEAS}/${n}`)
+      const building = recordFiles(projectDir, ['FEAT']).map((r) => r.rel)
         .filter((rel) => /^building/.test(String((parseFrontmatter(read(join(projectDir, rel)) || '') || {}).status || '')));
       records.push(...building.slice(0, MAX_BUILDING));
       named = building.slice(MAX_BUILDING);
@@ -190,8 +183,7 @@ export function workingState(projectDir, { worktree = null } = {}) {
       if (r) blocks.push(programLines(r));
     }
     if (!blocks.length) {
-      const venture = list(join(projectDir, IDEAS)).filter((n) => /^IDEA-\d+.*\.md$/.test(n))
-        .map((n) => `${IDEAS}/${n}`).find((rel) => /^venture$/.test(String((parseFrontmatter(read(join(projectDir, rel)) || '') || {}).kind || '')));
+      const venture = recordFiles(projectDir, ['IDEA']).map((r) => r.rel).find((rel) => /^venture$/.test(String((parseFrontmatter(read(join(projectDir, rel)) || '') || {}).kind || '')));
       const r = venture && load(projectDir, venture);
       if (r) blocks.push(ventureLines(r));
     }

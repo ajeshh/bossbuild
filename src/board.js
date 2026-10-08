@@ -15,7 +15,7 @@
 
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { firstAdded, lastTouched } from './gitdates.js';
-import { join } from 'node:path';
+import { join, relative, sep } from 'node:path';
 import { dim, bold } from './ui.js';
 import { frontmatter, unquote, baseStatus, isParked } from './frontmatter.js';
 // One chrome for every generated page in .boss/ — the board is a subpage of the same dashboard
@@ -30,6 +30,7 @@ import { isoDay, isoMinute } from './clock.js';
 import { readPrograms, isGrown, workShape, programId, programDecisions } from './programs.js';
 import { resumeReading, stateWords, COLD_DAYS } from '../stages/L0-quickstart/template/.claude/hooks/lib/resume-reading.js';
 import { openWork } from '../stages/L0-quickstart/template/.claude/hooks/lib/open-work.js';
+import { recordFiles } from '../stages/L0-quickstart/template/.claude/hooks/lib/record-files.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -325,9 +326,14 @@ const addedOn = (projectDir, fm, path) => isoDate(fm.created) || gitFirst(projec
 // { cards: [{id, title, column, blocked}], hasIdeasDir }.
 export function collectBoard(projectDir) {
   const ideasDir = join(projectDir, 'docs', 'ideas');
-  if (!existsSync(ideasDir)) return { cards: [], hasIdeasDir: false };
-
-  const files = readdirSync(ideasDir).filter((f) => f.endsWith('.md'));
+  // docs/ideas as it always was, plus IDEAs and FEATs this project keeps elsewhere — a folder per
+  // record, or its own `layout.records` (IDEA-163). Adopt never moves them, so the board reads them there.
+  const files = existsSync(ideasDir) ? readdirSync(ideasDir).filter((f) => f.endsWith('.md')) : [];
+  const where = new Map(files.map((f) => [f, join(ideasDir, f)]));
+  for (const r of recordFiles(projectDir, ['IDEA', 'FEAT'])) {
+    if (!r.rel.startsWith('docs/ideas/') && !where.has(r.name)) { files.push(r.name); where.set(r.name, join(projectDir, r.rel)); }
+  }
+  if (!existsSync(ideasDir) && !files.length) return { cards: [], hasIdeasDir: false };
   const feats = [];
   const ideas = [];
   const featSources = new Set(); // IDEA ids a FEAT was promoted from
@@ -341,7 +347,7 @@ export function collectBoard(projectDir) {
     // one board failure that leaves no trace at all. `canvassedIdeas` two screens up always
     // used the anchored form; this reader never got it.
     if (/-canvas\.md$/.test(f)) continue; // canvas files are state, not cards
-    const text = readFileSync(join(ideasDir, f), 'utf8');
+    const text = readFileSync(where.get(f), 'utf8');
     const fm = frontmatter(text);
     const id = fm.id || f.replace(/\.md$/, '');
     const title = cardTitle(firstHeading(text), id);
@@ -358,7 +364,7 @@ export function collectBoard(projectDir) {
       // `boss records` still reports the dead field so it gets corrected at the source.
       const src = fm.from || fm.source;
       if (src && src !== 'none') featSources.add(src);
-      feats.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review,
+      feats.push({ id, title, gist, file: relative(projectDir, where.get(f)).split(sep).join('/'), status: fm.status, nextReview: fm.next_review,
         buildingSince: fm.building_since || repoTouched(projectDir, `docs/ideas/${f}`),
         ageSource: fm.building_since ? 'authored' : 'derived',
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof),
@@ -366,7 +372,7 @@ export function collectBoard(projectDir) {
         priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text), work: workShape(text),
         waitingOn: parseWaiting(fm.waiting_on) });
     } else {
-      ideas.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
+      ideas.push({ id, title, gist, file: relative(projectDir, where.get(f)).split(sep).join('/'), status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
         work: workShape(text),
         waitingOn: parseWaiting(fm.waiting_on),
         // `kind: venture` — the thing they are building, one per project, written by /boss (IDEA-114).

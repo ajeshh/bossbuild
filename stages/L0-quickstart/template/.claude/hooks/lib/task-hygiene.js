@@ -43,6 +43,7 @@
 // makes the signal a GATE, not a finding — the frame says so, and the model does the judgment.
 
 import { statSync, readdirSync } from 'node:fs';
+import { recordFiles } from './record-files.js';
 import { join } from 'node:path';
 
 // The session has to have been going for this long before its record can be "trailing" it. Short
@@ -91,6 +92,13 @@ function newestDurable(projectDir) {
       const m = statSync(join(projectDir, rel)).mtimeMs;
       if (m > newest) { newest = m; which = rel; }
     } catch { /* not every rung ships every file */ }
+  }
+  // Records kept elsewhere — a folder per record, or a project's own `layout.records` (IDEA-163).
+  for (const { rel } of recordFiles(projectDir, ['IDEA', 'FEAT', 'PROG'])) {
+    try {
+      const m = statSync(join(projectDir, rel)).mtimeMs;
+      if (m > newest) { newest = m; which = rel; }
+    } catch { /* raced away */ }
   }
   for (const dir of DURABLE_DIRS) {
     let names = [];

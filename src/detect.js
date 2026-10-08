@@ -211,5 +211,5 @@ export function unreadRecords(dir, maxDepth = 4) {
     }
   };
   walk(join(dir, 'docs'), 'docs', 0);
-  return [...groups].map(([pattern, count]) => ({ pattern, count }));
+  return [...groups].map(([pattern, count]) => ({ pattern, count, dir: pattern.replace(/\/[A-Z]+-\*.*$/, '') }));
 }

@@ -27,11 +27,12 @@
 import { readdirSync, readFileSync, existsSync, realpathSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { firstAdded } from './gitdates.js';
-import { join, sep, basename } from 'node:path';
+import { join, sep, basename, dirname } from 'node:path';
 import { frontmatter, STATUS_VOCAB, baseStatus, revisitDue } from './frontmatter.js';
 import { cardGist, criteriaProgress } from './board.js';
 import { isoDay } from './clock.js';
 import { readPrograms, workShape, isGrown } from './programs.js';
+import { recordFiles, recordDirs } from '../stages/L0-quickstart/template/.claude/hooks/lib/record-files.js';
 
 const RECORD = /^([A-Z]{3,4})-(\d+)[-.].*\.md$/;
 // The seven-word ladder governs the LIFECYCLE types only. `DEC` is decided|superseded, `PRAC` is
@@ -128,18 +129,17 @@ const RECORD_DIRS = ['docs/ideas', 'docs/decisions', 'docs/evidence', 'docs/prac
 
 function readRecords(projectDir) {
   const out = [];
-  for (const d of RECORD_DIRS) {
-    const dir = join(projectDir, d);
-    if (!existsSync(dir)) continue;
-    let names = [];
-    try { names = readdirSync(dir); } catch { continue; }
-    for (const n of names) {
+  // Flat or a folder per record, in BOSS's folders and the project's own `layout.records` (IDEA-163).
+  const dirs = [...new Set([...RECORD_DIRS, ...recordDirs(projectDir)])];
+  for (const r of recordFiles(projectDir, null, dirs)) {
+    const n = r.rel.endsWith(`/${r.name}`) ? r.name : `${r.name}.md`;   // a folder reads as its name
+    {
       if (!RECORD.test(n)) continue;
       try {
-        const text = readFileSync(join(dir, n), 'utf8');
+        const text = readFileSync(join(projectDir, r.rel), 'utf8');
         if (!text.startsWith('---')) continue;
         out.push({
-          file: `${d}/${n}`,
+          file: r.rel,
           id: field(text, 'id') || n.match(RECORD).slice(1, 3).join('-'),
           status: field(text, 'status'),
           gist: field(text, 'gist'),
@@ -595,7 +595,9 @@ export function idCensus(projectDir) {
   // the census came back empty, and `boss id` handed out IDEA-001 to a project with sixty
   // records. Silent, and the one place duplicates are manufactured (IDEA-095).
   for (const f of walkDocs(join(projectDir, 'docs'))) {
-    const base = basename(f);
+    // A folder per record names the record by its folder: `FEAT-001-login/README.md` (IDEA-163 —
+    // read by the file name alone, `boss id FEAT` handed out FEAT-001 again beside it).
+    const base = /^(README|index)\.md$/i.test(basename(f)) ? basename(dirname(f)) : basename(f);
     const m = base.match(/^([A-Z]{3,4})-(\d+)/);
     if (m) bump(m[1], parseInt(m[2], 10));
     if (!recordRoots.some((r) => f.startsWith(r + sep))) continue;
