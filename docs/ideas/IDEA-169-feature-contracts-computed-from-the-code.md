@@ -109,47 +109,47 @@ check. **Not a skill:** the check rides links that already exist.
 Three reads at source; the full reports, tables and every URL are in
 `docs/research/SESSION-2026-10-08-links-that-stay-true.md` (local). What they change:
 
-**Where this stands in the field.** Note tools (Obsidian, Logseq, Roam, Notion) keep a link
+**Where this stands in the field.** Personal note and wiki tools keep a link
 *resolving* through renames, or transclude the target live, or expire trust on a timer; none detects
-that a target's *meaning* changed. Wikidata comes closest: each reference records a retrieved date and
-an archive snapshot. Requirements tools have done it for decades as "suspect links", and IBM's newer
-form keys a link's validity on *the contents of both ends*, not on an edit date. So the idea isn't new
+that a target's *meaning* changed. The open structured-knowledge base comes closest: each reference records a retrieved date and
+an archive snapshot. Requirements tools have done it for decades as "suspect links", and the newest of
+them keys a link's validity on *the contents of both ends*, not on an edit date. So the idea isn't new
 in kind. What's new is putting it in a solo founder's git repo, across code, docs and outside sources,
 lightly enough to live with.
 
 **Design rules the prior art hands us:**
 
 1. **Pin to a hash of the meaning, not the file, the commit or a date.** Hash the targeted section or
-   the contract, normalized (whitespace, formatting and names out, as Unison does), so a typo fix
+   the contract, normalized (whitespace, formatting and names out, as a content-addressed language does), so a typo fix
    doesn't move it. File modification time is the wrong signal everywhere it was tried.
 2. **Early cutoff.** From build systems: when a target is re-checked and its meaning-hash is unchanged,
    nothing downstream goes unconfirmed. Without it, one edit spreads through every linked doc.
-3. **Confirmation belongs to the pair of contents** (IBM link validity, Pact). A revert or a branch
+3. **Confirmation belongs to the pair of contents** (the newest requirements tool; consumer-driven contract testing). A revert or a branch
    with the same content inherits "confirmed" for free.
 4. **Each kind of link declares which fields count, and its direction.** Every requirements tool ended
    up here; one needed a plug-in to get there, which says the default was too noisy. Default: contract
    fields only.
-5. **Fix mechanical changes, flag meaningful ones.** Renames and moves are repaired automatically (Swimm,
-   Obsidian); the rest is classified, breaking vs informational (oasdiff). A new dependency starts
-   *pending*, not red (Pact). No one-click "clear all", which teaches clearing without looking.
+5. **Fix mechanical changes, flag meaningful ones.** Renames and moves are repaired automatically (docs-coupled-to-code tools,
+   note tools); the rest is classified, breaking vs informational (API spec diff tools). A new dependency starts
+   *pending*, not red (contract testing). No one-click "clear all", which teaches clearing without looking.
 6. **Declared links are the record; inference only proposes.** Without enforcement about 60% of commits
-   carry their link (Rath et al.); model-inferred requirement-to-code links score F1 ≈0.25–0.55 (LiSSA).
+   carry their link (Rath et al.); model-inferred requirement-to-code links score F1 ≈0.25–0.55 (Fuchß et al., ICSE 2025).
    An inferred link can be suggested, never stored as fact. A dangling link fails loud.
 7. **Computed views are read-only; the confirmation is the one written field,** with who and when.
 8. **Outside sources keep a snapshot.** URL, content hash and what was read, so a changed page can be
-   compared, not just re-dated. Wikipedia puts a link's median lifespan at about a year.
+   compared, not just re-dated. The largest online encyclopedia puts a link's median lifespan at about a year.
 
 **What the research says about the cards themselves:**
 
 - **Signatures beat whole files.** A skeleton (signatures, fields, module comments) found the right
-  code more often than full files, at about a seventh of the cost (Agentless). Supports the contract
+  code more often than full files, at about a seventh of the cost (Xia et al., 2024). Supports the contract
   written as types.
-- **More context can hurt.** Expanding a code graph to ~10.5k tokens *lowered* success (RepoGraph).
+- **More context can hurt.** Expanding a code graph to ~10.5k tokens *lowered* success (Ouyang et al., ICLR 2025).
   Supports the ~500-token cap.
-- **⚠ Codebase overviews did not help agents reach the right files sooner** (the AGENTS.md study). The
+- **⚠ Codebase overviews did not help agents reach the right files sooner** (Gloaguen et al., 2026). The
   always-loaded one-line index is the piece most at risk. T1 tests it separately from the cards.
 - **Drift is cheap to catch on names.** 28.9% of the top-1000 GitHub projects had docs naming a code
-  identifier that no longer existed (DOCER), found with plain identifier matching, no model.
+  identifier that no longer existed (Tan, Wagner & Treude), found with plain identifier matching, no model.
 - **No published study** compares typed module contracts with full-code retrieval for cross-module
   work. T1 would be first-hand evidence.
 
@@ -187,8 +187,7 @@ you write one* table · the E/P/W marks.
 
 - [x] **T0 — Prior art before design.** Done 2026-10-08 → § Prior art. Ajesh: *"if we need to investigate other research to help us
   design this before we implement it lets do it."* Three reads, sources opened at source: note tools
-  (Obsidian's links, backlinks, rename-updates and computed views; Logseq/Roam block refs; Notion's
-  verified pages); engineering traceability (requirements tools' "suspect links", docs-coupled-to-code
+  (links, backlinks, rename-updates and computed views; block references; verified pages); engineering traceability (requirements tools' "suspect links", docs-coupled-to-code
   tools, contract tests, content-addressed pinning); the research on doc drift, traceability recovery,
   context files and generated repo maps for agents. Findings land here before any design.
 - [ ] **T2 — The general form on BOSS's own records.** Add a confirmed-against version to the links of

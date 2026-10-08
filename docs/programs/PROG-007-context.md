@@ -72,6 +72,26 @@ Two reasons for this order:
 - **Each route fires on an event,** the same idea as the links: context arrives because something
   happened (a crossing, a question, a failed build), not because a session started.
 
+## Direction (Ajesh, 2026-10-08)
+
+*"I think of it as the next evolution of whats better than [a knowledge-graph tool]. How we build this, should be
+eventually if needed spun into its own tool for other existing projects or if people only want this
+part… We already do a lot of what [it] is or have learnt. so this is like taking it one LEAP
+forward."*
+
+- **One leap past knowledge-graph tools.** They infer a graph from a snapshot of the files and answer
+  *"what's connected that I didn't know?"*, the best of them labelling each edge as found or guessed.
+  This answers *"is what I rely on still true?"*: links declared, each confirmed against a version of
+  its target, flagged when that target moves. The two compose. Inference proposes a link (rule 6 of
+  IDEA-169's prior art), a person declares it, and the confirmed link becomes the record. A graph tool
+  is a good source of proposals.
+- **Separable by design.** Built inside BOSS first, shaped so it can leave: zero-dependency like the
+  CLI, its own module boundary, and a link format that doesn't require BOSS's records to mean anything.
+  A design constraint on every member, not a task yet.
+- **Told as a story, with its proof.** The essay (a shared doc, internal first) tells how context is
+  usually kept, what the AI-era attempts left hanging, how BOSS began and iterated, and where it goes,
+  citing the research where a claim needs it. The full notes stay in the research sessions.
+
 ## Where this sits
 
 - **Not an ecosystem (PROG-002).** Ecosystems are planted in a founder's project and connect through
@@ -95,6 +115,15 @@ Two reasons for this order:
 - **Does arriving at the crossing pay for itself?** A hook on every file read has a cost; T1 measures it
   against the other routes.
 - **Is the index worth keeping at all,** once it is a search target rather than preloaded? T1's index arm.
+- **Naming outside tools in the public essay.** The standing rule says tools we learn from are named by
+  their shape in anything public; research papers are cited by author. Does the essay keep that rule, or
+  is it the exception, since its job is to prove the approach?
+
+## Tasks
+
+- [ ] **E1 — The essay, told as a story.** How context is usually kept → the AI-era attempts and where
+  they leave you → how BOSS began (records, one home per fact) and iterated (resume computed, the
+  handoff ledger) → what this program adds → where it goes. Citations where a claim needs proof.
 
 ## Log
 
