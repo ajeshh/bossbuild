@@ -7,7 +7,7 @@
 //   repo VERSION  0.217.0   ·   npm oyeboss  0.215.0   ·   tap Formula/oyeboss.rb  0.179.0
 //
 // Nothing was broken. Nothing existed. There is no CI, there are zero git tags, package.json has no
-// publish script, and the formula lives in a second repo (ajeshh/homebrew-boss) that nothing here
+// publish script, and the formula lives in a second repo (Oyeboss/homebrew-tap) that nothing here
 // has ever written to. Both publish steps were hand-typed from memory, and memory did what memory
 // does: npm got remembered most times, the tap got remembered twice in two months.
 //
@@ -66,8 +66,8 @@ const TIMEOUT_MS = 5000;
 // authoritative and rate-limits at 60/hr unauthenticated, which is far more than a release gate
 // needs; raw stays as the fallback for the rate-limited case, where being 5 minutes stale beats
 // being blind.
-const TAP_API = 'https://api.github.com/repos/ajeshh/homebrew-boss/contents/Formula/oyeboss.rb';
-const TAP_RAW = 'https://raw.githubusercontent.com/ajeshh/homebrew-boss/HEAD/Formula/oyeboss.rb';
+const TAP_API = 'https://api.github.com/repos/Oyeboss/homebrew-tap/contents/Formula/oyeboss.rb';
+const TAP_RAW = 'https://raw.githubusercontent.com/Oyeboss/homebrew-tap/HEAD/Formula/oyeboss.rb';
 const NPM_LATEST = `https://registry.npmjs.org/${PKG}/latest`;
 
 const VERSION = readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();
@@ -169,7 +169,7 @@ if (tapRes.error) {
     } else {
       const behind = releasesBetween(f.url, target);
       console.log(`  ${err('✗')} tap  ${bold(f.url)} ${dim(`vs npm ${target}`)} — ${bold(String(behind))} behind`);
-      findings.push(`Formula/oyeboss.rb is ${behind} releases behind npm — \`brew install ajeshh/boss/oyeboss\` serves ${f.url}.`);
+      findings.push(`Formula/oyeboss.rb is ${behind} releases behind npm — \`brew install oyeboss/tap/oyeboss\` serves ${f.url}.`);
     }
   }
 }

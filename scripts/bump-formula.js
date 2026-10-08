@@ -83,12 +83,12 @@ console.log(`  ${dim('sha256')}   ${sha256}  ${dim(`(${(bytes.length / 1024).toF
 // --- 3. find the tap checkout --------------------------------------------
 const tapDir = flag('tap') ?? (() => {
   try {
-    return execFileSync('brew', ['--repository', 'ajeshh/boss'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return execFileSync('brew', ['--repository', 'oyeboss/tap'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
   } catch { return null; }
 })();
 if (!tapDir || !existsSync(tapDir)) {
   die('No tap checkout found.',
-    'Pass --tap PATH, or `brew tap ajeshh/boss` to get one at brew --repository ajeshh/boss.');
+    'Pass --tap PATH, or `brew tap oyeboss/tap` to get one at brew --repository oyeboss/tap.');
 }
 const formulaPath = join(tapDir, 'Formula', 'oyeboss.rb');
 if (!existsSync(formulaPath)) die(`No formula at ${formulaPath}.`);

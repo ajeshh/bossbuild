@@ -11,7 +11,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, realpa
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { collectBoard, canvassedIdeas } from '../src/board.js';
-import { updateNote, installKind, updateCommand, uninstallCommand, PKG, TAP } from '../src/update.js';
+import { updateNote, installKind, updateCommand, uninstallCommand, PKG } from '../src/update.js';
 import { project, cleanup, idea, feat, canvas } from './helpers.js';
 import { loadModes } from '../src/modes.js';
 import { lookup, terms } from '../src/glossary.js';
@@ -370,12 +370,12 @@ test('being AHEAD of the registry is never reported as behind', () => {
 test('the upgrade command matches how BOSS was actually installed', () => {
   // Telling a Homebrew user to run `npm i -g` is advice that fails silently — they run it, nothing
   // changes, and they conclude the check is broken.
-  assert.equal(updateCommand(installKind('/opt/homebrew/Cellar/oyeboss/0.1.0')), `brew upgrade ${TAP}/oyeboss`);
+  assert.equal(updateCommand(installKind('/opt/homebrew/Cellar/oyeboss/0.1.0')), 'brew upgrade oyeboss');
   assert.equal(updateCommand(installKind('/usr/local/lib/node_modules/oyeboss')), 'npm i -g oyeboss@latest');
   assert.match(updateCommand(installKind('/Users/x/Projects/bossbuild')), /git pull/);
 });
 
-test('REGRESSION: the Homebrew commands are TAP-QUALIFIED, because a bare `boss` resolves elsewhere', () => {
+test('REGRESSION: the Homebrew upgrade and uninstall name the installed formula, `oyeboss`, bare', () => {
   // This test previously asserted `brew upgrade boss` — and so PINNED A COMMAND THAT CANNOT RUN.
   // homebrew-cask ships its own `boss` (Risa Labs), and a bare name resolves to the cask, so for
   // two months BOSS told every Homebrew user to run something that exits non-zero with
@@ -388,9 +388,14 @@ test('REGRESSION: the Homebrew commands are TAP-QUALIFIED, because a bare `boss`
   // And the formula name is the PACKAGE name. Until 2026-09-14 this matched `…/boss` — the pre-rename
   // formula — which resolved only through the tap's formula_renames.json (boss → oyeboss). The test
   // pinned the name that no longer exists; the rename map was the only thing keeping it green.
+  //
+  // Then the tap moved (ajeshh/boss → oyeboss/tap, 2026-10-08), and a tap-qualified upgrade stopped
+  // resolving for every install from the old tap: brew exits 1 and asks to tap the new one. So
+  // upgrade and uninstall name the installed formula bare — `oyeboss`, which no cask shares — and
+  // only the cold install is qualified. Asserted: the current formula, never `boss`, never a tap.
   for (const cmd of [updateCommand('brew'), uninstallCommand('brew')]) {
-    assert.match(cmd, /^brew (upgrade|uninstall) \S+\/\S+\/oyeboss$/,
-      `\`${cmd}\` must name the tap AND the current formula — a bare \`boss\` loses to the homebrew-cask formula of the same name, and \`…/boss\` is the pre-rename formula`);
+    assert.match(cmd, /^brew (upgrade|uninstall) oyeboss$/,
+      `\`${cmd}\` must name the installed formula bare — a bare \`boss\` loses to the homebrew-cask formula of the same name, and a tap prefix fails for installs from the other tap`);
   }
 });
 

@@ -36,7 +36,7 @@ import { dim, bold, ok, warn, err } from '../src/ui.js';
 const SAVE = !process.argv.includes('--no-save');
 const TIMEOUT_MS = 6000;
 const REPO = 'ajeshh/bossbuild';
-const TAP_REPO = 'ajeshh/homebrew-boss';
+const TAP_REPO = 'Oyeboss/homebrew-tap';
 const LEDGER = join(BOSS_ROOT, '.boss', 'reach.jsonl');
 
 async function get(url) {
@@ -161,7 +161,7 @@ if (probe.error) {
   if (tapClones.error) console.log(`      ${dim(`traffic: ${tapClones.error}`)}`);
   else console.log(`      ${dim(`14d: ${snap.tap_tappers_14d} machines fetched it (${snap.tap_clones_14d} fetches) — \`brew tap\` clones, \`brew update\` fetches; an upper bound on machines with the tap, yours included`)}${delta(snap, prev, 'tap_tappers_14d')}`);
   console.log(`      ${dim('Homebrew publishes no analytics for third-party taps; the formula pulls the npm tarball, so brew installs land in the npm count above.')}`);
-  if (snap.tap_private) console.log(`      ${err('✗')} ${bold('private')} ${dim('— `brew tap ajeshh/boss` cannot clone a private repo; the Homebrew install path is dead.')}`);
+  if (snap.tap_private) console.log(`      ${err('✗')} ${bold('private')} ${dim('— `brew tap oyeboss/tap` cannot clone a private repo; the Homebrew install path is dead.')}`);
 }
 
 // --- ledger ---------------------------------------------------------------

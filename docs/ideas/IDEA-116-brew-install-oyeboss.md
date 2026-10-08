@@ -19,10 +19,11 @@ relates: DEC-002, IDEA-087
 Ajesh (2026-09-14): *"fix it so brew install oyeboss works."*
 
 **Why it doesn't, and can't be made to from this repo.** Homebrew resolves a bare formula name
-against homebrew-core and the taps already on the machine. `ajeshh/boss/oyeboss` is the tap-qualified
-form; it works cold. `brew install oyeboss` works only after `brew tap ajeshh/boss` (documented on
-`start.html`) or once `Formula/o/oyeboss.rb` is in `Homebrew/homebrew-core`. There is no third
-mechanism.
+against homebrew-core and the taps already on the machine. `oyeboss/tap/oyeboss` is the tap-qualified
+form; it works cold. A bare `brew install oyeboss` works only once `Formula/o/oyeboss.rb` is in
+`Homebrew/homebrew-core`. After a tap it resolves, but Homebrew 7 refuses to load a formula from an
+untrusted tap, and only a fully qualified `install`/`upgrade` trusts it on the way. There is no
+third mechanism.
 
 **The gate, read at source 2026-09-14** (docs.brew.sh/Package-Acceptance-Policy § Notability):
 
@@ -78,3 +79,10 @@ computes the hash), `gh repo fork Homebrew/homebrew-core --remote`, commit as
   through the tap's `formula_renames.json`; now names `oyeboss`, and the regression test pins the
   current name rather than the dead one. Website line untouched — `brew install ajeshh/boss/oyeboss`
   is the one form that works cold.
+- 2026-10-08 — Ajesh: *"30 days out, can we change it and not have ajeshh"*. The 30-day gate cleared;
+  notability hasn't (0/0/0, and no one uses the repo yet), so core stays closed. What Ajesh actually
+  wanted was their handle out of the command: the tap moved to a new org, `ajeshh/homebrew-boss` →
+  `Oyeboss/homebrew-tap`, and every line that names it now says `brew install oyeboss/tap/oyeboss`.
+  The "then plain `brew install oyeboss` works" note on `start.html` came out: Homebrew 7's tap
+  trust makes it false. Read at source: `cmd/install.rb` calls `Trust.trust_fully_qualified_items!`,
+  so the qualified install trusts itself and works cold (tapped, info, fetch verified, then untapped).

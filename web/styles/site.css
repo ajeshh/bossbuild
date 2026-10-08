@@ -84,7 +84,7 @@ a:hover { color: var(--color-link-hover); }
   font-family: var(--font-mono); font-size: var(--step--1); color: var(--color-text);
 }
 .cmd .prompt { color: var(--color-accent); user-select: none; }
-/* `brew install ajeshh/boss/oyeboss` in a box with the page gutters is ~390px, wider than
+/* `brew install oyeboss/tap/oyeboss` in a box with the page gutters is ~390px, wider than
    the narrowest phones. A command box that cannot shrink would push the whole hero past the
    viewport, so the box may shrink and the command may break — only when nothing else fits. */
 .cmd { min-width: 0; }

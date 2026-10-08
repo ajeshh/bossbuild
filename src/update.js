@@ -36,14 +36,23 @@ export const PKG = 'oyeboss';
 // commercial product), and a bare formula name loses to it. brew answers "Cask 'boss' is not
 // installed" and exits non-zero, so the one install path that most needed a working upgrade command
 // had one that could never run. Fully qualified is not belt-and-braces here; it is the only form
-// that resolves. Pinned by a REGRESSION test.
-export const TAP = 'ajeshh/boss';
+// that resolves. Pinned by a REGRESSION test. The tap moved to its own org on 2026-10-08
+// (ajeshh/homebrew-boss → Oyeboss/homebrew-tap); GitHub's redirect keeps old clones pulling.
+export const TAP = 'oyeboss/tap';
 // The formula is PKG (`oyeboss`, renamed with the package at v0.177.0). Until 2026-09-14 the
 // commands below said `${TAP}/boss` — the old formula name — and resolved only because the tap
 // carries a `formula_renames.json` (boss → oyeboss). One JSON file in a second repo was the whole
 // reason the upgrade command worked, and the regression test pinned the old name. Name the formula
 // that exists; the rename map is for installs that predate it, not for BOSS to lean on.
 export const FORMULA = `${TAP}/${PKG}`;
+// Upgrade and uninstall name the INSTALLED formula, bare. When the tap moved (2026-10-08),
+// `brew upgrade oyeboss/tap/oyeboss` on a machine installed from ajeshh/boss exits 1 ("tap it
+// explicitly") — the qualified name only works for whoever installed from that exact tap. A bare
+// `oyeboss` resolves to the installed keg whichever tap it came from, and that formula is already
+// trusted (Homebrew 7 trusts a fully qualified `install`). The cask collision that forced the
+// qualified form was `boss`; there is no `oyeboss` cask. Install, which has no keg to resolve to,
+// keeps FORMULA.
+const BREW_NAME = PKG;
 const REGISTRY = `https://registry.npmjs.org/${PKG}/latest`;
 const TIMEOUT_MS = 4000;
 const STALE_DAYS = 7;
@@ -76,7 +85,7 @@ export function installKind(root = BOSS_ROOT) {
 }
 
 export function updateCommand(kind = installKind()) {
-  return kind === 'brew' ? `brew upgrade ${FORMULA}`
+  return kind === 'brew' ? `brew upgrade ${BREW_NAME}`
     : kind === 'source' ? 'git pull && npm i -g .'
       : `npm i -g ${PKG}@latest`;
 }
@@ -87,7 +96,7 @@ export function updateCommand(kind = installKind()) {
 // would have silently emitted "brew upgrade …" as the way to UNINSTALL. Two strings that must agree
 // with nothing checking is the defect this file already names about PKG; it applied to the exit too.
 export function uninstallCommand(kind = installKind()) {
-  return kind === 'brew' ? `brew uninstall ${FORMULA}` : `npm uninstall -g ${PKG}`;
+  return kind === 'brew' ? `brew uninstall ${BREW_NAME}` : `npm uninstall -g ${PKG}`;
 }
 
 async function fetchLatest() {

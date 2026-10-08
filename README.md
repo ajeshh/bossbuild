@@ -151,7 +151,7 @@ list of what each mode includes lives where it can't go stale:
 # pick one — each puts `boss` on your PATH (zero runtime deps)
 npx oyeboss new my-app        # no install; try it first
 npm install -g oyeboss        # the usual — macOS, Linux, Windows
-brew install ajeshh/boss/oyeboss   # macOS, via the tap
+brew install oyeboss/tap/oyeboss   # macOS, via the tap
 
 # or, already inside Claude Code — no npm at all:
 > /plugin marketplace add ajeshh/bossbuild

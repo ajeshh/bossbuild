@@ -40,6 +40,12 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 ## 0.332.0 — 2026-10-07
 
 ### What you'll notice
+- **The Homebrew command is now `brew install oyeboss/tap/oyeboss`.** The tap moved to its own home
+  on GitHub, so the command no longer carries a personal handle. If you installed with the old
+  command, nothing breaks: upgrades keep arriving through the old tap. To switch over, run
+  `brew uninstall oyeboss && brew untap ajeshh/boss && brew install oyeboss/tap/oyeboss`.
+  The note that a plain `brew install oyeboss` works after tapping is gone, because newer Homebrew
+  won't load a formula from a tap you haven't trusted, and only the full name trusts it for you.
 
 - **`boss board --next` says how close each piece of work is, in words, and where to pick it up.** It
   used to list what was in build and say "finish it". Now each piece says whether questions are still
