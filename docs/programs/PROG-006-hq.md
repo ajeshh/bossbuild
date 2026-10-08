@@ -106,6 +106,14 @@ load-bearing, hard to reverse once projects carry a `room:`, and it supersedes p
 4. **Moving into the Boardroom enters Quickstart**, keeping what the lower room installed; the mode
    ladder unlocks from there as it does today.
 5. **No migration:** every existing project is a Boardroom project at its current mode.
+6. **Rooms are presets over IDEA-163's parts; `--take` is the per-part edge.** IDEA-163 already splits
+   what adopt installs into parts (working rules, records, session memory, agents by discipline,
+   skill groups, guards…) and plans file by file. A room names a set of parts; `--take` adds or drops
+   one. One mechanism, not two. (From IDEA-163 Q9, 2026-10-08.)
+7. **The safety floor is carried by every room above the Mailroom, not a room of its own.** IDEA-163
+   Q7 (Ajesh, 2026-10-08) made a bare `adopt --apply` take only the safety floor: deny/ask rules, the
+   secrets pre-commit check, the `.gitignore` block. The Desk starts from that floor. The Mailroom
+   writes nothing, so it has none.
 
 **Q2 — settled by Ajesh: the rooms solve IDEA-067.** IDEA-067 asked how BOSS serves a project that
 isn't a business. Its rung 2 was an `intent` field (*what is this for?*) and rung 3 a body of
@@ -127,6 +135,9 @@ never asked of it — no `intent` field, no cell gating. What that changes, for 
   rungs 2–3 set aside by DEC-009)? If so, DEC-009's reasoning applies and may need revisiting.
 - **Q3. What earns Phase 3 and beyond?** Ajesh's own machine is one case. Is that enough, or does a
   founder's multi-project use need to be on record first?
+- **Q5. (IDEA-163 Q9)** Are rooms presets over adopt's parts, with `--take` as the per-part edge? And
+  is the safety floor its own room or what every room above the Mailroom carries? Proposed answers:
+  Q1 items 6 and 7. IDEA-163 holds `--take` and a default parts set until Q1 is decided.
 - **Q4. Where do Mailroom notes go that belong to no project yet** — `~/.boss/inbox/`, and how does
   one get assigned into a project's own `boss inbox`?
 
