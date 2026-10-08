@@ -186,3 +186,15 @@ test('the preview promises the files --apply lays down', () => {
   const added = Number(/(\d+) file\(s\) added/.exec(boss(['adopt', '--apply'], dir))[1]);
   assert.equal(added, promised);
 });
+
+test('adopt records the commit it started from, and the preview names it', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}' });
+  const git = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8' }).trim();
+  git('init', '-q'); git('add', '-A'); git('-c', 'user.email=a@b', '-c', 'user.name=t', 'commit', '-qm', 'init');
+  const sha = git('rev-parse', 'HEAD');
+  assert.match(boss(['adopt'], dir), new RegExp(`Starts from ${sha.slice(0, 7)}`));
+  writeFileSync(join(dir, 'wip.txt'), 'x');
+  assert.match(boss(['adopt'], dir), /1 uncommitted change\(s\)\. Commit first/);
+  boss(['adopt', '--apply'], dir);
+  assert.equal(JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8')).adoptedFrom, sha);
+});

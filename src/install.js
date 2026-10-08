@@ -61,6 +61,16 @@ function previewUnlock(stamp) {
   console.log(`\n  ${bold(`boss unlock ${modeWord(next)}`)} ${dim('when you are — it never blocks.')}\n`);
 }
 
+// The commit adopt started from — the reconcile's baseline (IDEA-163). Git already keeps the before;
+// what was missing is a fixed point to compare against. `dirty` = uncommitted work the baseline won't hold.
+function gitBaseline(dir) {
+  const run = (cmd) => execSync(cmd, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  try {
+    const sha = run('git rev-parse HEAD');
+    return { sha, dirty: run('git status --porcelain').split('\n').filter(Boolean).length };
+  } catch { return null; }
+}
+
 // The plan `boss adopt --apply` would carry out, computed by the same steps and written nowhere.
 // It answers the three things someone with a working repo asks first: where do I stand, what
 // do you add, and what of mine do you touch. Then what BOSS can't see, and how to take less.
@@ -96,6 +106,10 @@ function previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shi
   console.log(`    ${manifest.name} mode${named ? dim(' — the mode you named') : ''}`);
   if (detected) console.log(`    ${dim('read from your repo:')} ${detected.why.join(' · ')}`);
   if (detected && detected.beyond) console.log(`    ${warn('▸')} this looks past MVP — shipped and tested. ${dim("BOSS won't climb past MVP on its own; `boss unlock v1` later if you want it.")}`);
+  const base = gitBaseline(targetDir);
+  if (!base) console.log(`    ${warn('!')} not a git repo with a commit yet — there is nothing to compare against later. ${dim('Commit first.')}`);
+  else if (base.dirty) console.log(`    ${warn('!')} ${base.dirty} uncommitted change(s). ${dim(`Commit first: adopt records the commit it starts from (${base.sha.slice(0, 7)}) as the before.`)}`);
+  else console.log(`    ${dim(`Starts from ${base.sha.slice(0, 7)} — what you had, to compare against later.`)}`);
   console.log(`    ${dim('The full read — what you built and what is missing — is /read-repo, once BOSS is in.')}`);
 
   console.log(`\n  ${bold('What it adds')} ${dim(`— ${files.length} new file(s); none of yours is replaced`)}`);
@@ -447,6 +461,7 @@ export function cmdAdopt(args) {
   // Preview first, like `boss sync` and `boss remove`: adopt was the one door that wrote on its
   // first run, into a repo that already had its own way of working (IDEA-163, EVID-006).
   if (!flags.apply) return previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shippedBefore, named: Boolean(flags.mode) });
+  const baseline = gitBaseline(targetDir);   // read before anything is written
   const deferred = {};
   const heldSkills = [];
   for (const s of chain) {
@@ -518,6 +533,7 @@ export function cmdAdopt(args) {
     installedLayers: chain, agents: [...u.agents], skills: [...u.skills].filter((sk) => !heldSkills.includes(sk)),
     hooks: [...u.hooks], loops: [...u.loops],
     createdAt: new Date().toISOString(), adopted: true,
+    ...(baseline ? { adoptedFrom: baseline.sha } : {}),
     ...(shippedBefore ? { shippedBefore: true } : {}),
     ...(Object.keys(deferred).length ? { deferred } : {}),
   };
