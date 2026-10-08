@@ -46,7 +46,7 @@ const base = (status) => (/^[a-z]+/i.exec(String(status || '').trim()) || [''])[
 const iso = (ms) => new Date(ms).toISOString().slice(0, 10);
 const placeholder = (s) => /^\(.*\)$|^…$|^\.\.\.$/.test(s.trim());
 
-const FOUND = /found|after shipping|while applying/i;
+const FOUND = /\bfound\b|after shipping|while applying/i; // not "founder", not "foundations"
 const BACKLOG = /backlog|maybes|saved for later/i;
 const QUESTIONS = /open questions/i;
 // An answered question stays in the record for its reasoning; it is not open.
@@ -64,8 +64,9 @@ export function readRecord(text) {
   let question = null; // the top-level question being read (continuation lines join it)
   const closeQuestion = () => {
     if (question == null) return;
-    const q = question.replace(/^\*\*Q\d+\*\*\s*·\s*/, '').trim();
-    if (q && !placeholder(q) && !ANSWERED.test(q)) {
+    const ticked = /^\[[xX]\]/.test(question);
+    const q = question.replace(/^\[[ xX]\]\s*/, '').replace(/^\*\*Q\d+\*\*\s*·\s*/, '').trim();
+    if (q && !ticked && !placeholder(q) && !ANSWERED.test(q)) {
       out.questions++;
       if (!out.firstQuestion) out.firstQuestion = clip(q.replace(/^\*\*Q\d+\s*·\s*/, ''));
     }
@@ -163,6 +164,9 @@ function lastNamed(projectDir, ids) {
 function history(projectDir, rels, now) {
   const series = new Map(rels.map((r) => [r, []]));
   if (!rels.length) return series;
+  // git speaks in repo-root paths; a project may sit in a subfolder of its repo.
+  let prefix = '';
+  try { prefix = git(projectDir, ['rev-parse', '--show-prefix']).trim(); } catch { return series; }
   let log = '';
   try {
     log = git(projectDir, ['log', `--since=${iso(now - HISTORY_DAYS * DAY)}`, '--format=C %as', '--raw', '--no-renames', '--no-abbrev', '--', ...rels]);
@@ -172,7 +176,8 @@ function history(projectDir, rels, now) {
   for (const line of log.split('\n')) {
     if (line.startsWith('C ')) { date = line.slice(2, 12); continue; }
     const raw = /^:\S+ \S+ \S+ (\S+) \S+\t(.+)$/.exec(line);
-    if (raw && date && series.has(raw[2]) && !/^0+$/.test(raw[1])) rows.push({ date, rel: raw[2], blob: raw[1] });
+    const rel = raw && raw[2].startsWith(prefix) ? raw[2].slice(prefix.length) : null;
+    if (rel && date && series.has(rel) && !/^0+$/.test(raw[1])) rows.push({ date, rel, blob: raw[1] });
   }
   if (!rows.length) return series;
   const blobs = new Map();

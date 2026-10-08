@@ -36,13 +36,13 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 - **`boss board --next` says how close each piece of work is, in words, and where to pick it up.** It
   used to list what was in build and say "finish it". Now each piece says whether questions are still
   open (*uphill*) or only known work is left (*downhill*), and which way it has been going: *8 → 4 open
-  since Tuesday*, or *1 left, no tick since Monday (2 edits since)*. Tasks you found along the way are
+  since 10-06*, or *1 left, no tick since 10-05 (2 edits since)*. Tasks you found along the way are
   shown beside the count, never in it. It also names what to do next, from a `next:` line on the
   record or its first open question or task. Below that come records whose tasks are all ticked but
   whose status never moved, programs that are backlogs rather than builds, and work no commit has
   named in 14 days. There's no percentage, because a count that grows as you work can't say how close
   you are. `boss status` adds the same line under *Building now*, and a session that opens in your main
-  checkout starts with the top three.
+  checkout knows the top three, so asking it what to pick up gets a real answer.
 - **Your home page now shows every folder BOSS writes, not only the ones it started with.** *Where things
   live* (`.boss/index.html`) only knew the folders that existed when it was built. Your red-team
   passes, eval sets, roadmaps, programs, design reviews, drift audits, onboarding and money reads, AI

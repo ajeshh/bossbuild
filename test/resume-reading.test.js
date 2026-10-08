@@ -248,3 +248,25 @@ test('the session start in a main checkout names the top work to pick up, in wor
     } finally { rmSync(home, { recursive: true, force: true }); }
   } finally { r.done(); }
 });
+
+// Found by the pre-land review (IDEA-158): three shapes a founder's tree has and BOSS's own didn't.
+test('readRecord: a heading that says "founder" is scope, not findings; a ticked question is answered', () => {
+  const r = readRecord(`# x\n## What the founder sees\n- [ ] the swap shows\n## Found while building\n- [ ] later\n## Open questions\n- [x] Is it done?\n- [ ] Who confirms it?\n`);
+  assert.deepEqual(r.scope, { open: 1, done: 0 });
+  assert.equal(r.found, 1);
+  assert.equal(r.questions, 1);
+  assert.equal(r.firstQuestion, 'Who confirms it?');
+});
+
+test('resumeReading: a project in a subfolder of its repo still reads its history', () => {
+  const r = repo();
+  try {
+    mkdirSync(join(r.dir, 'app', 'docs', 'ideas'), { recursive: true });
+    const f = (o, d) => `${fm({ id: 'FEAT-002', status: 'building' })}# FEAT-002 — x\n## Acceptance criteria\n${boxes(o, d)}\n`;
+    r.commit('app/docs/ideas/FEAT-002-x.md', f(3, 0), '10-04', 'FEAT-002 specced');
+    r.commit('app/docs/ideas/FEAT-002-x.md', f(1, 2), '10-05', 'FEAT-002: two met');
+    const e = resumeReading(join(r.dir, 'app'), { now: NOW, worktrees: [] }).pickup.find((x) => x.id === 'FEAT-002');
+    assert.equal(e.direction.kind, 'closing');
+    assert.deepEqual([e.direction.from, e.direction.to], [3, 1]);
+  } finally { r.done(); }
+});

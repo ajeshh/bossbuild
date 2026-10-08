@@ -59,14 +59,14 @@ long, and says nothing about the questions that actually decide whether somethin
 2. **Direction: closing, growing, or stalled.** Replay the open count across the commits that touched
    the record: *"8 → 4 open since 10-06"* (closing), *"8 → 9"* (growing), *"1 open since 10-06,
    3 touches, no tick"* (stalled). A trend between two dates, never a percentage.
-3. **Scope: what's left inside the line.** Count only the committed list — a record's *Tasks*, a FEAT's
-   *Acceptance criteria*. *Found while building* and a program's *Backlog* are shown beside it
+3. **Scope: what's left inside the line.** Every checkbox counts as scope (a record's *Tasks*, a FEAT's
+   *Acceptance criteria*, a program's *Phases*…) except findings and backlogs. *Found while building* and a program's *Backlog* are shown beside it
    (*"+3 found, not in scope"*, *"9 saved, none picked"*) and never enter the count.
 
 Beside those, two plain facts: **last worked** = the newest commit naming the id
 (`git log --all --grep=<ID>`; file dates lie — sweep commits put IDEA-107 at 10-04 when its last work
 was 09-23, IDEA-070 at 10-05 against 08-23), and **next** = the record's `next:` line, else its first
-open task.
+open question when it is uphill, else its first open task.
 
 What it would print (illustrative, from today's tree):
 
@@ -102,8 +102,8 @@ record's `next:` and the priority list, instead of rewriting a page of prose.
   open task. Documented in `docs/IDS.md` beside `waiting_on:`.
 - [x] **S2 · The reading** — `stages/L0-quickstart/template/.claude/hooks/lib/resume-reading.js` (zero-dep,
   shared by the CLI and the hooks, like `loop-runtime.js`): unknowns, direction, in-scope left vs
-  found/backlog, last worked, next. Three git calls in all (one log for the names, one `--raw` log + one
-  `cat-file --batch` for the history), ~0.1 s on this tree. `test/resume-reading.test.js` — the four
+  found/backlog, last worked, next. Four git calls in the common case (one log for the names, `rev-parse` + a `--raw` log + one
+  `cat-file --batch` for the history; one more per record no commit names), ~0.1 s on this tree. `test/resume-reading.test.js` — the four
   cases as fixtures, written first.
 - [x] **S3 · Where it shows** — no new verb or flag: **`boss board --next`** was already *"what should I
   pick up?"*, so its *Finish* list became the reading (*Pick up*, then *Status looks stale*, *Backlogs,
@@ -135,6 +135,15 @@ record's `next:` and the priority list, instead of rewriting a page of prose.
   task list's — but it is the same shape. Not changed here; Ajesh's call whether the board follows.
 - [ ] **`boss board --json` doesn't carry the reading** — the agent-readable view still has only the
   columns. Add it when an agent needs it (`planner` reads `--next` as text today).
+- [x] **The pre-land review (a fresh reviewer, IDEA-158) found three bugs, each reproduced in a test first:** a
+  project in a subfolder of its repo lost its history (git paths are repo-root-relative); `found` matched
+  *founder* / *foundations* headings; a ticked `- [x]` open question still counted. Fixed. Small things built
+  beyond the tasks, kept: the `⬆` high-priority marker carried over from the old *Finish* list, blocked cards
+  left out of *Pick up* (they're under *Blocked*), and `boss status`'s *+N more* pointing at `--next`.
+- [ ] **`git log --all` over a very large history** runs at every main-checkout session start (~0.1 s here). Cap
+  it (`--since`) if a real tree shows it slow; past the cap, "no commit names it" is cold anyway.
+- [ ] **Small:** `~~~` fences aren't skipped; `--program prog-5` doesn't match `PROG-005` (use `programId()`);
+  the lib's `ready` bucket and `readingLines`' full mode are only exercised by the test (the board renders its own).
 - [x] **PROG-005's Q1–Q4 were answered only in the heading** — every reader counted five open. Each
   line now says so (its own commit). The reading's *uphill* is also a cue to tidy a record's questions.
 
