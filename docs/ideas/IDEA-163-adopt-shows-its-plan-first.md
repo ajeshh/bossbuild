@@ -9,7 +9,7 @@ relates: IDEA-005, IDEA-073, IDEA-118, IDEA-162, IDEA-153
 proof: test/adopt.test.js
 proof_note: S1 (the preview) ships with its test; S2 and choosing parts are still open
 gist: `boss adopt` says what it found and what it would change before it changes anything, and an adopted repo's own record layout is read instead of ignored.
-next: build — monorepo detection and identity from the remote, then agent overlap
+next: land (waits on the 0.332.0 stamp on main); then the Basement as bare --apply, then monorepo detection and identity
 ---
 
 # IDEA-163 — Adopt shows its plan first
@@ -127,6 +127,10 @@ part, in their layout), the accepted ones become tasks on the record of the work
 no new record type. Code findings carry their paths, so they come back at the breakpoint.
 
 ## Tasks
+
+- [ ] **The Basement is the bare `adopt --apply`** (DEC-024, Q7): deny/ask rules, the secrets pre-commit
+      check, the `.gitignore` block — nothing else. The plan is built from named parts; `--take <part>`
+      adds one; the preview shows the plan for what was asked. Lands after DEC-024 reaches main.
 
 - [x] S1: `boss adopt` previews; `--apply` writes. Callers moved: `scripts/demo.js`, tests, README,
       GUIDE, `web/index.html`, `web/start.html`, help. The preview's file count equals what `--apply` adds.
@@ -326,13 +330,12 @@ showed every side effect, the baseline, all 32 folder FEATs. Still wrong — eac
   and the easiest win. Session continuity follows once the layout is confirmed. Supersedes Q4's default.
 - **Q8** · *(decide at the layout-map slice; Ajesh wants it explained then)* Is `boss layout` (point BOSS at where things live, after adopt) a verb, or is re-running the
   preview and editing `.boss/config.json` enough?
-- **Q9** · **PROG-006 (rooms) overlaps the parts work** (heads-up from its session, 2026-10-08). Rooms are
-  nested presets — Mailroom (registry row only) ⊂ Desk (context, RESUME, re-entry/memory-cue/secrets hooks,
-  /idea /inbox /decide /close /log) ⊂ Floor (+ build agents and skills) ⊂ Boardroom (today's BOSS) — chosen
-  at `new`/`adopt`. Are rooms the presets over this record's parts table, with `--take` as the à-la-carte
-  edge? And does Q7's bare `--apply` (the safety floor) become a room, or the floor every room above
-  Mailroom carries? Seams already here: the plan is computed per file (`planStageSafe`) and can take a
-  subset; the preview groups by part; take-stock is where a room would be suggested. Not built until
-  PROG-006's Q1 is decided. *PROG-006 took both as proposed answers (its Q1 items 6–7, Q5 points here):
-  rooms are presets over these parts and `--take` adds or drops one; the safety floor is carried by every
-  room above the Mailroom. Ajesh decides them in one `/decide` (Q1+Q2, superseding part of DEC-009).*
+- **Q9** · ~~Rooms vs parts~~ — **decided: DEC-024** (2026-10-08, ai-suggested, ratified by Ajesh; on
+  `work/prog-006`, not yet on main). BOSS is a building: Basement (this record's Q7 safety floor) →
+  Mailroom → Office → Studio → Boardroom, each carrying every floor below; a Lobby outside (registry row
+  only). **Floors are presets over this record's parts; `--take` adds or drops one part.** The floor is
+  declared (`room:` on the stamp). A bare `adopt --apply` takes the Basement; adopt asks which floor.
+  `boss up` is the elevator. Modes live only in the Boardroom.
+  **Split:** IDEA-163 builds the adopt side — the Basement as the bare `--apply`, the parts as named sets
+  in the plan, `--take`, the preview showing the floor's plan. PROG-006 owns the floor presets, `room:`,
+  the registry fields and `boss up`.
