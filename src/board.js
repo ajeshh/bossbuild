@@ -334,6 +334,7 @@ export function collectBoard(projectDir) {
     if (!r.rel.startsWith('docs/ideas/') && !where.has(r.name)) { files.push(r.name); where.set(r.name, join(projectDir, r.rel)); }
   }
   if (!existsSync(ideasDir) && !files.length) return { cards: [], hasIdeasDir: false };
+  const relOf = (f) => relative(projectDir, where.get(f)).split(sep).join('/');   // links and git dates read the real path
   const feats = [];
   const ideas = [];
   const featSources = new Set(); // IDEA ids a FEAT was promoted from
@@ -364,15 +365,15 @@ export function collectBoard(projectDir) {
       // `boss records` still reports the dead field so it gets corrected at the source.
       const src = fm.from || fm.source;
       if (src && src !== 'none') featSources.add(src);
-      feats.push({ id, title, gist, file: relative(projectDir, where.get(f)).split(sep).join('/'), status: fm.status, nextReview: fm.next_review,
-        buildingSince: fm.building_since || repoTouched(projectDir, `docs/ideas/${f}`),
+      feats.push({ id, title, gist, file: relOf(f), status: fm.status, nextReview: fm.next_review,
+        buildingSince: fm.building_since || repoTouched(projectDir, relOf(f)),
         ageSource: fm.building_since ? 'authored' : 'derived',
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof),
-        addedOn: addedOn(projectDir, fm, `docs/ideas/${f}`),
+        addedOn: addedOn(projectDir, fm, relOf(f)),
         priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text), work: workShape(text),
         waitingOn: parseWaiting(fm.waiting_on) });
     } else {
-      ideas.push({ id, title, gist, file: relative(projectDir, where.get(f)).split(sep).join('/'), status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
+      ideas.push({ id, title, gist, file: relOf(f), status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
         work: workShape(text),
         waitingOn: parseWaiting(fm.waiting_on),
         // `kind: venture` — the thing they are building, one per project, written by /boss (IDEA-114).
@@ -384,10 +385,10 @@ export function collectBoard(projectDir) {
         // NORMAL case, not an edge one — `docs/IDS.md` says most ideas never earn a FEAT and
         // carry themselves to `shipped`, and on BOSS's own board seven of the eight cards in
         // Building were ideas. The one surface built to catch stalled work was blind to 88% of it.
-        buildingSince: fm.building_since || repoTouched(projectDir, `docs/ideas/${f}`),
+        buildingSince: fm.building_since || repoTouched(projectDir, relOf(f)),
         ageSource: fm.building_since ? 'authored' : 'derived',
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof), program: fm.program || null,
-        addedOn: addedOn(projectDir, fm, `docs/ideas/${f}`) });
+        addedOn: addedOn(projectDir, fm, relOf(f)) });
     }
   }
 

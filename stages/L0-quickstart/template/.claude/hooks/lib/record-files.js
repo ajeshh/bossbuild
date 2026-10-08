@@ -15,7 +15,9 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const DEFAULT_DIRS = ['docs/ideas', 'docs/programs', 'docs/decisions', 'docs/evidence', 'docs/practices'];
+// `docs/features` is read by default — `boss records` always did, and a repo keeping a folder per FEAT
+// there needs no setting, adopted before `layout` existed or not.
+export const DEFAULT_DIRS = ['docs/ideas', 'docs/features', 'docs/programs', 'docs/decisions', 'docs/evidence', 'docs/practices'];
 const NAME = /^([A-Z]+)-\d+/i;
 const INDEXES = ['README.md', 'index.md'];
 

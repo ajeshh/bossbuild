@@ -165,8 +165,8 @@ test('bare adopt writes nothing and says what it would add, change and not see',
     'package.json': '{"name":"myapp"}',
     'CLAUDE.md': '# my rules\n',
     '.gitignore': 'node_modules/\n',
-    'docs/features/FEAT-001-login/README.md': '---\nid: FEAT-001\nstatus: building\n---\n# Login\n',
-    'docs/features/FEAT-002-cart/README.md': '---\nid: FEAT-002\nstatus: shipped\n---\n# Cart\n',
+    'docs/specs/FEAT-001-login/README.md': '---\nid: FEAT-001\nstatus: building\n---\n# Login\n',
+    'docs/specs/FEAT-002-cart/README.md': '---\nid: FEAT-002\nstatus: shipped\n---\n# Cart\n',
     'docs/design/FEAT-001-review.md': '# a review named after a FEAT is not a record\n',
   });
   const before = readdirSync(dir).sort();
@@ -177,7 +177,7 @@ test('bare adopt writes nothing and says what it would add, change and not see',
   assert.match(out, /CLAUDE\.md\s+a marked BOSS block/);
   assert.match(out, /\.gitignore\s+\d+ rule\(s\) added/);
   assert.match(out, /Where you keep things/);
-  assert.match(out, /docs\/features\/FEAT-\*\/README\.md \(2\)/);
+  assert.match(out, /docs\/specs\/FEAT-\*\/README\.md \(2\)/);
   assert.doesNotMatch(out, /docs\/design/, 'a file named after a FEAT without its frontmatter is not a record');
   assert.match(out, /boss adopt --apply/);
 });
@@ -204,11 +204,11 @@ test('adopt records the commit it started from, and the preview names it', () =>
 test('a repo that keeps FEATs in a folder per record: adopt notes the folder, and the board reads them there', () => {
   const dir = project({
     'package.json': '{"name":"myapp"}',
-    'docs/features/FEAT-001-login/README.md': '---\nid: FEAT-001\nstatus: building\n---\n# FEAT-001 — Login\n\n## Acceptance criteria\n- [ ] a user can sign in\n',
+    'docs/specs/FEAT-001-login/README.md': '---\nid: FEAT-001\nstatus: building\n---\n# FEAT-001 — Login\n\n## Acceptance criteria\n- [ ] a user can sign in\n',
   });
   boss(['adopt', '--apply'], dir);
   const cfg = JSON.parse(readFileSync(join(dir, '.boss', 'config.json'), 'utf8'));
-  assert.deepEqual(cfg.layout, { records: ['docs/features'] });
+  assert.deepEqual(cfg.layout, { records: ['docs/specs'] });
   assert.match(boss(['board', '--next'], dir), /FEAT-001/, 'the board sees the FEAT in build');
   assert.doesNotMatch(boss(['id', 'FEAT'], dir), /FEAT-001/, 'boss id does not hand out a taken number');
 });
@@ -284,4 +284,21 @@ test('REGRESSION: a repo adopted before `theirs` existed — sync works it out f
   boss(['sync', '--apply'], dir);
   assert.equal(readFileSync(join(dir, '.claude/agents/tester.md'), 'utf8'), '# MY OWN tester\n');
   assert.ok(JSON.parse(readFileSync(mp, 'utf8')).theirs, 'the record is kept once worked out');
+});
+
+test('docs/features/FEAT-*/README.md is read with no setting — found where BOSS looks, and on the board', () => {
+  const dir = project({
+    'package.json': '{"name":"myapp"}',
+    'docs/features/FEAT-001-login/README.md': '---\nid: FEAT-001\nstatus: building\n---\n# FEAT-001 — Login\n\n## Acceptance criteria\n- [ ] sign in\n',
+  });
+  assert.match(boss(['adopt'], dir), /docs\/features\/FEAT-\*\/README\.md \(1\) — found where BOSS looks/);
+  boss(['adopt', '--apply'], dir);
+  assert.equal(JSON.parse(readFileSync(join(dir, '.boss', 'config.json'), 'utf8')).layout, undefined, 'no setting needed');
+  assert.match(boss(['board', '--next'], dir), /FEAT-001/);
+});
+
+test('a clean adopt records theirs as empty, so sync never guesses from git', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}' });
+  boss(['adopt', '--apply'], dir);
+  assert.deepEqual(JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8')).theirs, { files: [], skills: [] });
 });

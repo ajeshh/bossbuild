@@ -559,7 +559,8 @@ export function cmdAdopt(args) {
     createdAt: new Date().toISOString(), adopted: true,
     ...(baseline ? { adoptedFrom: baseline.sha } : {}),
     // What the repo already had where BOSS ships a file: theirs, so `boss sync` leaves it alone.
-    ...(theirs.length || theirSkills.length ? { theirs: { files: theirs.map((r) => r.split(sep).join('/')), skills: theirSkills } } : {}),
+    // Always written, empty or not: an absent `theirs` is how sync knows a repo predates it.
+    theirs: { files: theirs.map((r) => r.split(sep).join('/')), skills: theirSkills },
     ...(shippedBefore ? { shippedBefore: true } : {}),
     ...(Object.keys(deferred).length ? { deferred } : {}),
   };

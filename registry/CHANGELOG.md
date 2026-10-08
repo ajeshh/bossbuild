@@ -60,8 +60,8 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 - **`boss adopt` shows you the plan before it writes anything.** Run bare in a repo you already
   started, it now says where you stand and why, what it would add (skills, agents, hooks, docs), which
   of your own files it would append to and how (`CLAUDE.md`, `AGENTS.md`, `.gitignore`,
-  `.claude/settings.json`, a pre-commit check), and what it can't see: records you keep somewhere it
-  doesn't read yet, like `docs/features/FEAT-001-login/README.md`. It also says how to take less.
+  `.claude/settings.json`, a pre-commit check), and where you keep your records — the ones it already
+  reads, and any it will read from a folder of your own. It also says how to take less.
   Nothing is written until `boss adopt --apply`, the same way `boss sync` and `boss remove` already
   work. If you script adopt, add `--apply`. Adopt also records the commit it started from, so what you
   had stays something you can compare against; the preview asks you to commit first if you haven't. The
@@ -70,8 +70,9 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 - **BOSS reads your records where you keep them.** A repo that keeps each feature in its own folder,
   like `docs/features/FEAT-001-login/README.md`, used to show *nothing in flight* on the board and at
   session start, and `boss id` could hand out a number already taken. Now records are read flat or as
-  a folder per record, `boss id` counts them wherever they sit under `docs/`, and `boss adopt` notes the
-  folders it found in `.boss/config.json` (`layout.records`) — said in the preview first, nothing moved.
+  a folder per record, `docs/features/` included, with no setting. `boss id` counts them wherever they
+  sit under `docs/`. Records in a folder of your own (`docs/specs/`, say) are read once `boss adopt`
+  notes it in `.boss/config.json` (`layout.records`) — said in the preview first, nothing moved.
 - **`boss board --next` says how close each piece of work is, in words, and where to pick it up.** It
   used to list what was in build and say "finish it". Now each piece says whether questions are still
   open (*uphill*) or only known work is left (*downhill*), and which way it has been going: *8 → 4 open

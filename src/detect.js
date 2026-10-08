@@ -179,7 +179,7 @@ export function detectStage(dir) {
 // `docs/features/FEAT-001-login/README.md` has a FEAT in build that BOSS reports as nothing in
 // flight. Adopt can't fix that by moving their files, so the preview says it out loud. Returns
 // [{ pattern, count }], grouped by where they live, so the line reads as a layout, not a file list.
-const RECORD_HOME = { IDEA: 'docs/ideas', FEAT: 'docs/ideas', PROG: 'docs/programs', DEC: 'docs/decisions', EVID: 'docs/evidence', PRAC: 'docs/practices' };
+const RECORD_HOME = { IDEA: 'docs/ideas', FEAT: ['docs/ideas', 'docs/features'], PROG: 'docs/programs', DEC: 'docs/decisions', EVID: 'docs/evidence', PRAC: 'docs/practices' };
 const RECORD_NAME = /^(IDEA|FEAT|PROG|DEC|EVID|PRAC)-\d+/i;
 
 // A file is a record when its frontmatter says so — a design review named after a FEAT is not one,
@@ -209,9 +209,9 @@ export function unreadRecords(dir, maxDepth = 4) {
         if (SKIP_DIRS.has(e.name)) continue;
         // A folder per record: its README (or index) is the record.
         const f = kind && ['README.md', 'index.md'].find((n) => isRecord(join(abs, e.name, n), kind));
-        if (f) { add(`${rel}/${kind}-*/${f}`); continue; }
+        if (f) { if (![].concat(RECORD_HOME[kind]).includes(rel)) add(`${rel}/${kind}-*/${f}`); continue; }
         if (depth < maxDepth) walk(join(abs, e.name), `${rel}/${e.name}`, depth + 1);
-      } else if (kind && e.name.endsWith('.md') && rel !== RECORD_HOME[kind] && isRecord(join(abs, e.name), kind)) {
+      } else if (kind && e.name.endsWith('.md') && ![].concat(RECORD_HOME[kind]).includes(rel) && isRecord(join(abs, e.name), kind)) {
         add(`${rel}/${kind}-*.md`);
       }
     }

@@ -296,6 +296,18 @@ showed every side effect, the baseline, all 32 folder FEATs. Still wrong — eac
       `docs/<other>/FEAT-*/README.md` record — the prose scan runs only inside `RECORD_DIRS`.
 - [ ] `boss hooks disable` reaches only the opt-in hooks; conscience and reentry can only be paused.
 
+- [ ] **Board double-count (pre-land review):** a record kept both flat in `docs/ideas/` and as a folder
+      elsewhere gets two cards; two same-named flat files in two layout folders keep only the first. Unlikely.
+- [ ] A founder file inside their own kept skill folder, at a path BOSS also ships, is still stamped as
+      BOSS's (only `SKILL.md` is excluded). Sync skips it via `theirs.skills`; `boss remove` may not — part
+      of the remove-misattribution task.
+- **Noted, kept:** `boss records` now also reads `docs/programs` (PROG records), through the shared reader.
+  Pre-land review: no output change on bossbuild.
+- **Pre-land review fixes (2026-10-08):** adopt always writes `theirs`, so the git guess runs only for repos
+  adopted before it existed, and declines when the adopt was never committed (HEAD may already hold BOSS's
+  files); board dates read the record's real path; `docs/features/` is a default record folder, so a repo
+  adopted earlier needs no setting.
+
 ## Open questions
 
 - **Q1** · ~~Which first~~ — answered 2026-10-08 (Ajesh): investigate first; S1 shipped.

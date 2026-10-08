@@ -661,16 +661,17 @@ export function planSync(projectDir, stamp) {
 }
 
 // For a repo adopted before adopt recorded `theirs`: what was under `.claude/` in git before BOSS's
-// manifest first appeared there (or at HEAD, if the adopt was never committed) predates BOSS, so it
-// is the founder's. No git, or no history to read → null, and sync behaves as it always did.
+// manifest first appeared there predates BOSS, so it is the founder's. No git, or no commit that
+// added the manifest → null, and sync behaves as it always did.
 export function theirsFromGit(projectDir) {
   const git = (...a) => execFileSync('git', a, { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
   try {
     const added = git('log', '--diff-filter=A', '--format=%H', '--', '.boss/manifest.json').split('\n').filter(Boolean).pop();
-    let tree = 'HEAD';
-    if (added) {
-      try { tree = git('rev-parse', '--verify', '-q', `${added}^`); } catch { return null; }   // adopted in the first commit: nothing before it
-    }
+    // Never committed (or `.boss/` ignored): HEAD may already hold BOSS's own files, and calling them
+    // theirs would freeze them forever. No history to read → no guess; sync behaves as it always did.
+    if (!added) return null;
+    let tree;
+    try { tree = git('rev-parse', '--verify', '-q', `${added}^`); } catch { return null; }   // adopted in the first commit: nothing before it
     const paths = git('ls-tree', '-r', '--name-only', tree, '--', '.claude').split('\n').filter(Boolean);
     const skills = [...new Set(paths.map((p) => (/^\.claude\/skills\/([^/]+)\/SKILL\.md$/.exec(p) || [])[1]).filter(Boolean))];
     const files = paths.filter((p) => !p.startsWith('.claude/skills/'));
