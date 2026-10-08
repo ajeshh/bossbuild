@@ -17,12 +17,12 @@ The top room: today's BOSS. The mentors *are* a board (`/consult` already conven
 board"), with the conscience, canvas, evidence, interviews, pretotypes and money.
 
 Most of it exists. What this record holds is the **seam**: how the Boardroom relates to the four
-modes, and how a project promoted from the Floor or the Desk arrives without losing anything.
+modes, and how a project promoted from the Studio or the Office arrives without losing anything.
 
 ## Tasks
 
 - [ ] PROG-006 Q1: is the Boardroom "all four modes", or does each room carry modes?
-- [ ] Promotion into the Boardroom: what `/boss` asks a project that already has a Desk or Floor
+- [ ] Promotion into the Boardroom: what `/boss` asks a project that already has an Office or Studio
   (it has history; it should not be greeted like a blank idea).
 - [ ] Demotion: moving down a room removes only what BOSS added, never the founder's records.
 

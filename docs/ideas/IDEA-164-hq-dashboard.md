@@ -26,7 +26,7 @@ where it stands. With dhun and others on the same machine, there is no way to lo
 | What's next | the board's `next:` (IDEA-162), else RESUME, else the Mailroom row |
 | Last touched | git: last commit, branch, uncommitted changes, open worktrees |
 | Which window | Claude Code sessions (`~/.claude/projects/<path>/`, last active); VS Code's open folders |
-| Room | which of Mailroom · Desk · Floor · Boardroom it lives in |
+| Room | which of Mailroom · Office · Studio · Boardroom it lives in |
 
 ## Rungs
 

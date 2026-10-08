@@ -22,8 +22,8 @@ building, and a visual sense of headway. That is the warrant for the *orientatio
 yet asked for the many-projects view** — Ajesh's own machine is the first case. See Q3.
 
 **Members:** every record with `program: PROG-006` — `boss board PROG-006`.
-[[IDEA-164]] the HQ dashboard · [[IDEA-165]] the Mailroom · [[IDEA-166]] the Desk ·
-[[IDEA-167]] the Floor · [[IDEA-168]] the Boardroom.
+[[IDEA-164]] the HQ dashboard · [[IDEA-165]] the Mailroom · [[IDEA-166]] the Office ·
+[[IDEA-167]] the Studio · [[IDEA-168]] the Boardroom.
 
 ## The reasoning no single member holds
 
@@ -33,13 +33,13 @@ yet asked for the many-projects view** — Ajesh's own machine is the first case
 | Room | You're saying | In the repo |
 |---|---|---|
 | **Mailroom** | *"hey, track this"* | Nothing. A registry row with *what this is* and *next*; git fills in the rest. |
-| **Desk** | *"help me hold the context"* | Working rules, RESUME, the idea pool; re-entry and `/close` keep it current. |
-| **Floor** | *"help me build it, skip the venture talk"* | The building agents and skills — spec, smoke, ship, design review. |
+| **Office** | *"help me hold the context"* | Working rules, RESUME, the idea pool; re-entry and `/close` keep it current. |
+| **Studio** | *"help me build it, skip the venture talk"* | The building agents and skills — spec, smoke, ship, design review. |
 | **Boardroom** | *the whole thing* | Today's BOSS: the mentors, the conscience, canvas, evidence, money. |
 
 **Rooms are a second axis, not a rename of modes.** Modes (Quickstart → MVP → V1 → Scale) say how far
 along the *venture* is. Rooms say how much *BOSS* is in the project. Sorting today's files proved they
-cut across: `/close` and `/log` — the two skills that keep RESUME current — ship in MVP, yet the Desk
+cut across: `/close` and `/log` — the two skills that keep RESUME current — ship in MVP, yet the Office
 needs them. So a room takes from several modes. How the two axes meet is Q1.
 
 **The dashboard reads; it never adds a skill.** The EVID-001 re-aim still holds — compose and
@@ -67,8 +67,8 @@ since every room writes `room:`.
 
 1. **The Mailroom** — [[IDEA-165]]: `room:` on the registry row, *what* and *next*, the portfolio inbox.
    `boss list` shows the room meanwhile.
-2. **The Desk** — [[IDEA-166]]: the room list file, and a project whose RESUME keeps itself.
-3. **The Floor** — [[IDEA-167]].
+2. **The Office** — [[IDEA-166]]: the room list file, and a project whose RESUME keeps itself.
+3. **The Studio** — [[IDEA-167]].
 4. **The Boardroom** — [[IDEA-168]]: today's BOSS gets its `room:`, and moving up into it.
 5. **HQ** — [[IDEA-164]]: `boss hq` + `--json`, the local page, window awareness.
 6. **The menubar** — a native app over `boss hq --json`, its own repo, only if the page gets used.
@@ -101,13 +101,13 @@ load-bearing, hard to reverse once projects carry a `room:`, and it supersedes p
 **Q1 — items 1–5 taken by Ajesh 2026-10-08** (items 6–7 taken earlier). DEC to be written once the
 Basement and the door below are settled, so one record holds the whole room model.
 1. **Rooms are the outer axis; modes live only in the Boardroom.** A mode is a venture stage, and its
-   gate (the canvas, Quickstart→MVP) is a venture gate. A Desk or Floor project has no venture to
-   gate, so it has no mode. The Floor installs its whole build kit at once.
+   gate (the canvas, Quickstart→MVP) is a venture gate. A Office or Studio project has no venture to
+   gate, so it has no mode. The Studio installs its whole build kit at once.
 2. **Room is declared, not derived.** One `room:` on the project's stamp (the Mailroom, which has no
    stamp, is a registry row). Deriving it from the files present breaks the first time a founder
    deletes a skill.
 3. **Rooms are lists, not copies.** One file names which skills, agents and hooks each room carries,
-   drawn from the existing `stages/`; Desk ⊂ Floor ⊂ Boardroom. Every file still has one home.
+   drawn from the existing `stages/`; Office ⊂ Studio ⊂ Boardroom. Every file still has one home.
 4. **Moving into the Boardroom enters Quickstart**, keeping what the lower room installed; the mode
    ladder unlocks from there as it does today.
 5. **No migration:** every existing project is a Boardroom project at its current mode.
@@ -118,26 +118,26 @@ Basement and the door below are settled, so one record holds the whole room mode
 7. ✅ **Taken, and named: the safety floor is the Basement** (Ajesh: *"Its the "foundation" of the
    building. Its the basement."*). Every room above stands on it; it is not a room you choose. IDEA-163
    Q7 (Ajesh, 2026-10-08) made a bare `adopt --apply` take only the safety floor: deny/ask rules, the
-   secrets pre-commit check, the `.gitignore` block. The Desk starts from that floor. The Mailroom
+   secrets pre-commit check, the `.gitignore` block. The Office starts from that floor. The Mailroom
    writes nothing, so it has none.
 
 **Q2 — settled by Ajesh: the rooms solve IDEA-067.** IDEA-067 asked how BOSS serves a project that
 isn't a business. Its rung 2 was an `intent` field (*what is this for?*) and rung 3 a body of
 non-commercial support; DEC-009 deferred both at n=0 and kept the positioning as *incubator*. Ajesh's
-read: a project that isn't a venture simply lives on the Desk or the Floor, so the venture half is
+read: a project that isn't a venture simply lives on the Office or the Studio, so the venture half is
 never asked of it — no `intent` field, no cell gating. What that changes, for the DEC to say:
 - **DEC-009 §3** (*no new declared axis*) — superseded in part: `room:` is a declared axis. It answers
   *how much BOSS*, which carries *what this is for* without asking it.
 - **DEC-009 §5** (*the positioning does not change*) — superseded: BOSS now says there are different
   ways to use it. The no-overclaiming rule stays: the site says what each room *is*, never a body of
   non-commercial support that does not exist (rung 3 stays deferred).
-- IDEA-067's status moves when the Floor ships, pointing here.
+- IDEA-067's status moves when the Studio ships, pointing here.
 
-- **Q1. How do rooms meet modes?** Is the Boardroom simply "today's modes, all four", with the Floor
-  and Desk as subsets? Or does each room carry its own mode ladder (a Floor project at MVP)? The file
+- **Q1. How do rooms meet modes?** Is the Boardroom simply "today's modes, all four", with the Studio
+  and Office as subsets? Or does each room carry its own mode ladder (a Studio project at MVP)? The file
   sort says rooms cut across modes; the answer decides whether a project stamp gets a new `room:`
   field or whether room is derived from what is installed.
-- **Q2. Is the Floor the same thing as IDEA-067's open rungs** ("not every project is a business",
+- **Q2. Is the Studio the same thing as IDEA-067's open rungs** ("not every project is a business",
   rungs 2–3 set aside by DEC-009)? If so, DEC-009's reasoning applies and may need revisiting.
 - **Q3. What earns Phase 3 and beyond?** Ajesh's own machine is one case. Is that enough, or does a
   founder's multi-project use need to be on record first?
@@ -149,7 +149,7 @@ never asked of it — no `intent` field, no cell gating. What that changes, for 
 - **Q6. ✅ Answered (Ajesh, 2026-10-08): the building is one cumulative ladder, Basement first.**
   *"as you go up the level, including the previous levels make it easier to remember… if they are
   using AI then isnt it better to first create the right container the right way?"* So:
-  **Basement → Mailroom → Desk → Floor → Boardroom**, each floor carrying every floor below. A tracked
+  **Basement → Mailroom → Office → Studio → Boardroom**, each floor carrying every floor below. A tracked
   project always has the Basement; the Mailroom is no longer zero-write. Open edge, Q8.
 - **Q7. ✅ Direction (Ajesh, 2026-10-08): a door, then an elevator.** *"its like moving up a floor by the
   lift, you start in the basement and then go up, each time you go up you get all the perks of the
@@ -159,17 +159,25 @@ never asked of it — no `intent` field, no cell gating. What that changes, for 
   - **The elevator** moves a project up later, one deliberate command, with the same preview adopt
     shows. BOSS **names a threshold when it sees one** — once, never a nag — and the founder decides.
     Modes already do this (`boss unlock`, `src/readiness.js`); floors reuse that reading.
-- **Q8. A repo you don't own.** With the Basement always included, tracking a client's or employer's
-  repo writes files there. Does HQ need a way to *see* a folder without bringing it into the
-  building (a visitor in the lobby), or is that case out?
-- **Q9. "The Floor" collides.** Every level is now a floor, so the building room's name is ambiguous
-  (*"move it to the Floor"* vs *"which floor"*). Rename it (Workshop?) or keep.
-- **Q10. The elevator's command and its thresholds.** One verb (`boss up`?) or `boss unlock` grown to
-  floors; and what signal names each threshold (Mailroom→Desk, Desk→Floor, Floor→Boardroom).
+- **Q8. ✅ Answered (Ajesh, 2026-10-08): the Lobby.** A repo you don't own (a client's, an employer's,
+  an open-source one) can wait in the Lobby: HQ shows its card from git plus a *what* and *next* you
+  type, and nothing is written into the repo. The Lobby is outside the building, so the ladder stays
+  clean: everything *in* the building stands on the Basement.
+- **Q9. ✅ Answered (Ajesh, 2026-10-08): every level is its own kind of place.** *"everything is a
+  different type of floor."* The build room was "the Floor", which collided with *which floor*; it is
+  now the **Studio**. The Desk was furniture among rooms; it is now the **Office**.
+- **Q10. ✅ Answered (Ajesh, 2026-10-08): `boss up`** is the elevator, one verb everywhere: next floor,
+  and inside the Boardroom, next mode (`boss unlock` stays as an alias). Open, for IDEA work: the
+  signal that names each threshold (Mailroom→Office, Office→Studio, Studio→Boardroom).
 
+**The building, as decided 2026-10-08:** *Lobby* (outside: seen, not touched) · **Basement** (the
+safety floor) → **Mailroom** (tracked) → **Office** (context) → **Studio** (building) → **Boardroom**
+(the venture). Each floor carries every floor below; a door to enter, an elevator to go up.
 
 ## Log
 
+- **2026-10-08** — renamed the same day: Desk → **Office**, Floor → **Studio**; added the **Basement**
+  and the **Lobby** (Q6–Q9). Records and files renamed (IDEA-166, IDEA-167).
 - **2026-10-08** — opened. Names chosen with Ajesh: *HQ* for the dashboard and the building
   (*"I like HQ!"*); the room ladder from Ajesh's *"the bottom level is the mailroom like in a big
   corp"*. Earlier working names, not taken: Junction, Concourse, Chowk; `listed / mini / boss`;
