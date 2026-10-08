@@ -134,15 +134,99 @@ no new record type. Code findings carry their paths, so they come back at the br
       from, frontmatter-checked (`unreadRecords`, `src/detect.js`).
 - [x] `/welcome`'s adopted branch no longer offers re-adopting with `--mode` (adopt refuses an adopted repo).
 - [x] The preview says which two hooks run from the start, instead of implying every hook is opt-in.
-- [ ] S2: one reader for "where are this repo's records" (flat and folder-per-record), in the hooks lib
-      that `src/` already imports from; adopt writes the found location into `.boss/config.json` on apply,
-      as it writes `sourceGlobs`; the preview says it as a default ("BOSS reads your FEATs here and writes
-      new ones here").
+- [x] S2 for records: one reader (`hooks/lib/record-files.js`) for flat and folder-per-record, used by
+      the session-start hooks, `boss board`, `boss records`; adopt writes `layout.records` in
+      `.boss/config.json` on apply, and the preview says it first (*Where you keep things*).
+- [ ] The rest of the layout map: `layout.devlog`, `layout.resume`, worktrees — the re-entry read, the
+      five skills that hard-code `docs/devlog.md` / `docs/RESUME.md`, `open-work`, the V1 `/board` skill,
+      `insights.js`.
 - [ ] The AGENTS.md block adopt appends names `docs/ideas/` — it should name where *this* repo keeps ideas.
 - [ ] `/close` and `/log` keep an existing RESUME / devlog rather than starting a second (reproduce first).
 - [ ] `/read-repo` assess-only: with no `.boss/manifest.json`, the position read and nothing written, so
       the preview can hand off to it before apply. Check Claude Code doesn't stall reading outside the project.
 - [ ] Detection: a FEAT at `building` counts toward MVP.
+
+## Found installing for real — dhun at MVP (Ajesh's own project, 2026-10-08)
+
+BOSS 0.332.0 adopted into a worktree of dhun (a monorepo with its own agents, skills, devlog and
+worktree practice). Nothing of dhun's was overwritten — and dhun would still have behaved differently.
+**Reading the docs found none of these; installing found five.** Each is a task here until it ships.
+
+- [ ] **A quiet deletion.** The settings merge removed `defaultMode: "auto"` and adopt said nothing —
+      `computeSettingsMerge` returns `migrated`, `boss sync` prints it, adopt drops it. The preview must
+      say it too.
+- [ ] **Most of BOSS can't see a repo that keeps things elsewhere — and silence reads as fine.** The
+      re-entry read looks for `docs/devlog.md`; dhun's is `logs/devlog.yaml`, so the tool built for the
+      six-week return never fires. Records were one case of this; the fix is a **layout map** in
+      `.boss/config.json` (records, devlog, RESUME, worktrees) that every hook reads, and every hook that
+      can't find its file says *could not look*, never nothing (the IDEA-073 rule, again).
+- [ ] **Routing, not names, is the risk.** BOSS's `coder` answers to *build / implement / fix*, the same
+      words as dhun's `coder-rust` and `coder-frontend`, and knows nothing of their smoke or ratchets;
+      `designer`, `planner`, `product-lead` overlap the same way. The preview must name agents whose
+      triggers overlap the repo's own, and agents stay out of a bare `--apply`.
+- [ ] **Same-named skills.** dhun's `/smoke`, `/close`, `/log`, `/board`, `/design-review` were kept
+      (copy-if-absent) — right — but the preview should say *yours wins* for each, by name.
+- [ ] **Detection misread a monorepo.** `package.json` and `Cargo.toml` in subfolders → Quickstart, "no
+      build manifest". Manifests one level down count.
+- [ ] **The worktree's folder name became the project's name** (`dhun-boss`) in files and the registry.
+      Name it from the main worktree, or the package.
+- [ ] **`.gitattributes` would renormalize line endings on 36 files**, a migration's data CSV among them.
+      The preview must flag a `.gitattributes` against a repo with history; never laid down silently.
+- [ ] **Adopting in a worktree touches every checkout.** The pre-commit hook lands in the shared
+      `.git/hooks` (inert elsewhere, but there) and the registry row outlives the branch.
+- [ ] **`boss remove` is not a full undo.** It leaves the permission rules, the `.gitignore` block and the
+      pre-commit hook. Either it takes them, or the preview says so.
+
+**The fuller report (same install, 2026-10-08)** — the *builder who already built a system* case: ~40
+agents, ~40 skills, shell hooks, tiered CI, its own doc layout. Went well: copy-if-absent held, the marked
+CLAUDE.md block is clean, the deny/ask floor conflicts with nothing, the commit shim only fills an empty
+slot, `boss map` shows the repo's own skill descriptions. New beyond the list above:
+
+- [x] **`boss id` hands out a number already taken** when records live in a folder per record outside
+      BOSS's folders — reproduced 2026-10-08: `docs/specs/FEAT-001-login/README.md` → `boss id FEAT` says
+      `FEAT-001`. The census reads ids from file names, and the file is `README.md`.
+- [ ] **More hard-wired paths:** `open-work.js` sees only `.claude/worktrees/` (misses sibling worktrees
+      like `~/Projects/<app>-*`); the V1 `/board` skill reads `docs/ideas/FEAT-*`; `consult`, `drift-deep`,
+      `extract`, `revalidate`, `sunset` hard-code `docs/devlog.md` and `docs/RESUME.md`.
+- [ ] **Collision is per file; it should be per skill.** Where the repo's `SKILL.md` was kept, 18 sibling
+      files still landed in those folders (dead; `log/scripts/entry.js` would start a second devlog). If
+      `<skill>/SKILL.md` exists, skip the folder. Skills declare what they assume (`assumes: [log, spec]`);
+      adopt holds or warns about a skill whose assumption is now the repo's own version — `sunset` writes
+      `dropped` where the repo says `killed`; `red-team/paths.md` reads a section the repo's `/spec` never
+      writes; `/idea` numbers through `boss id` and ignores the repo's own INDEX.
+- [ ] **Agent overlap compared by trigger words**, against every `.claude/agents/*`; hold the generic one
+      where a specialist owns the words, and say so. The four builders matter; the mentors are additive.
+- [ ] **"Nothing of yours overwritten" is asserted, not computed** — the summary should come from a diff
+      of what was touched. `.gitattributes`: detect CRLF with `git ls-files --eol` and skip or exempt.
+- [ ] **Source globs are blind to a monorepo too** — `inferSourceGlobs` returned nothing, so the
+      conscience reports it could not look at the code. Per-package roots (extends IDEA-073).
+- [ ] **Identity:** name from `git rev-parse --git-common-dir`'s toplevel or the remote, or ask (IDEA-161's family).
+- [ ] **`boss remove` misattributes:** files skipped as collisions are stamped as managed, so the remove
+      preview lists the repo's own `tester.md`, `close/SKILL.md` as *BOSS files you edited*. It should list
+      every adopt side effect, kept ones too, with why.
+- [ ] **A large CLAUDE.md** (413 lines) got 59 lines appended at the end, the lowest-compliance zone →
+      a ≤10-line pointer near the top. A repo with a stack shouldn't import *stack-neutral until decided*.
+- [ ] **`boss status` called a 51-day-stale IDEA "Ready to build".** Staleness should outrank `ready`.
+- [ ] **A third state for every hook:** spoke · quiet because fine · *quiet because it couldn't see*.
+- **New scope, not this record:** worktree-per-work and `land` as founder verbs (`boss worktree`,
+  `boss land`), and `open-work` reading `git worktree list` — BOSS solves stranded branches and
+  sessions sweeping each other for itself and ships neither.
+- **Practice, not adopt (for `/extract`):** a gate lands on main first and alone · automation needs
+  someone who merges, not only someone told · a doc describing a module is not evidence about it · probe
+  against production-shaped data, not the fixture.
+
+**Its frame:** adopting into an existing system is a negotiation, not a scaffold — a repo with 40 agents
+has opinions, and adopt discovers them by colliding. The receiving repo's gates come first; BOSS offers
+its version as an extension, not a sibling.
+
+**What it taught (Ajesh's session's words):** adding without overwriting is not the same as changing
+nothing — routing, line endings and one quiet deletion would all have changed how the project behaves.
+A tool that stays quiet is ambiguous unless it says when it couldn't look. The fix for the worst failure
+was already built; it just couldn't find the files — shared file conventions mattered more than another
+feature.
+
+Not BOSS's: dhun's own `/design-review` reads the old CLI's files. Practice UP (the eleven proposals,
+worktree-per-work and `land` shipping beyond bossbuild) belongs to their own records, not this one.
 
 ## Found while building
 
