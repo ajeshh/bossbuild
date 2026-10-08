@@ -210,3 +210,8 @@ Canvas for BOSS itself: [CANVAS.md](CANVAS.md).
 - v0.3.0 — modes vocabulary (Quickstart/MVP/V1/Scale)
 - v0.2.0 — `/boss` spin-up + repo-creation defaults
 - v0.1.0 — walking skeleton (CLI + Quickstart stage)
+| [IDEA-164](IDEA-164-hq-dashboard.md) | The HQ dashboard — every project on this machine in one view: what it is, where it stands, what's next, which window is on it | seedling | 2026-10-08 · PROG-006 · Ajesh: *"boss board is just for that project, not for all projects"* · rungs: `boss hq` + `--json` → local page → window awareness → menubar app (own repo) |
+| [IDEA-165](IDEA-165-the-mailroom.md) | The Mailroom — "track this": any project gets an HQ card with nothing written into its repo | seedling | 2026-10-08 · PROG-006 · registry row gains *what* + *next*; portfolio inbox for notes with no project yet |
+| [IDEA-166](IDEA-166-the-desk.md) | The Desk — just enough BOSS to hold context and RESUME, so the HQ card writes itself | seedling | 2026-10-08 · PROG-006 · takes `/close` + `/log` from MVP — rooms cut across modes |
+| [IDEA-167](IDEA-167-the-floor.md) | The Floor — the Desk plus the building agents and skills, no venture half | seedling | 2026-10-08 · PROG-006 · may be IDEA-067's deferred rungs (PROG-006 Q2) |
+| [IDEA-168](IDEA-168-the-boardroom.md) | The Boardroom — the whole of BOSS, and how a project moves up into it | seedling | 2026-10-08 · PROG-006 · waits on rooms vs modes (Q1) |
