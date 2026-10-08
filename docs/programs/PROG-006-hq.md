@@ -83,6 +83,10 @@ since every room writes `room:`.
   so we need to communicate to users, that different ways to use boss"*). One explanation of the four
   rooms, written once, read by the site (PROG-001), the front door — `/welcome`, `/boss`, `boss help`
   (PROG-004) — and the README. Lands with the first room that ships, not before (no overclaiming).
+- [ ] **The site tells the building as a story** (Ajesh: *"storytelling using the names of each floor…
+  make it relateable and which floor they want"*). Walk the building from the Basement up; each room
+  says who it is for in their words; the reader leaves knowing which room they want. One page or one
+  section, PROG-001's subtract-first rule applies.
 - [ ] **`boss new` and `boss adopt` ask which room** (Ajesh: *"it also applies when someone initiates
   boss in a new or existing project"*). Coordinate with IDEA-163 (adopt shows its plan first), told
   2026-10-08: keep its install step parameterizable by file set and its preview per part.
@@ -94,7 +98,8 @@ Phase 1. **Q2 — the rooms are the answer to IDEA-067** (*"yes to 067… this s
 **Q1 — recommendation below, awaiting Ajesh's call.** Q1 and Q2 go into **one DEC**: it is
 load-bearing, hard to reverse once projects carry a `room:`, and it supersedes part of DEC-009.
 
-**Q1 recommendation:**
+**Q1 — items 1–5 taken by Ajesh 2026-10-08** (items 6–7 taken earlier). DEC to be written once the
+Basement and the door below are settled, so one record holds the whole room model.
 1. **Rooms are the outer axis; modes live only in the Boardroom.** A mode is a venture stage, and its
    gate (the canvas, Quickstart→MVP) is a venture gate. A Desk or Floor project has no venture to
    gate, so it has no mode. The Floor installs its whole build kit at once.
@@ -106,11 +111,12 @@ load-bearing, hard to reverse once projects carry a `room:`, and it supersedes p
 4. **Moving into the Boardroom enters Quickstart**, keeping what the lower room installed; the mode
    ladder unlocks from there as it does today.
 5. **No migration:** every existing project is a Boardroom project at its current mode.
-6. **Rooms are presets over IDEA-163's parts; `--take` is the per-part edge.** IDEA-163 already splits
+6. ✅ **Taken (Ajesh, 2026-10-08: *"room over parts"*). Rooms are presets over IDEA-163's parts; `--take` is the per-part edge.** IDEA-163 already splits
    what adopt installs into parts (working rules, records, session memory, agents by discipline,
    skill groups, guards…) and plans file by file. A room names a set of parts; `--take` adds or drops
    one. One mechanism, not two. (From IDEA-163 Q9, 2026-10-08.)
-7. **The safety floor is carried by every room above the Mailroom, not a room of its own.** IDEA-163
+7. ✅ **Taken, and named: the safety floor is the Basement** (Ajesh: *"Its the "foundation" of the
+   building. Its the basement."*). Every room above stands on it; it is not a room you choose. IDEA-163
    Q7 (Ajesh, 2026-10-08) made a bare `adopt --apply` take only the safety floor: deny/ask rules, the
    secrets pre-commit check, the `.gitignore` block. The Desk starts from that floor. The Mailroom
    writes nothing, so it has none.
@@ -138,8 +144,14 @@ never asked of it — no `intent` field, no cell gating. What that changes, for 
 - **Q5. (IDEA-163 Q9)** Are rooms presets over adopt's parts, with `--take` as the per-part edge? And
   is the safety floor its own room or what every room above the Mailroom carries? Proposed answers:
   Q1 items 6 and 7. IDEA-163 holds `--take` and a default parts set until Q1 is decided.
-- **Q4. Where do Mailroom notes go that belong to no project yet** — `~/.boss/inbox/`, and how does
-  one get assigned into a project's own `boss inbox`?
+- **Q4. ✅ Answered (Ajesh, 2026-10-08):** notes with no project yet live in `~/.boss/inbox/`;
+  assigning one moves it into that project's `boss inbox`, or onto its row's *next* if it has no BOSS.
+- **Q6. Does a Mailroom project get the Basement?** Ajesh leans yes — always, or offered — and wants the
+  case argued both ways before deciding.
+- **Q7. The door.** Ajesh: adopt makes sense for an existing project; should a bare adopt install the
+  whole of BOSS, or not? Note IDEA-163 Q7 already made a bare `adopt --apply` take only the Basement.
+  Open: one verb for every room (`adopt` asks which) or a separate `track`; what `boss new` defaults to.
+
 
 ## Log
 
