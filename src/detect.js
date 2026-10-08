@@ -18,7 +18,7 @@
 // sync has no removal concept yet, ceremony added is ceremony that stays: over-shooting is the
 // expensive direction, so the tie goes to less.
 
-import { readdirSync, existsSync, statSync } from 'node:fs';
+import { readdirSync, existsSync, statSync, readFileSync } from 'node:fs';
 import { join, extname } from 'node:path';
 
 // Directories that are never the founder's own work. Skipping these is what keeps the walk cheap
@@ -172,4 +172,44 @@ export function inferSourceGlobs(dir) {
 export function detectStage(dir) {
   const scan = scanRepo(dir);
   return { ...suggestStage(scan), scan };
+}
+
+// Records this repo already keeps where BOSS won't read them (IDEA-163). The board and the
+// session hooks look for each kind as a flat `<ID>-*.md` in one folder; a repo that keeps
+// `docs/features/FEAT-001-login/README.md` has a FEAT in build that BOSS reports as nothing in
+// flight. Adopt can't fix that by moving their files, so the preview says it out loud. Returns
+// [{ pattern, count }], grouped by where they live, so the line reads as a layout, not a file list.
+const RECORD_HOME = { IDEA: 'docs/ideas', FEAT: 'docs/ideas', PROG: 'docs/programs', DEC: 'docs/decisions', EVID: 'docs/evidence', PRAC: 'docs/practices' };
+const RECORD_NAME = /^(IDEA|FEAT|PROG|DEC|EVID|PRAC)-\d+/i;
+
+// A file is a record when its frontmatter says so — a design review named after a FEAT is not one.
+const isRecord = (file, kind) => {
+  try { return new RegExp(`^---\\r?\\n(?:[^\\n]*\\n)*?id:\\s*["']?${kind}-\\d+`, 'i').test(readFileSync(file, 'utf8').slice(0, 2000)); }
+  catch { return false; }
+};
+
+// Only `docs/` at the root: that is where a repo keeps its records, and a nested project
+// (a demo, an example app) has its own.
+export function unreadRecords(dir, maxDepth = 4) {
+  const groups = new Map();
+  const add = (pattern) => groups.set(pattern, (groups.get(pattern) || 0) + 1);
+  const walk = (abs, rel, depth) => {
+    let entries = [];
+    try { entries = readdirSync(abs, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      const m = RECORD_NAME.exec(e.name);
+      const kind = m && m[1].toUpperCase();
+      if (e.isDirectory()) {
+        if (SKIP_DIRS.has(e.name)) continue;
+        // A folder per record: its README (or index) is the record.
+        const f = kind && ['README.md', 'index.md'].find((n) => isRecord(join(abs, e.name, n), kind));
+        if (f) { add(`${rel}/${kind}-*/${f}`); continue; }
+        if (depth < maxDepth) walk(join(abs, e.name), `${rel}/${e.name}`, depth + 1);
+      } else if (kind && e.name.endsWith('.md') && rel !== RECORD_HOME[kind] && isRecord(join(abs, e.name), kind)) {
+        add(`${rel}/${kind}-*.md`);
+      }
+    }
+  };
+  walk(join(dir, 'docs'), 'docs', 0);
+  return [...groups].map(([pattern, count]) => ({ pattern, count }));
 }

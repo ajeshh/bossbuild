@@ -3,11 +3,11 @@
 // already in). They share a job and their helpers, so they share a module (IDEA-160 Q3). The file
 // copying itself is scaffold.js's; this is the part a founder reads.
 
-import { mkdirSync, existsSync, writeFileSync } from 'node:fs';
-import { join, resolve, delimiter, basename } from 'node:path';
+import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
+import { join, resolve, delimiter, basename, relative, sep } from 'node:path';
 import { execSync } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId } from './paths.js';
-import { stageVars, applyStage, readStageManifest, recordIgnoreOffered, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock } from './scaffold.js';
+import { stageVars, applyStage, readStageManifest, recordIgnoreOffered, applyStageSafe, planStageSafe, gitignoreRulesToAdd, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock } from './scaffold.js';
 import { readStamp, writeStamp, registerProject, STAMP } from './registry.js';
 import { stampManaged, computeSettingsMerge } from './sync.js';
 import { earnedGroups, describeUntil, holdAtAdopt } from './earned.js';
@@ -18,7 +18,7 @@ import { fail, failNotAProject } from './fail.js';
 import { commitGuardLine } from './hooks.js';
 import { installCommitGuard } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
 import { writeFileAtomic } from './atomic.js';
-import { detectStage, inferSourceGlobs } from './detect.js';
+import { detectStage, inferSourceGlobs, unreadRecords } from './detect.js';
 import { parseArgs } from './args.js';
 
 
@@ -59,6 +59,93 @@ function previewUnlock(stamp) {
     for (const line of renderReadiness(bar, { bold, dim, ok, warn }, { preview: true })) console.log(line);
   }
   console.log(`\n  ${bold(`boss unlock ${modeWord(next)}`)} ${dim('when you are — it never blocks.')}\n`);
+}
+
+// The plan `boss adopt --apply` would carry out, computed by the same steps and written nowhere.
+// It answers the three things someone with a working repo asks first: where do I stand, what
+// do you add, and what of mine do you touch. Then what BOSS can't see, and how to take less.
+function previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shippedBefore, named }) {
+  const rel = (f) => relative(targetDir, f).split(sep).join('/');
+  const planned = new Set();
+  const kept = new Set();
+  const deferred = [];
+  for (const s of chain) {
+    const m = readStageManifest(s);
+    const hold = holdAtAdopt(m, targetDir, { shippedBefore });
+    const r = planStageSafe(s, targetDir, { skipSkills: hold.skip });
+    // A later mode meets an earlier one's file on disk in a real run; here it isn't, so dedupe.
+    r.copied.map(rel).forEach((f) => planned.add(f));
+    r.skipped.map(rel).forEach((f) => kept.add(f));
+    for (const [group, sk] of Object.entries(hold.deferred)) deferred.push({ s, group, sk, until: (m.earned || {})[group] });
+  }
+  planned.delete('claude-append.md'); // folded into CLAUDE.md, never left behind
+  const files = [...planned];
+  const under = (p) => files.filter((f) => f.startsWith(p));
+  const names = (p, re) => [...new Set(under(p).map((f) => (re.exec(f.slice(p.length)) || [])[1]).filter(Boolean))];
+  const skills = names('.claude/skills/', /^([^/]+)\//);
+  const agents = names('.claude/agents/', /^([^/]+)\.md$/);
+  const hooks = names('.claude/hooks/', /^([^/]+)\.js$/);
+  const docs = under('docs/');
+  const other = files.filter((f) => !/^(\.claude\/(skills|agents|hooks)\/|docs\/|\.boss\/)/.test(f));
+
+  const pad = (s, n) => s + ' '.repeat(Math.max(1, n - s.length));
+  const line = (label, text) => console.log(`    ${pad(label, 13)}${text}`);
+  console.log(`\n  ${bold('boss adopt')} — what BOSS would do to ${bold(name)}. ${dim('Nothing is written yet.')}`);
+
+  console.log(`\n  ${bold('Where you stand')}`);
+  console.log(`    ${manifest.name} mode${named ? dim(' — the mode you named') : ''}`);
+  if (detected) console.log(`    ${dim('read from your repo:')} ${detected.why.join(' · ')}`);
+  if (detected && detected.beyond) console.log(`    ${warn('▸')} this looks past MVP — shipped and tested. ${dim("BOSS won't climb past MVP on its own; `boss unlock v1` later if you want it.")}`);
+  console.log(`    ${dim('The full read — what you built and what is missing — is /read-repo, once BOSS is in.')}`);
+
+  console.log(`\n  ${bold('What it adds')} ${dim(`— ${files.length} new file(s); none of yours is replaced`)}`);
+  if (skills.length) line(`${skills.length} skills`, skillsLine(skills).replace(/ \(`boss map`\)$/, ''));
+  if (agents.length) line(`${agents.length} agents`, agents.join(', '));
+  if (hooks.length) line(`${hooks.length} hooks`, `${hooks.slice(0, 4).join(', ')}${hooks.length > 4 ? ` … +${hooks.length - 4}` : ''} ${dim('(scripts; only the registered ones run)')}`);
+  if (docs.length) line('docs/', `${docs.length} file(s): ${docs.slice(0, 4).map((f) => f.slice(5)).join(', ')}${docs.length > 4 ? ' …' : ''}`);
+  if (under('.boss/').length) line('.boss/', "BOSS's own state for this project (mode, config)");
+  if (other.length) line('other', other.slice(0, 4).join(', ') + (other.length > 4 ? ' …' : ''));
+  for (const d of deferred) console.log(`    ${dim(`· ${d.sk.length} held back ${describeUntil(d.until)}: ${d.sk.join(', ')}`)}`);
+
+  console.log(`\n  ${bold('What it changes of yours')}`);
+  const touched = [];
+  for (const f of ['CLAUDE.md', 'AGENTS.md']) {
+    if (existsSync(join(targetDir, f))) touched.push([f, 'a marked BOSS block added at the end; the rest untouched']);
+  }
+  if (existsSync(join(targetDir, '.gitignore'))) {
+    const rules = gitignoreRulesToAdd(chain, targetDir);
+    if (rules.length) touched.push(['.gitignore', `${rules.length} rule(s) added in a marked block — what stays on your machine`]);
+  }
+  const settings = computeSettingsMerge(targetDir, chain);
+  if (settings?.unparseable) touched.push(['.claude/settings.json', `can't be read, so left alone: ${settings.unparseable}`]);
+  else if (settings?.changed && existsSync(join(targetDir, settings.rel))) {
+    let before = {};
+    try { before = JSON.parse(readFileSync(join(targetDir, settings.rel), 'utf8')); } catch { /* counted from empty */ }
+    const count = (o) => Object.values(o?.hooks || {}).reduce((n, a) => n + a.length, 0);
+    const perms = (o) => ['deny', 'ask'].reduce((n, k) => n + (o?.permissions?.[k] || []).length, 0);
+    const parts = [`${count(settings.merged) - count(before)} hook registration(s)`, `${perms(settings.merged) - perms(before)} deny/ask rule(s)`];
+    touched.push(['.claude/settings.json', `${parts.join(' and ')} added; your permissions and hooks kept`]);
+  }
+  if (existsSync(join(targetDir, '.git'))) touched.push(['.git/hooks', 'a pre-commit check for keys, unless you already have a pre-commit hook']);
+  touched.push(['~/.boss', 'this project registered, so `boss list` and `boss sync` find it']);
+  for (const [f, what] of touched) line(f, what);
+  for (const [f] of touched) kept.delete(f);   // merged into, and said so above — not "kept as-is"
+  if (kept.size) console.log(`    ${dim(`kept as-is — you already have ${kept.size}: ${[...kept].slice(0, 3).join(', ')}${kept.size > 3 ? ' …' : ''}`)}`);
+
+  const unread = unreadRecords(targetDir);
+  if (unread.length) {
+    console.log(`\n  ${bold("What it can't see")}`);
+    for (const u of unread) console.log(`    ${warn('!')} ${u.pattern} ${dim(`(${u.count})`)}`);
+    console.log(`    ${dim('BOSS reads each kind of record as a flat file in one folder (FEATs and IDEAs in docs/ideas/).')}`);
+    console.log(`    ${dim("These stay where they are, and the board and session start won't show them yet.")}`);
+  }
+
+  console.log(`\n  ${bold('Taking less')}`);
+  if (stageId !== STAGE_ORDER[0]) console.log(`    boss adopt --mode ${modeWord(STAGE_ORDER[0])}     ${dim('the smallest set; grow later with `boss unlock`')}`);
+  console.log(`    ${dim('Two hooks run from the start: the conscience (an occasional nudge) and reentry')}`);
+  console.log(`    ${dim('(where you left off). Every other hook stays off until `boss hooks enable <name>`.')}`);
+  console.log(`    boss remove             ${dim('afterwards, previews taking all of it back out')}`);
+  console.log(`\n  ${bold('boss adopt --apply')}${stageId !== detected?.stage && named ? ` --mode ${modeWord(stageId)}` : ''} does it.\n`);
 }
 
 export function cmdUnlock(args) {
@@ -357,6 +444,9 @@ export function cmdAdopt(args) {
   // — counts as shipped; a model call in the source counts as calling a model), and the opt-in
   // hooks stay off until `boss hooks enable`. Adopt used to lay down all of both (IDEA-118).
   const shippedBefore = Boolean(detected && detected.beyond);
+  // Preview first, like `boss sync` and `boss remove`: adopt was the one door that wrote on its
+  // first run, into a repo that already had its own way of working (IDEA-163, EVID-006).
+  if (!flags.apply) return previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shippedBefore, named: Boolean(flags.mode) });
   const deferred = {};
   const heldSkills = [];
   for (const s of chain) {
@@ -491,7 +581,7 @@ export function cmdAdopt(args) {
     claudePreexisted ? 'CLAUDE.md preserved (BOSS block appended)' : null,
     ignored.applied ? `.gitignore merged (${ignored.added.length} rule(s) added)` : null,
   ].filter(Boolean);
-  console.log(`    ${copied.length} file(s) added · nothing of yours overwritten${preserved.length ? ` · ${preserved.join(' · ')}` : ''}`);
+  console.log(`    ${copied.filter((f) => basename(f) !== 'claude-append.md').length} file(s) added · nothing of yours overwritten${preserved.length ? ` · ${preserved.join(' · ')}` : ''}`);
   console.log(`    skills: ${skillsLine(stamp.skills)}`);
   // `/read-repo` leads here, and `/welcome` follows it. The order is the point: someone adopting
   // BOSS has already built the thing, so the first useful sentence BOSS can say is about THEIR

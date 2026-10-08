@@ -94,7 +94,7 @@ export function layDown({ dir = join(tmpdir(), 'boss-kettlewick'), fresh = false
 
   // 2. The install, the way a founder's runs.
   const env = { ...process.env, BOSS_HOME: home, NO_COLOR: '1' };
-  execFileSync(process.execPath, [BOSS, 'adopt', '--mode', meta.mode], { cwd: project, env, stdio: ['ignore', 'pipe', 'pipe'] });
+  execFileSync(process.execPath, [BOSS, 'adopt', '--apply', '--mode', meta.mode], { cwd: project, env, stdio: ['ignore', 'pipe', 'pipe'] });
   // What adopt can't know about a venture that's been running since May: who it's for, when it began,
   // who's on the team. The same overlay the site's render uses (gen-demo.js), so the two read alike.
   const mf = join(project, '.boss', 'manifest.json');

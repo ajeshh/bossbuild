@@ -81,7 +81,7 @@ test('REGRESSION: adopting a repo that already has a .gitignore still protects D
   // repo in the first place (a non-destructive copy silently skipping the one file that
   // keeps per-person conscience state out of a shared repo).
   const dir = project({ '.gitignore': 'node_modules/\ndist/\n', 'package.json': '{"name":"mine"}\n' });
-  const r = boss(['adopt'], dir);
+  const r = boss(['adopt', '--apply'], dir);
   assert.equal(r.code, 0, r.out);
 
   const ignore = readFileSync(join(dir, '.gitignore'), 'utf8');

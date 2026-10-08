@@ -62,7 +62,7 @@ function scaffoldedConfigKeys() {
   const adopted = join(tmp, 'adopted');
   mkdirSync(adopted, { recursive: true });
   writeFileSync(join(adopted, 'package.json'), '{"name":"adopted","version":"1.0.0"}\n');
-  boss(['adopt', '--yes'], adopted);
+  boss(['adopt', '--apply'], adopted);
   const cfg = join(adopted, '.boss', 'config.json');
   if (existsSync(cfg)) {
     for (const k of Object.keys(JSON.parse(readFileSync(cfg, 'utf8')))) keys.add(k);

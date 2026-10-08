@@ -46,7 +46,7 @@ function repoWithClaudeMd() {
     'src/b.ts': 'export const b = 2;\n',
   });
   execFileSync('git', ['init', '-q'], { cwd: dir });
-  boss(['adopt'], dir);
+  boss(['adopt', '--apply'], dir);
   return dir;
 }
 
@@ -106,7 +106,7 @@ test("adopt does not overwrite a founder's own Claude Code settings", () => {
   mkdirSync(join(dir, '.claude', 'hooks'), { recursive: true });
   writeFileSync(join(dir, '.claude', 'hooks', 'mine.js'), 'process.exit(0)\n');
   execFileSync('git', ['init', '-q'], { cwd: dir });
-  boss(['adopt'], dir);
+  boss(['adopt', '--apply'], dir);
   const s = JSON.parse(readFileSync(join(dir, '.claude', 'settings.json'), 'utf8'));
   assert.deepEqual(s.permissions.allow, ['Bash(npm test)'], 'their allow rules must survive');
   assert.equal(s.env.MY_FLAG, '1', 'their env must survive');
@@ -126,7 +126,7 @@ test('adopt at MVP holds the earned groups and the opt-in hooks like unlock does
   };
   for (let i = 0; i < 7; i++) files[`src/m${i}.js`] = `export const f${i} = ${i}\n`;
   const dir = project(files);
-  const out = boss(['adopt'], dir);
+  const out = boss(['adopt', '--apply'], dir);
   assert.match(out, /MVP mode/);
   const skills = readdirSync(join(dir, '.claude', 'skills'));
   // shipped before adoption → the after-you-ship verbs are on disk, not folded away from a live app
@@ -150,7 +150,39 @@ test('adopt at MVP holds the earned groups and the opt-in hooks like unlock does
 
 test('a small repo adopts at Quickstart and the why line names what it found and the bar', () => {
   const dir = project({ 'package.json': '{"name":"x"}', 'src/a.js': '1\n', 'test/a.test.js': '1\n', 'vercel.json': '{}' });
-  const out = boss(['adopt'], dir);
+  const out = boss(['adopt', '--apply'], dir);
   assert.match(out, /Quickstart mode/);
   assert.match(out, /2 source file\(s\) — MVP starts at 5 with a build manifest · package\.json · tests · deploy config \(vercel\.json\)/);
+});
+
+// --- IDEA-163 — adopt shows its plan before it writes ------------------------------------------
+// `boss sync` and `boss remove` previewed and acted on `--apply`; adopt wrote on its first run,
+// into a repo that already had its own way of working (EVID-006).
+
+test('bare adopt writes nothing and says what it would add, change and not see', () => {
+  const dir = project({
+    'package.json': '{"name":"myapp"}',
+    'CLAUDE.md': '# my rules\n',
+    '.gitignore': 'node_modules/\n',
+    'docs/features/FEAT-001-login/README.md': '---\nid: FEAT-001\nstatus: building\n---\n# Login\n',
+    'docs/features/FEAT-002-cart/README.md': '---\nid: FEAT-002\nstatus: shipped\n---\n# Cart\n',
+    'docs/design/FEAT-001-review.md': '# a review named after a FEAT is not a record\n',
+  });
+  const before = readdirSync(dir).sort();
+  const out = boss(['adopt'], dir);
+  assert.deepEqual(readdirSync(dir).sort(), before, 'nothing written');
+  assert.equal(readFileSync(join(dir, 'CLAUDE.md'), 'utf8'), '# my rules\n');
+  assert.match(out, /Nothing is written yet/);
+  assert.match(out, /CLAUDE\.md\s+a marked BOSS block/);
+  assert.match(out, /\.gitignore\s+\d+ rule\(s\) added/);
+  assert.match(out, /docs\/features\/FEAT-\*\/README\.md \(2\)/);
+  assert.doesNotMatch(out, /docs\/design/, 'a file named after a FEAT without its frontmatter is not a record');
+  assert.match(out, /boss adopt --apply/);
+});
+
+test('the preview promises the files --apply lays down', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}', 'src/a.js': 'export const a = 1;\n' });
+  const promised = Number(/What it adds — (\d+) new file/.exec(boss(['adopt'], dir))[1]);
+  const added = Number(/(\d+) file\(s\) added/.exec(boss(['adopt', '--apply'], dir))[1]);
+  assert.equal(added, promised);
 });

@@ -48,6 +48,13 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### What you'll notice
 
+- **`boss adopt` shows you the plan before it writes anything.** Run bare in a repo you already
+  started, it now says where you stand and why, what it would add (skills, agents, hooks, docs), which
+  of your own files it would append to and how (`CLAUDE.md`, `AGENTS.md`, `.gitignore`,
+  `.claude/settings.json`, a pre-commit check), and what it can't see: records you keep somewhere it
+  doesn't read yet, like `docs/features/FEAT-001-login/README.md`. It also says how to take less.
+  Nothing is written until `boss adopt --apply`, the same way `boss sync` and `boss remove` already
+  work. If you script adopt, add `--apply`.
 - **`boss board --next` says how close each piece of work is, in words, and where to pick it up.** It
   used to list what was in build and say "finish it". Now each piece says whether questions are still
   open (*uphill*) or only known work is left (*downhill*), and which way it has been going: *8 → 4 open

@@ -151,6 +151,14 @@ export function appendGitignoreBlock(stageIds, targetDir) {
   return { added, applied: true };
 }
 
+// The rules appendGitignoreBlock would add, written nowhere (the adopt preview).
+export function gitignoreRulesToAdd(stageIds, targetDir) {
+  const filePath = join(targetDir, '.gitignore');
+  const existing = existsSync(filePath) ? readFileSync(filePath, 'utf8') : '';
+  if (existing.includes('# ── BOSS — what stays on this machine')) return [];
+  return freshIgnoreGroups(stageIds, existing).added;
+}
+
 // The template rules a .gitignore lacks, grouped with the comments that explain them.
 // Exact (trimmed) match. A near-miss — theirs `node_modules`, ours `node_modules/` — adds a
 // harmless duplicate rather than guessing at gitignore semantics we'd get subtly wrong.
@@ -251,21 +259,40 @@ export function applyIgnoreRules(projectDir, plan, stageIds, version) {
 // Recursive copy-if-absent: copy every template file that doesn't already exist
 // in the target, skipping (never clobbering) any the founder already has. The
 // non-destructive half of `boss adopt`. Records copied + skipped paths.
-function cpSafeTree(srcDir, destDir, copied, skipped, held = new Set()) {
-  mkdirSync(destDir, { recursive: true });
+// `dry` walks the same tree and fills the same lists without touching disk — the adopt preview
+// (IDEA-163) reads them, so what it promises is what `--apply` lays down.
+function cpSafeTree(srcDir, destDir, copied, skipped, held = new Set(), dry = false) {
+  if (!dry) mkdirSync(destDir, { recursive: true });
   for (const name of readdirSync(srcDir)) {
     const s = join(srcDir, name);
     const d = join(destDir, name);
     if (held.has(s)) continue;   // held back until earned or asked for — not copied at all
     if (statSync(s).isDirectory()) {
-      cpSafeTree(s, d, copied, skipped, held);
+      cpSafeTree(s, d, copied, skipped, held, dry);
     } else if (existsSync(d)) {
       skipped.push(d);
     } else {
-      cpSync(s, d);
+      if (!dry) cpSync(s, d);
       copied.push(d);
     }
   }
+}
+
+function heldPaths(stageId, templateDir, skipSkills, skipHooks) {
+  const hooksHeld = skipHooks ?? (readStageManifest(stageId).optionalHooks || []);
+  return new Set([
+    ...skipSkills.map((n) => join(templateDir, '.claude', 'skills', n)),
+    ...hooksHeld.map((n) => join(templateDir, '.claude', 'hooks', `${n}.js`)),
+  ]);
+}
+
+// What applyStageSafe would copy and what it would leave alone, written nowhere.
+export function planStageSafe(stageId, targetDir, { skipSkills = [], skipHooks = null } = {}) {
+  const templateDir = join(STAGES_DIR, stageId, 'template');
+  const copied = [];
+  const skipped = [];
+  if (existsSync(templateDir)) cpSafeTree(templateDir, targetDir, copied, skipped, heldPaths(stageId, templateDir, skipSkills, skipHooks), true);
+  return { copied, skipped };
 }
 
 // Adopt a stage into an EXISTING repo non-destructively: copy only files that
@@ -284,12 +311,7 @@ export function applyStageSafe(stageId, targetDir, vars, { skipSkills = [], skip
   // opt-in hooks stay off disk until earned or asked for. Adopt used to copy all of them — the
   // one path most founders meet first got every verb and every guard the other path withholds
   // (IDEA-118).
-  const hooksHeld = skipHooks ?? (readStageManifest(stageId).optionalHooks || []);
-  const held = new Set([
-    ...skipSkills.map((n) => join(templateDir, '.claude', 'skills', n)),
-    ...hooksHeld.map((n) => join(templateDir, '.claude', 'hooks', `${n}.js`)),
-  ]);
-  cpSafeTree(templateDir, targetDir, copied, skipped, held);
+  cpSafeTree(templateDir, targetDir, copied, skipped, heldPaths(stageId, templateDir, skipSkills, skipHooks));
 
   // Substitute placeholders only in the files we actually wrote.
   for (const f of copied) {

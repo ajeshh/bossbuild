@@ -18,9 +18,9 @@ export const HELP = {
     see: ['adopt', 'unlock', 'map'],
   },
   adopt: {
-    usage: 'boss adopt [--mode <m>] [--ai]',
-    what: 'Bring BOSS into an already-started repo, non-destructively — your files are untouched, BOSS lands at the lightest register that fits. --mode mvp adopts higher when the app has earned it.',
-    examples: ['boss adopt', 'boss adopt --mode mvp   # already has real users'],
+    usage: 'boss adopt [--apply] [--mode <m>] [--ai]',
+    what: 'Bring BOSS into an already-started repo, non-destructively. Bare, it shows the plan and writes nothing: where you stand, what it adds, which of your files it appends to, what it can\'t see. --apply does it. --mode picks a lighter or heavier set.',
+    examples: ['boss adopt                  # the plan; nothing written', 'boss adopt --apply', 'boss adopt --apply --mode quickstart   # the smallest set'],
     see: ['new', 'unlock'],
   },
   unlock: {

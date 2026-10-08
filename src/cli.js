@@ -933,7 +933,7 @@ function printHelp() {
 
   console.log(`  ${bold('Start here')}`);
   console.log(row('boss new <name> [--ai]', 'scaffold a new project (Quickstart) + register it'));
-  console.log(row('boss adopt [--mode <m>] [--ai]', 'bring BOSS into an already-started repo, non-destructively'));
+  console.log(row('boss adopt [--apply] [--mode <m>]', 'bring BOSS into an already-started repo — shows the plan first'));
   console.log(row('boss map [--next|--all]', 'live cheatsheet: where you are + what\'s one unlock away'));
 
   console.log(`\n  ${bold('Everyday')}`);

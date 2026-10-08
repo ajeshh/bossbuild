@@ -21,8 +21,8 @@ What changes:
   repo's `/boss`.
 - **Name the mode BOSS inferred, and how to change it.** `boss adopt` reads the repo and proposes
   a mode from what it finds (a build manifest, source files, tests, CI, deploy config). Tell them
-  what it landed on and that they own the call: `boss unlock <mode>` climbs, and re-adopting with
-  `--mode` was always available. **If it guessed low, that's a one-command fix; say so** rather
+  what it landed on and that they own the call: `boss unlock <mode>` climbs. (Re-adopting is not a
+  way down: adopt refuses a repo that already has BOSS.) **If it guessed low, that's a one-command fix; say so** rather
   than letting them assume BOSS has decided they're a beginner.
 - **Don't audit their code.** They didn't ask for a review, and an unrequested critique of work
   they already shipped is the fastest way to lose them. If `/read-repo` surfaces something real
