@@ -5,8 +5,8 @@ owner: product-lead
 status: active
 created: 2026-10-08
 gist: Every project on the machine in one building — HQ shows where each stands and what's next, and each project lives in the room that holds as much BOSS as it wants, from the Mailroom (just track it) to the Boardroom (the whole venture).
-next: Ajesh takes or changes the Q1 recommendation, then one /decide for Q1+Q2 (supersedes part of DEC-009) — it blocks phase 1 (2026-10-08)
-relates: IDEA-005, IDEA-049, IDEA-055, IDEA-067, IDEA-162, IDEA-163, DEC-009, PROG-001, PROG-004
+next: Phase 1, the Mailroom (IDEA-165) — registry row gains room/what/next; DEC-024 settled the model (2026-10-08)
+relates: DEC-024, IDEA-005, IDEA-049, IDEA-055, IDEA-067, IDEA-162, IDEA-163, DEC-009, PROG-001, PROG-004
 ---
 
 # PROG-006 — HQ
@@ -170,7 +170,7 @@ never asked of it — no `intent` field, no cell gating. What that changes, for 
   and inside the Boardroom, next mode (`boss unlock` stays as an alias). Open, for IDEA work: the
   signal that names each threshold (Mailroom→Office, Office→Studio, Studio→Boardroom).
 
-**The building, as decided 2026-10-08:** *Lobby* (outside: seen, not touched) · **Basement** (the
+**Recorded as DEC-024.** **The building, as decided 2026-10-08:** *Lobby* (outside: seen, not touched) · **Basement** (the
 safety floor) → **Mailroom** (tracked) → **Office** (context) → **Studio** (building) → **Boardroom**
 (the venture). Each floor carries every floor below; a door to enter, an elevator to go up.
 
