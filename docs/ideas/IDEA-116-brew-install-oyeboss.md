@@ -86,3 +86,11 @@ computes the hash), `gh repo fork Homebrew/homebrew-core --remote`, commit as
   The "then plain `brew install oyeboss` works" note on `start.html` came out: Homebrew 7's tap
   trust makes it false. Read at source: `cmd/install.rb` calls `Trust.trust_fully_qualified_items!`,
   so the qualified install trusts itself and works cold (tapped, info, fetch verified, then untapped).
+  The CLI's own `brew upgrade`/`uninstall` went bare (`oyeboss`): a qualified upgrade from the new
+  tap exits 1 on a machine installed from the old one (dry-run, 2026-10-08). The REGRESSION test
+  that pinned "tap-qualified" now pins bare `oyeboss`; the `TAP`/`FORMULA` exports nothing read are
+  gone. Old clones keep pulling: `ajeshh/homebrew-boss` (https and ssh) resolves to the new repo's
+  HEAD — and stops the day anything new is created at that name.
+  **Ajesh's machine, once:** `scripts/bump-formula.js` now looks for `brew --repository oyeboss/tap`,
+  so `npm run bump:formula` dies until `brew uninstall oyeboss && brew untap ajeshh/boss &&
+  brew install oyeboss/tap/oyeboss` (or pass `--tap PATH`).

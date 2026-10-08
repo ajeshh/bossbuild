@@ -31,27 +31,18 @@ const CACHE = join(BOSS_HOME, 'update-check.json');
 // The package name is written ONCE: the registry URL and the update command must never disagree,
 // because a rename that lands in one and not the other is silent. Pinned by a REGRESSION test.
 export const PKG = 'oyeboss';
-// The tap, written once for the same reason PKG is. `brew upgrade boss` — the command BOSS shipped
-// for two months — DOES NOT WORK: homebrew-cask has its own `boss` (Risa Labs, an unrelated
-// commercial product), and a bare formula name loses to it. brew answers "Cask 'boss' is not
-// installed" and exits non-zero, so the one install path that most needed a working upgrade command
-// had one that could never run. Fully qualified is not belt-and-braces here; it is the only form
-// that resolves. Pinned by a REGRESSION test. The tap moved to its own org on 2026-10-08
-// (ajeshh/homebrew-boss → Oyeboss/homebrew-tap); GitHub's redirect keeps old clones pulling.
-export const TAP = 'oyeboss/tap';
-// The formula is PKG (`oyeboss`, renamed with the package at v0.177.0). Until 2026-09-14 the
-// commands below said `${TAP}/boss` — the old formula name — and resolved only because the tap
-// carries a `formula_renames.json` (boss → oyeboss). One JSON file in a second repo was the whole
-// reason the upgrade command worked, and the regression test pinned the old name. Name the formula
-// that exists; the rename map is for installs that predate it, not for BOSS to lean on.
-export const FORMULA = `${TAP}/${PKG}`;
-// Upgrade and uninstall name the INSTALLED formula, bare. When the tap moved (2026-10-08),
-// `brew upgrade oyeboss/tap/oyeboss` on a machine installed from ajeshh/boss exits 1 ("tap it
-// explicitly") — the qualified name only works for whoever installed from that exact tap. A bare
-// `oyeboss` resolves to the installed keg whichever tap it came from, and that formula is already
-// trusted (Homebrew 7 trusts a fully qualified `install`). The cask collision that forced the
-// qualified form was `boss`; there is no `oyeboss` cask. Install, which has no keg to resolve to,
-// keeps FORMULA.
+// The Homebrew name. `brew upgrade boss` — the command BOSS shipped for two months — DID NOT WORK:
+// homebrew-cask has its own `boss` (Risa Labs, an unrelated commercial product), and a bare formula
+// name loses to it. brew answered "Cask 'boss' is not installed" and exited non-zero. The fix was
+// the tap-qualified `ajeshh/boss/boss`, which resolved only through the tap's formula_renames.json
+// (boss → oyeboss) — so on 2026-09-14 it became `ajeshh/boss/oyeboss`, the formula that exists.
+// Then the tap moved (2026-10-08, ajeshh/homebrew-boss → Oyeboss/homebrew-tap), and a qualified
+// `brew upgrade oyeboss/tap/oyeboss` exits 1 on every machine installed from the old tap ("tap it
+// explicitly"). A qualified name only works for whoever installed from that exact tap. So upgrade
+// and uninstall name the INSTALLED formula, bare: `oyeboss` resolves to the installed keg whichever
+// tap it came from, that formula is already trusted (Homebrew 7 trusts a fully qualified install),
+// and no cask is called `oyeboss`. The cold install stays qualified, in README, web/ and gen-site.
+// Pinned by a REGRESSION test.
 const BREW_NAME = PKG;
 const REGISTRY = `https://registry.npmjs.org/${PKG}/latest`;
 const TIMEOUT_MS = 4000;
