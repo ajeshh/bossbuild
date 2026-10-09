@@ -32,9 +32,11 @@ legends."*
 
 ## The character
 
-The B is the body. The top counter is a **visor** with two eyes; the lower bowl **smiles**. A **tuft**,
-the B's top serif curled up, takes the place of antennae. It has **stubby red shoes** and **blush**.
-The waist stops three pixels in from the lower loop so the two loops read as a B, even at 16px.
+The B is the body. **The whole face sits in the top loop**: the top counter is a **visor** with two
+eyes, with the smile right under it; the bottom loop is a plain belly. A **tuft**, the B's top serif
+curled up, takes the place of antennae. It has **stubby red shoes** and **blush**. The waist stops three
+pixels in from the lower loop so the two loops read as a B, even at 16px. **The right side stays clean**:
+nothing is held or worn there, so the B's two bumps aren't confused; everything held goes in the left hand.
 Colours are the site's own: persimmon, sky, deep, paper, plus gold for unlocks.
 
 ## The legend
@@ -45,12 +47,17 @@ its own part of the body:
 
 | Floor | Enemy | Unlock | Where |
 |---|---|---|---|
-| 0 · Lobby | The Blank Page | visitor sticker with its name | chest |
-| 1 · Security | The Leaked Key | the sticker becomes a gold badge | chest |
-| 2 · Mailroom | The Pile | satchel | left hand |
-| 3 · Office | The Lost Thread | scarf (the thread, wound up) | neck |
-| 4 · Studio | The Yak | hammer (swings as it walks) | right hand |
-| 5 · Boardroom | The Mirror | the glow, and the shades | eyes, whole body |
+| 0 · Lobby | The Blank Page | visitor sticker with its name | belly |
+| 1 · Security | The Leaked Key | the sticker becomes a gold badge | belly |
+| 2 · Mailroom | The Pile | satchel | hip |
+| 3 · Office | The Lost Thread (a ball of yarn) | pencil, to write down where it stopped | tuft |
+| 4 · Studio | The Yak (a fluffy puff) | hammer (swings as it walks) | left hand |
+| 5 · Boardroom | The Mirror (smug) | the glow, and the shades: one solid black bar | eyes, whole body |
+
+Enemies are drawn soft and round, with the same face as Bitsy. Ajesh, 2026-10-08, on the first
+round: the thread, the yak and the mirror were *"not cute, very distracting"*; a scarf at the waist
+*"splits the B"*; a smile in the lower loop *"doesn't feel connected"*; shades with glints read as
+see-through; the sparkles go.
 
 **The boss level.** The last fight is with its own reflection, the one that says *no need to check*.
 Bitsy checks. Then it glows like the neon letter it always was; the brightest letter on the sign needs
