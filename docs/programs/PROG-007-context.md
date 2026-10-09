@@ -55,7 +55,10 @@ or need to go, the designer brings it to visual life, the user story is the cont
 of what needs to be built and the code is that truth and the contract that is being coded into an
 app's reality… its the missing link of how the 3 senses come together to create truth."*
 
-- **Product** holds why and where; **design** brings it to visible life; **engineering** holds how. The
+- **Product** holds why and where (the problem and who has it, what matters most, what to say no to,
+  what success means); **design gives the story its form** — Ajesh: *"designers are not just about
+  create pretty design, or go research. they play a pivotal role of helping shape the story and give it
+  form"*; **engineering** holds how, and follows through. The
   **story** is what all three agree to; the **code** is that agreement made real; **acceptance**
   closes the loop, and it is joint: any of the three can reject reality against the story. Done means
   accepted, not written.
@@ -64,7 +67,9 @@ app's reality… its the missing link of how the 3 senses come together to creat
   the eng follow thru and understand. and its a joint responsibility to ensuring its clear. so that
   nothing gets lost in translation."* Each sense speaks its own language (value, experience, systems);
   the story is the one artifact all three read.
-- **It's Ajesh's theory**, which they want to grow: *"this is my theory and how i see the pattern and
+- **It's Ajesh's theory**, from more than a decade wearing each of the three hats and aligning people
+  across them (*"not just TDD, but all my experience wearing multiple hats has helped me understand and
+  empathize with each"*), which they want to grow: *"this is my theory and how i see the pattern and
   organizational psychology… i think its pretty big revelation."* Its claim: **truth in a product is a
   social agreement made checkable.** Kin it builds on: boundary objects (Star & Griesemer, 1989),
   shared mental models (Cannon-Bowers, Salas & Converse, 1993), BDD's three amigos (Dinwiddie).
@@ -97,8 +102,21 @@ programming languages"*). It rides on comments and notes, so it lives in any pro
 own @-tags, in a design file's component descriptions, in a PR description. Nothing compiles or runs
 differently. Each sense writes it and reads it; agents draft it from the records but don't own it.
 
-**Its name — open** (Ajesh: *"We should also create a name for this language"*). Candidates in the
-2026-10-08 session; none checked for collisions yet.
+**Its name — open** (Ajesh: *"it needs a really recognizable name"*, like JavaScript, CSS, HTML,
+Python). Quick web checks 2026-10-08 (not trademark or package registries): two early favourites are
+already taken in the developer space (one by a 2026 AI programming language, one by a long-standing
+promise library); **Kept**, **Troth**, **Sworn** and **Trine** came back clear. Names stay in the
+session notes until chosen.
+
+**The aha, as the essay tells it:** three threads — the story is the one thing all three senses read
+but the code can't see it; anything kept apart from the code drifts; comments and types never run —
+fuse into one question: *what if the story lived in the code, in a small language every sense can
+read, every tool can check, and the running program never sees?* That's the birth of the language.
+
+**The dictionary draft** (about twenty words, core vs candidate; the shape of a line `@word target
+!flags : text`; examples in code, Markdown, stories, BDD, design files and PRs; add and strip) lives in
+the essay's second tab for review. Rules added there: it reads fine without the tool, like Markdown;
+adding is one line and removing is one command that leaves files byte-for-byte the same.
 
 **How it grows:** settle early only what's dear to reverse — the promise id (`feature#slug`, stable
 through renames, held by the target) and the shape of the `@confirmed` mark, since both get written
@@ -268,6 +286,12 @@ forward."*
 - [ ] **E1 — The essay, told as a story.** How context is usually kept → the AI-era attempts and where
   they leave you → how BOSS began (records, one home per fact) and iterated (resume computed, the
   handoff ledger) → what this program adds → where it goes. Citations where a claim needs proof.
+- [ ] **E2 — Name the language.** Ajesh picks; then a real clash check (package registries, code hosts,
+  domains, trademark) before it's used anywhere public.
+- [ ] **E3 — The dictionary moves into the repo once named.** One home: the draft lives in the essay's
+  tab for review; when settled it becomes a tracked spec, and the tab points to it.
+- [ ] **E4 — Later: a "how to use the language" page with many examples** (Ajesh: *"eventually this can
+  have a how to use this language page with a lot of examples but that is later"*).
 
 ## Log
 
