@@ -85,6 +85,20 @@ Agreed with that session, 2026-10-08. **IDEA-163 builds the adopt side:** Securi
 `--floor <name>` resolving to them, `floor:` on the stamp, the Lobby's row, the door's ownership check,
 and `boss up`. IDEA-163 builds Security only after DEC-024 lands on main.
 
+**What IDEA-163 built (work/idea-163, 4dc87daf, told 2026-10-08, not landed):**
+- Bare `boss adopt --apply` = Security only: deny/ask merged from L0 settings with no hooks
+  (`computeSettingsMerge(dir, layers, { hooks: false })`, `src/sync.js`), `commit-secrets.js` and its
+  pre-commit shim, the `.gitignore` block.
+- **It already writes `floor`**: the stamp `{ floor: 1, installedLayers: [], adopted, adoptedFrom, theirs }`
+  (no stage or mode) and the registry row `{ name, path, floor: 1, bossVersion, createdAt }`. IDEA-165
+  builds on these fields; it does not add `floor` a second time.
+- `boss adopt --apply --mode <m>` climbs from floor 1 to all of BOSS (`floor: 5`). **Interim:** this
+  is the only way up until `boss up`; when `boss up` lands it owns 1 → n, and adopt's floor-1
+  exception narrows to `--floor`.
+- `whereLabel(stamp)` (`src/modes.js`) prints every "You are here"; it handles floor 1 and needs 0
+  and 2–4. `boss status` on floor 1 prints the floor's contents and the way up.
+- Still to come from IDEA-163: the exported parts list and `--take`.
+
 ## Tasks — too small to ship alone
 
 - [ ] `boss list` and `boss hq` overlap. Decide: does `hq` replace `list`, or does `list` stay the
@@ -102,6 +116,8 @@ and `boss up`. IDEA-163 builds Security only after DEC-024 lands on main.
 - [ ] **`boss new` and `boss adopt` ask which floor** (Ajesh: *"it also applies when someone initiates
   boss in a new or existing project"*), through IDEA-163's preview.
 - [ ] IDEA-067's status moves when the Studio ships, pointing to DEC-024.
+- [ ] `boss up` replaces the interim climb `adopt --apply --mode` from floor 1 (IDEA-163's exception).
+- [ ] `whereLabel` covers every floor: 0 (Lobby) and 2–4, beside IDEA-163's 1 and today's 5.
 
 ## Open questions
 
