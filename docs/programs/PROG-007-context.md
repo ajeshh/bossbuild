@@ -286,8 +286,12 @@ forward."*
 - [ ] **E1 — The essay, told as a story.** How context is usually kept → the AI-era attempts and where
   they leave you → how BOSS began (records, one home per fact) and iterated (resume computed, the
   handoff ledger) → what this program adds → where it goes. Citations where a claim needs proof.
-- [ ] **E2 — Name the language.** Ajesh picks; then a real clash check (package registries, code hosts,
-  domains, trademark) before it's used anywhere public.
+- [ ] **E2 — Name the language.** Ajesh: *"it can be a shortform of a full form that feels catchy like
+  CSS… easy, hopeful. can be also sanskrit, hindi, gujarati, kutchi. I like kept."* Study done
+  2026-10-08 (meanings against dictionaries, clashes against registries; session notes): shortlist
+  **Vachan** (a given word, a promise; clear-ish), **KEPT** (*Keep Every Promise True*; bare package names
+  taken, scoped ones free), **Triveni** (three streams meeting; clear), **Troth** (clear-ish). Ajesh
+  picks; then domains and a trademark search before anything public.
 - [ ] **E3 — The dictionary moves into the repo once named.** One home: the draft lives in the essay's
   tab for review; when settled it becomes a tracked spec, and the tab points to it.
 - [ ] **E4 — Later: a "how to use the language" page with many examples** (Ajesh: *"eventually this can
