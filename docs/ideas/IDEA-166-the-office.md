@@ -30,7 +30,7 @@ Left out: agents, the conscience, loops, canvas, evidence, everything venture.
 
 ## Why it matters most
 
-This is the room that fixes the forgetting: a session opens by reading where you were and closes by
+This is the floor that fixes the forgetting: a session opens by reading where you were and closes by
 writing it, so the HQ card is never stale. Below the Office, the card is only as current as the last
 time you typed into it.
 

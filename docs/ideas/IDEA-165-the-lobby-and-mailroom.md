@@ -33,7 +33,7 @@ project."* Every project passes through it, on the way to any floor.
 
 ## The Mailroom — things arrive and get sorted
 
-Ajesh: *"the bottom level is the mailroom like in a big corp."* Level 2, above Security: a Mailroom project has its badge.
+The name comes from Ajesh: *"the bottom level is the mailroom like in a big corp."* It now sits at level 2, above Security: a Mailroom project has its badge.
 
 - The project's inbox: `/inbox`, `docs/source/`.
 - Idea capture: `/idea`, `docs/ideas/` + `INDEX.md`, `docs/IDS.md`.

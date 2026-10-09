@@ -17,8 +17,7 @@ they trying to build next, which window (CLI, VScode or such) is on which projec
 is just for that project, not for all projects. like we have dhun or other projects already on this
 machine. there is no way to get a status, visual, and remember what the project is about."*
 
-The pain behind it is on record: EVID-001's founder named orientation, forgetting what they are
-building, and a visual sense of headway. That warrants the *orientation* half. The many-projects view
+The orientation pain is on record (EVID-001). That warrants the *orientation* half. The many-projects view
 is warranted by Ajesh's own machine (Q3, answered).
 
 **Members:** every record with `program: PROG-006` — `boss board PROG-006`.
@@ -98,6 +97,8 @@ and `boss up`. IDEA-163 builds Security only after DEC-024 lands on main.
 - [ ] **The site tells the building as a story** (Ajesh: *"storytelling using the names of each floor…
   make it relateable and which floor they want"*). First draft:
   `docs/stories/2026-10-08-the-building.html`. PROG-001's subtract-first rule applies.
+- [ ] `docs/stories/` is new: internal story drafts that may become site content (its README says
+  so). Keep it, or fold it into PROG-001, at the next site pass.
 - [ ] **`boss new` and `boss adopt` ask which floor** (Ajesh: *"it also applies when someone initiates
   boss in a new or existing project"*), through IDEA-163's preview.
 - [ ] IDEA-067's status moves when the Studio ships, pointing to DEC-024.

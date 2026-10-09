@@ -60,6 +60,7 @@ Its rules:
 2. **The floor is declared, as a number**: `floor: 0–5`, on the registry row for every project and on
    the project's stamp from Security up; a Lobby project has a row and no stamp. Never inferred from which files happen to be present.
    The names are labels over the numbers, so renaming a floor touches one line, not every project.
+   `--floor` accepts a name or a number and stores the number.
 3. **Modes live only inside the Boardroom.** A mode is a venture stage behind a venture gate; the
    floors below have no venture to gate. Entering the Boardroom starts at Quickstart and keeps what the
    lower floors installed.
@@ -73,7 +74,7 @@ Its rules:
 6. **A floor is where a project lives, not its rank.** HQ never pushes a project upward.
 
 Named with Ajesh: *HQ*, the Lobby as reception (*"its like enter the lobby and then go to the floor.
-lobby is just the what is the name of this project"*), the Mailroom (*"the bottom level is the mailroom like in a big corp"*), the
+lobby is just the what is the name of this project"*), the Mailroom (*"the bottom level is the mailroom like in a big corp"* — the origin of the name; it now sits at level 2), the
 safety step as Security, where you get your badge (Ajesh, on the earlier *Basement*: *"its one floor
 below? so how do you pass it to go up? doesnt make sense"* — *"i like badge but i also like level"*),
 the cumulative ladder and the elevator (*"each time you go up you get all the perks of the previous
@@ -115,8 +116,10 @@ By **2027-01-08**, with the Mailroom and the Office shipped:
   is this for*, and gates nothing. DEC-009's other sections stand; IDEA-067 rung 3 (a body of
   non-commercial support) stays deferred. DEC-011's positioning stands; the site will now say there are
   different ways to use BOSS, and must not claim support that does not exist.
-- **Adopt changes shape** (IDEA-163): a bare `adopt --apply` already takes the safety floor, which is
-  now Security; `--take` and the default parts set wait on this record.
+- **Adopt changes shape** (IDEA-163, in flight): a bare `adopt --apply` will take the safety floor,
+  which is now Security; `--take` and the default parts set wait on this record.
+- **DEC-011 §5 stands** (no commons mode, no `intent` axis): a floor is neither. It says how much BOSS
+  a project holds, gates nothing, and a Studio project may be a commons without BOSS naming it one.
 - **The project stamp and the registry row gain fields** (`floor:`; `what`/`next` on rows). Undoing it
   later means a migration for every project that has one, which is why this is `costly`.
 - **Every surface that explains BOSS** (site, `/welcome`, `/boss`, `boss help`, README) gets one shared

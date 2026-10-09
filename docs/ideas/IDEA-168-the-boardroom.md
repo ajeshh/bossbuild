@@ -7,13 +7,13 @@ status: seedling
 created: 2026-10-08
 program: PROG-006
 relates: IDEA-005
-gist: The whole of BOSS, venture half included — and the way a project moves up into it from any lower room.
-next: waits on PROG-006 Q1 (rooms vs modes) (2026-10-08)
+gist: The whole of BOSS, venture half included — and the way a project moves up into it from any lower floor.
+next: the Boardroom preset and what `/boss` asks a project arriving from a lower floor (2026-10-08)
 ---
 
 # IDEA-168 — The Boardroom
 
-The top room: today's BOSS. The mentors *are* a board (`/consult` already convenes "the mentor
+Level 5, the top floor: today's BOSS. The mentors *are* a board (`/consult` already convenes "the mentor
 board"), with the conscience, canvas, evidence, interviews, pretotypes and money.
 
 Most of it exists. What this record holds is the **seam**: how the Boardroom relates to the four
@@ -21,9 +21,9 @@ modes, and how a project promoted from the Studio or the Office arrives without 
 
 ## Tasks
 
-- [ ] PROG-006 Q1: is the Boardroom "all four modes", or does each room carry modes?
+- [x] PROG-006 Q1: answered — modes live only in the Boardroom; entering starts at Quickstart (DEC-024 rule 3).
 - [ ] Promotion into the Boardroom: what `/boss` asks a project that already has an Office or Studio
   (it has history; it should not be greeted like a blank idea).
-- [ ] Demotion: moving down a room removes only what BOSS added, never the founder's records.
+- [ ] Demotion: moving down a floor removes only what BOSS added, never the founder's records.
 
 ## Found while building
