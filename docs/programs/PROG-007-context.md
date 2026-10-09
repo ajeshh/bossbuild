@@ -58,8 +58,8 @@ coverage hides it (one suite: 100% coverage, 4% mutation score). IDEA-154 T1 and
 seeds in BOSS: a sanctioned stop when a test and the FEAT disagree, and each criterion naming its test.
 The second language carries them further:
 
-1. **Tests are written from promises, not from code.** The writer, person or agent, reads the promise
-   line in the contract, never the implementation.
+1. **Tests are written from promises, not from code.** The promises come from the spec (below); the
+   test writer reads them and the contract, never the implementation.
 2. **Promise coverage over line coverage.** Every promise names its test or reads *unchecked*.
 3. **A test counts only if breaking its promise breaks it.** Confirmation for a test link is a planted
    break of the promise (a mutation) that makes the test fail.
@@ -97,8 +97,19 @@ what the agent can and can't touch — yes, piece by piece.
 
 **What it changes in the design:**
 
-1. **The person approves; they don't author tests.** They write one promise line and approve the
-   agent's tests, the arrangement with measured support. Typing expected outputs did worse.
+1. **Nobody writes promises from scratch; they're drawn from what discovery already captured.** Ajesh:
+   *"we have captured enough of the story during discovery and writing the prd that we can almost need
+   to bypass some of it and create more flow."* `/spec` already writes acceptance criteria and the
+   paths that must not break (money, destructive, who must *not*), each phrased so a person can check
+   it. Those are the promises. An agent drafts them into the contract from the FEAT, the IDEA and any
+   DEC that constrains the feature, before code exists. Each promise links to the line it came from,
+   stamped like any link, so a changed spec flags its promise and the promise flags its tests.
+   - **The person only approves, and only where it matters.** Money, destructive and who-must-not
+     promises get one look, at a moment they already pass through (the end of `/spec`, or before
+     landing). The rest are accepted as *drafted, not approved*: visible, never blocking. Approving
+     beat authoring in the evidence (typing expected outputs did worse).
+   - **No record, no promise from the code.** A feature with no spec gets its promises marked *no
+     source*, never drafted from its implementation, which would make the code its own oracle again.
 2. **Independence is structural, not a prompt.** The test-writing agent runs in a separate context that
    sees the promise lines and the contract, never the implementation.
 3. **Promises and tests are read-only to the coding agent,** with an explicit exit: *"this promise

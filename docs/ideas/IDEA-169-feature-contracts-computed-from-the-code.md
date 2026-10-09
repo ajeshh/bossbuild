@@ -193,8 +193,8 @@ you write one* table · the E/P/W marks.
 - [ ] **T2 — The general form on BOSS's own records.** Add a confirmed-against version to the links of
   one program's records, change a record one of them depends on, and see that the right record is
   flagged and nothing else.
-- [ ] **T3 — A promise proves its test.** On T1's feature: write each promise line, have an agent in a
-  separate context write tests from the promise lines alone (never the code), plant a break of each
+- [ ] **T3 — A promise proves its test.** On T1's feature: draft its promise lines from its spec (acceptance criteria and the
+  paths that must not break), approve the high-stakes ones, have an agent in a separate context write tests from the promise lines alone (never the code), plant a break of each
   promise (a plausible wrong implementation, naming the promise it breaks) and count which tests fail.
   Compare against tests an agent writes after seeing the code. Then, with tests read-only to the coding
   agent, let an agent try to loosen one assertion and check the test↔promise link flags it. PROG-007
