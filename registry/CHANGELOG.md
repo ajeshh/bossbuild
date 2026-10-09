@@ -33,21 +33,6 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### What you'll notice
 
-- **The Homebrew command is now `brew install oyeboss/tap/oyeboss`.** The tap moved to its own home
-  on GitHub, so the command no longer carries a personal handle. If you installed with the old
-  command, nothing breaks: upgrades keep arriving through the old tap. To switch over, run
-  `brew uninstall oyeboss && brew untap ajeshh/boss && brew install oyeboss/tap/oyeboss`.
-  The note that a plain `brew install oyeboss` works after tapping is gone, because newer Homebrew
-  won't load a formula from a tap you haven't trusted, and only the full name trusts it for you.
-
-### Smaller improvements
-
-### Under the hood
-
-## 0.332.0 — 2026-10-07
-
-### What you'll notice
-
 - **Adopting no longer puts your own same-named files at risk.** If your repo already had a file
   where BOSS ships one — your own `tester` agent, your own `/smoke` — adopt left it alone but recorded
   it as BOSS's, and the next `boss sync --apply` replaced it with BOSS's version. Now adopt notes what
@@ -75,6 +60,21 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   a folder per record, `docs/features/` included, with no setting. `boss id` counts them wherever they
   sit under `docs/`. Records in a folder of your own (`docs/specs/`, say) are read once `boss adopt`
   notes it in `.boss/config.json` (`layout.records`) — said in the preview first, nothing moved.
+- **The Homebrew command is now `brew install oyeboss/tap/oyeboss`.** The tap moved to its own home
+  on GitHub, so the command no longer carries a personal handle. If you installed with the old
+  command, nothing breaks: upgrades keep arriving through the old tap. To switch over, run
+  `brew uninstall oyeboss && brew untap ajeshh/boss && brew install oyeboss/tap/oyeboss`.
+  The note that a plain `brew install oyeboss` works after tapping is gone, because newer Homebrew
+  won't load a formula from a tap you haven't trusted, and only the full name trusts it for you.
+
+### Smaller improvements
+
+### Under the hood
+
+## 0.332.0 — 2026-10-07
+
+### What you'll notice
+
 - **`boss board --next` says how close each piece of work is, in words, and where to pick it up.** It
   used to list what was in build and say "finish it". Now each piece says whether questions are still
   open (*uphill*) or only known work is left (*downhill*), and which way it has been going: *8 → 4 open
