@@ -66,7 +66,9 @@ become case logs (53 KB, 19 KB, 10 KB). → T2.
   bypass options"*). Rule 7 runs one review for every land; a change that is only a record and an INDEX
   row (IDEA-170's) got the same line as a code change. Shape it: a text review (does it say what the
   record says, nothing it doesn't), a code review (what got built unasked), and a named bypass, recorded
-  when used. Open: does the diff pick the mode, or the person landing it?
+  when used. **Decided (Ajesh, 2026-10-08): the diff picks by default**, so only records and docs
+  changed means a text review and any code means a code review. The bypass is always a deliberate choice,
+  so a review is never skipped by accident.
 
 ## Log
 
