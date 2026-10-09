@@ -46,8 +46,8 @@ its own part of the body:
 
 | Floor | Enemy | Unlock | Where |
 |---|---|---|---|
-| 0 · Lobby | The Blank Page | visitor sticker with its name | belly |
-| 1 · Security | The Leaked Key | the sticker becomes a gold badge | belly |
+| 0 · Lobby | The Blank Page | visitor sticker with its name | spine |
+| 1 · Security | The Leaked Key | the sticker becomes a gold badge | spine |
 | 2 · Mailroom | The Pile | satchel | hip |
 | 3 · Office | The Fog (a sleepy cloud: the morning-after "where was I?") | a mug of coffee | left hand |
 | 4 · Studio | The Yak (a fluffy puff) | hammer, swapped for the mug, swinging as it walks | left hand |
@@ -57,7 +57,8 @@ Enemies are drawn soft and round, with the same face as Bitsy. Ajesh, 2026-10-08
 round: the thread, the yak and the mirror were *"not cute, very distracting"*; a scarf at the waist
 *"splits the B"*; shades with glints read as see-through; the sparkles go. Second round: the smile in
 the bottom loop *"was fine"* (it stays); a pencil on the head was *"confusing"* and the thread unclear,
-so the Office became the Fog and a mug.
+so the Office became the Fog and a mug. Third round: a badge on the right of the belly still read as
+*"the weird jutting out"*, so it moved to the spine; the right side carries nothing at all.
 
 **The boss level.** The last fight is with its own reflection, the one that says *no need to check*.
 Bitsy checks. Then it glows like the neon letter it always was; the brightest letter on the sign needs
