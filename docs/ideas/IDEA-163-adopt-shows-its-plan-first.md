@@ -9,7 +9,7 @@ relates: IDEA-005, IDEA-073, IDEA-118, IDEA-162, IDEA-153
 proof: test/adopt.test.js
 proof_note: S1 (the preview) ships with its test; S2 and choosing parts are still open
 gist: `boss adopt` says what it found and what it would change before it changes anything, and an adopted repo's own record layout is read instead of ignored.
-next: the parts export and --take (the seam PROG-006's --floor calls); then agent overlap and .gitattributes
+next: paused (Ajesh, 2026-10-08) until PROG-006's floors are built — then re-read what's left against them
 ---
 
 # IDEA-163 — Adopt shows its plan first
@@ -125,6 +125,27 @@ touches a button.
 **Where findings live:** one reconcile doc per run (`docs/adopt/RECONCILE-<date>.md`, a section per
 part, in their layout), the accepted ones become tasks on the record of the work that will touch them —
 no new record type. Code findings carry their paths, so they come back at the breakpoint.
+
+## ⏸ Paused — 2026-10-08 (Ajesh)
+
+*"Lets pause before the ladder system is complete because it may help cure a lot of adopt and change
+the shape of adopt moving forward."* Landed on main: the preview, the baseline, records read where they
+live, `theirs` (sync never overwrites the founder's files), the monorepo and naming reads, and
+**Security as the bare `--apply`**. Everything still open below waits for PROG-006's floors (Lobby,
+Mailroom, Office, Studio, `boss up`), because several of these may dissolve or change shape there:
+
+- **The parts export and `--take`** — PROG-006's `--floor` calls it; the floors decide what a part is.
+- **Agent overlap by trigger words** — Studio is where the build agents arrive; how it holds a generic
+  agent against a repo's specialist is Studio's question first.
+- **The layout map beyond records** (devlog, RESUME, worktrees) and **"couldn't look"** — the Office is
+  where RESUME and the devlog land. Q8 (`boss layout`) is decided there.
+- **`.gitattributes`, the CLAUDE.md pointer, the AGENTS.md rules, the write contract, existing session
+  hooks** — each is a question of what a floor lays down.
+- **`boss remove` / `boss sync` on Security** — the elevator (`boss up`) and its way down set the shape.
+- **The reconcile** (finding shape, Q5, Q6) — unchanged by the floors; resumes with the rest.
+
+**Re-open when:** PROG-006's floors 2–4 and `boss up` are on main. Then re-read every open task here
+against them before building any — drop what the floors cured.
 
 ## Tasks
 
