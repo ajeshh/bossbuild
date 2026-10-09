@@ -32,7 +32,7 @@ that survives the session) · IDEA-158 (one home per fact) · IDEA-162 (resume c
 
 **In one line** (Ajesh, 2026-10-08, sharpened): *code gets a second language — signals in comments
 and types that tools and agents read and the running program never sees.* Not secret: written in plain
-sight, never executed. Its words so far: `@feature` tags (where a file belongs), contract types (what
+sight, never executed. Its name is **Pakka** (§ The language). Its words so far: `&belongs` tags (where a file belongs), contract types (what
 is promised), promise lines (what it must never do), links stamped with what they were confirmed
 against.
 
@@ -86,43 +86,146 @@ app's reality… its the missing link of how the 3 senses come together to creat
   never lose, is design's promise, drawn from the design records the same way. Open: which design
   records carry promises today (tokens? the five states in `/design-review`?).
 
+## Values and principles
+
+Settled with Ajesh 2026-10-08 (E2), after three drafts (kept in the links session notes, § F). Ajesh:
+*"this is another humane program, where it focus on emerging truth that then can scale and is based in
+humanity ways of working, sensing and collaborating"* — and values *"each one is in relationship, and
+hold mirrors and together form a constellation."* Six values in three mirrored pairs; each holds its
+position, its mirror keeps it honest.
+
+**Together ↔ distinct**
+
+1. **Truth emerges between us.** Nobody hands it down. The people building a product find it together,
+   in the story they all agree to, and keep finding it as the product and its people change. When we
+   disagree, that's truth still forming, not a fight to win.
+2. **Every voice is heard.** Product, design and engineering are the usual three senses, not the only
+   ones: support, sales, legal, operations, whoever in the organisation holds part of the truth, and the
+   person the product is for. Each sees what the others can't, so we make room for all of them and don't
+   let the loudest speak for the rest. Nothing should get lost in translation, including to the agent
+   building with us: it has to understand, not only obey. (Ajesh: *"its our secret way of making it feel
+   inclusive."*)
+
+*Shared truth needs distinct voices; distinct voices with nothing shared is noise.*
+
+**Care ↔ candour**
+
+3. **A promise is a relationship.** Every promise is made to someone who will trust what we built, and
+   kept between people who trust each other. We write it in their words, not the system's. Keeping it
+   is a form of care. Ajesh: *"this is ayni, sacred reciprocity in action. we are holding this bridge of
+   promise together"* (ayni: the Andean, Quechua practice of reciprocity, giving and receiving in turn).
+4. **Kacha is honest.** Half-baked is a stage, not a failure. We say where things stand, out loud: this
+   one's pakka, this one's still kacha, this one went kacha again when the story moved. It's always safe to say
+   "not yet". It's never safe to pretend.
+
+*Care without candour is flattery; candour without care is cruelty.*
+
+**Growth ↔ lightness**
+
+5. **It grows like living things.** It starts with one line, in one feature, written by one person who
+   found it useful, and spreads the way talk does. A new word joins when someone needs it twice. Nobody
+   rolls it out.
+6. **It's light to carry.** It never changes what runs, it reads fine without the tool, and it leaves
+   without a trace. We ask little of people's time and code, and respect that they have other things
+   to do.
+
+*Growth without lightness becomes a burden; lightness without growth stays a toy.*
+
+**Principles**, in the agile form so a reader can place themselves: the right-hand side has value; we
+hold the left higher. The number is the value each one serves.
+
+| We hold | over | Values |
+|---|---|---|
+| Words a tool checks | words that only describe | 4 |
+| Lines that never run | annotations that change what runs | 6 |
+| Plain text anyone can read | a format only tools read | 2, 6 |
+| One line in, one command out | integration that holds on | 6 |
+| Promises from the story | specs read off the code | 1 |
+| The user's words | the system's terms | 3 |
+| Saying it back | assuming it landed | 2 |
+| Joint acceptance | one person's sign-off | 1, 2 |
+| Declared links | inferred ones | 1 |
+| Showing the state, kacha included | a clean green badge | 4 |
+| Change as the trigger | review by the calendar | 4 |
+| Agents draft, people decide | agents own the contract | 2, 3 |
+| A nudge | a gate | 3, 6 |
+| Growing by use | designing up front | 5 |
+
 ## The language
 
+**Its name is Pakka** (Ajesh, 2026-10-08: *"Pakka is right!! lets do it!! Kachha is what its half baked
+and its other side!!"*). Hindi/Urdu *pakkā*, Gujarati પાકું: ripe, firm, sound, proved, decided; *pakkā
+karnā*, to ratify (Platts). Its other side, **kacha** (*kaccā*; one h, Ajesh: *"less spelling mistakes"*): raw, unripe, unfinished. The pair is a
+promise's life — drafted is kacha; proven and accepted is pakka; it goes kacha again when the other
+side moves — and it is ripening fruit, so the language carries its own homage to growing things. In
+speech: *is it pakka?*, *pakka it*, *it went kacha when the spec changed*. Spelled *pakka*, never the
+colonial-era English *pukka*. A quick registry check found the plain `pakka` name used only by small,
+dormant or unrelated packages, and a `-lang` domain free; **not a trademark search** (E5).
+
 **One rule: every word is something a tool checks.** A word no tool reads is a comment and doesn't get
-in. A sketch, spelling not settled: `@feature` (file → feature), `@promise <id>` (on the contract),
-`@from <record#anchor>` (promise → the spec line it came from), `@approved <who>`, `@proves
-<feature#promise>` (test → promise), `@relies <feature#promise>` (a dependent feature), `@about
-<feature>` (a doc → what it depends on), `@source <url>` (research), and `@confirmed`, written only by
-the tool: the fingerprint each link was last checked against.
+in. A sketch, spelling of each word still a draft: `&belongs <feature>` (file → feature), `&keeps <id>`
+(the promise, on the contract), `&from <record#anchor>` (promise → the spec line it came from),
+`&signed <who>`, `&proves <feature#promise>` (test → promise), `&relies <feature#promise>` (a dependent
+feature), `&about <feature>` (a doc → what it depends on), `&cites <url>` (research), and `&confirmed`,
+written only by the tool: the fingerprint each link was last checked against. **"Promise" stays the
+spoken word**; the tag is `&keeps`, which also steers clear of JavaScript's `Promise`.
+
+**The line shape: `&word target !flags : plain words`.** Settled 2026-10-08:
+
+- **`&` starts every line** (Ajesh: *"I love &!!! HECK YES. I usually use yes and... so this is
+  perfect."*). It's on every keyboard with no dead key; it opens no picker in the tools people write in
+  (`@` does, nearly everywhere); it isn't a comment character in any major language; it renders inert
+  in Markdown (tested on a public code host, as were `^`, `+`, `=`); and, as far as we found, no culture has claimed it the way people
+  took `@` and topics took `#`. Its meanings are the language's: *and* (every voice together), *yes,
+  and* (the improv rule), and to engineers *a reference to* (a link that stays true). `@` was dropped
+  because it opens people-pickers and doc-comment linters flag it as an unknown tag; `^` because it is a
+  dead key on French, German, Spanish, Portuguese and Nordic keyboards. (Tests and sources: links session notes, § F.)
+- **Each line is a sentence about the thing it's written on.** Words are verbs (`keeps`, `proves`,
+  `relies`, `shows`), so the file is the subject.
+- **Where it lives:** any comment in code, doc blocks included (`&` is no doc tag); bare lines or a
+  ```` ```pakka ```` fence in Markdown, stories, tickets and PRs; a component's description in a design
+  file; `# &proves …` above a BDD scenario. Open below: frontmatter, commit messages, JSON.
 
 **A language for people, in every language** (Ajesh: *"a proper language that any engineer, designer,
 or product could use… not just wait for the AI to write it… a language that can live in all existing
 programming languages"*). It rides on comments and notes, so it lives in any programming language
-(`//`, `#`, `--`), in Markdown (`<!-- -->`, frontmatter), in stories and tickets, in BDD scenarios'
-own @-tags, in a design file's component descriptions, in a PR description. Nothing compiles or runs
+(`//`, `#`, `--`), in Markdown (bare lines, a `pakka` fence or `<!-- -->`), in stories and tickets, in a comment above a
+BDD scenario, in a design file's component descriptions, in a PR description. Nothing compiles or runs
 differently. Each sense writes it and reads it; agents draft it from the records but don't own it.
-
-**Its name — open** (Ajesh: *"it needs a really recognizable name"*, like JavaScript, CSS, HTML,
-Python). Quick web checks 2026-10-08 (not trademark or package registries): two early favourites are
-already taken in the developer space (one by a 2026 AI programming language, one by a long-standing
-promise library); **Kept**, **Troth**, **Sworn** and **Trine** came back clear. Names stay in the
-session notes until chosen.
 
 **The aha, as the essay tells it:** three threads — the story is the one thing all three senses read
 but the code can't see it; anything kept apart from the code drifts; comments and types never run —
 fuse into one question: *what if the story lived in the code, in a small language every sense can
 read, every tool can check, and the running program never sees?* That's the birth of the language.
 
-**The dictionary draft** (about twenty words, core vs candidate; the shape of a line `@word target
-!flags : text`; examples in code, Markdown, stories, BDD, design files and PRs; add and strip) lives in
+**The dictionary draft** (about twenty words, core vs candidate; the line shape above; examples in code, Markdown, stories, BDD, design files and PRs; add and strip) lives in
 the essay's second tab for review. Rules added there: it reads fine without the tool, like Markdown;
 adding is one line and removing is one command that leaves files byte-for-byte the same.
 
 **How it grows:** settle early only what's dear to reverse — the promise id (`feature#slug`, stable
-through renames, held by the target) and the shape of the `@confirmed` mark, since both get written
+through renames, held by the target) and the shape of the `&confirmed` mark, since both get written
 into many files. Every other word earns its place the second time it's needed, and only if a tool
 will check it. The essay walks one promise through all of it (spec → contract → test → planted break
 → dependent feature → card → a change that lights up the links).
+
+**How new words, styles and manners join without breaking old lines** (Ajesh: *"a very easy pick up
+and easily expandable where the language and style and semantics and mannerism grow with it"*). The
+rules come from how HTML, CSS, HTTP headers, Go directives and Markdown grew, what worked and what
+didn't (research in the links session notes, § F):
+
+1. **The head never grows a new shape.** `&word target !flags :` stays as it is; style and manner grow
+   in the plain-words tail and in new words, never in new syntax.
+2. **Core words are bare, lowercase and reserved; a team's own words carry a hyphen** (`&pantry-sla`),
+   declared once in a dictionary file with what checks them, so a future core word can never clash with
+   one a team already wrote. A local word many teams use graduates by dropping its hyphen; the hyphenated spelling stays valid as an alias, so no old line breaks.
+3. **Unknown words are kept and reported, never errors and never dropped.**
+4. **No "experimental" prefix.** Such prefixes stick once used; try a word behind a setting in the
+   tool, then give it its final name.
+5. **A shipped word is never re-meant.** It's retired and replaced, so every old line keeps its meaning.
+6. **Marks check themselves.** A `&proves` whose promise is gone is reported, the way a stale
+   suppression comment is.
+7. **A short versioned spec with example tests**, before a second implementation exists, so the
+   language doesn't fork the way Markdown's dialects did before a shared spec came.
 
 ## Testing: promises, not lines
 
@@ -222,7 +325,7 @@ already search well. What search can't do is three things, and each has its own 
 | Route | What it solves | Example | Cost |
 |---|---|---|---|
 | **1. Enforce** | stops the mistake without being read | the contract as types; the build fails on a broken promise | none at read time |
-| **2. Arrive at the crossing** | the rules that apply when one feature reaches into another | the agent opens or edits a file tagged `@feature crates` → crates' card arrives, once | ~500 tokens, only when crossing |
+| **2. Arrive at the crossing** | the rules that apply when one feature reaches into another | the agent opens or edits a file tagged `&belongs crates` → crates' card arrives, once | ~500 tokens, only when crossing |
 | **3. Look up on demand** | "does this already exist, under another name?" | the index as something to search (names, aliases, one line each), not something loaded | a search, when asked |
 | **4. Preload** | only what is non-standard and true every session | a repo-specific rule a model wouldn't follow by itself | every turn — keep it minimal |
 
@@ -280,18 +383,31 @@ forward."*
 - **Naming outside tools in the public essay.** The standing rule says tools we learn from are named by
   their shape in anything public; research papers are cited by author. Does the essay keep that rule, or
   is it the exception, since its job is to prove the approach?
+- **Do flags keep `!`?** To engineers `!` means *not*, so `!destructive` can read as "not destructive".
+  Commit conventions already use `!` for "breaking", which argues for keeping it; `(destructive)` is the
+  plain alternative.
+- **Is `&pakka` the word for joint acceptance** (`&pakka product design support`), in place of
+  `&accepted`, the candidate in the essay tab? The language's name would be the word for the moment every voice says yes.
+- **Where it lives, three gaps:** whole-doc links in Markdown frontmatter (a `pakka:` key?); commit
+  messages (do git's own trailers count too?); JSON, which has no comments (a neighbour file says
+  `&about config.json`?).
+- **A mark for the language:** a raw mango ripening green to gold (kachi kerī → pakki kerī)? Ajesh's
+  call, after the name is cleared.
 
 ## Tasks
 
 - [ ] **E1 — The essay, told as a story.** How context is usually kept → the AI-era attempts and where
   they leave you → how BOSS began (records, one home per fact) and iterated (resume computed, the
   handoff ledger) → what this program adds → where it goes. Citations where a claim needs proof.
-- [ ] **E2 — Name the language.** Ajesh: *"it can be a shortform of a full form that feels catchy like
-  CSS… easy, hopeful. can be also sanskrit, hindi, gujarati, kutchi. I like kept."* Study done
-  2026-10-08 (meanings against dictionaries, clashes against registries; session notes): shortlist
-  **Vachan** (a given word, a promise; clear-ish), **KEPT** (*Keep Every Promise True*; bare package names
-  taken, scoped ones free), **Triveni** (three streams meeting; clear), **Troth** (clear-ish). Ajesh
-  picks; then domains and a trademark search before anything public.
+- [x] **E2 — Name the language.** Ajesh: *"it can be a shortform of a full form that feels catchy like
+  CSS… easy, hopeful. can be also sanskrit, hindi, gujarati, kutchi. I like kept."* Two rounds of study
+  (meanings against dictionaries, clashes against registries, pronunciation worldwide; session notes
+  § D–F). **Done 2026-10-08: Pakka, kacha its other side; `&` starts a line; values and principles
+  settled** (§ Values and principles, § The language).
+- [ ] **E5 — Clear the name before anything public:** a trademark search (the registry check was not
+  one), the `-lang` domain and the package names while they're free.
+- [ ] **E6 — Respell IDEA-169 in Pakka** (`/** @feature crates */` → `&belongs crates`) when its worktree
+  lands; it was open in a peer's worktree on 2026-10-08.
 - [ ] **E3 — The dictionary moves into the repo once named.** One home: the draft lives in the essay's
   tab for review; when settled it becomes a tracked spec, and the tab points to it.
 - [ ] **E4 — Later: a "how to use the language" page with many examples** (Ajesh: *"eventually this can
@@ -303,3 +419,8 @@ forward."*
   reports local in `docs/research/sessions/SESSION-2026-10-08-links-that-stay-true.md`). Members: IDEA-169,
   IDEA-154. Weighed as an ecosystem under PROG-002 and placed here instead (§ Where this sits). Delivery
   order proposed in answer to the overview finding; T1 decides it.
+- **2026-10-08** — E2 done. The language is **Pakka** (kacha its other side); lines start with `&`;
+  six values in three mirrored pairs and fourteen principles in the agile form; seven rules for how it
+  grows (the grammar-growth proposal E2 asked for; E3's spec carries it). Words respelled as verbs
+  (`&belongs`, `&keeps`, `&signed`, `&cites`); `@` and `^` weighed and dropped (§ The language). Three drafts of the values kept in the links
+  session notes, § F.
