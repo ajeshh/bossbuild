@@ -283,7 +283,9 @@ export function computeSettingsMerge(projectDir, layers, { hooks = true } = {}) 
   const migrated = [];
   // Apply hook-command migrations first (e.g. v0.18.0 bash→node) so stale entries
   // don't masquerade as already-present and block the new entry from being added.
-  if (applyHookMigrations(merged)) changed = true;
+  // Security registers no hooks (`hooks: false`), so it rewrites none either: migrating a hook it then
+  // would not re-add could only delete one (pre-land review, IDEA-163).
+  if (hooks && applyHookMigrations(merged)) changed = true;
   // v0.218.0 — the ONE permission key BOSS will remove, and only at one exact value.
   //
   // BOSS shipped `"defaultMode": "auto"` in the L0 template from v0.141.0. From Claude Code

@@ -361,5 +361,31 @@ test('from Security, adopt --mode climbs to the whole of BOSS, and Security\'s o
   const m = JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8'));
   assert.equal(m.floor, 5);
   assert.ok(!m.theirs.files.some((f) => f.includes('commit-secrets')), 'BOSS\'s secrets script is BOSS\'s');
+  assert.deepEqual(m.theirs.files, [], 'settings.json and .gitignore were Security\'s, not the founder\'s');
   assert.ok(readdirSync(join(dir, '.claude', 'skills')).length > 0);
+});
+
+test('on the Security floor, unlock refuses and points at the climb', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}' });
+  execFileSync('git', ['init', '-q'], { cwd: dir });
+  boss(['adopt', '--apply'], dir);
+  assert.match(boss(['unlock', 'quickstart'], dir), /Security floor, which has no modes[\s\S]*adopt --mode/);
+  assert.equal(JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8')).floor, 1);
+  assert.throws(() => readdirSync(join(dir, '.claude', 'skills')), 'nothing was laid down');
+});
+
+test('the Security preview does not promise a pre-commit hook that core.hooksPath would stop', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}' });
+  execFileSync('git', ['init', '-q'], { cwd: dir });
+  execFileSync('git', ['config', 'core.hooksPath', '.husky'], { cwd: dir });
+  assert.match(boss(['adopt'], dir), /\.husky\s+left alone — core\.hooksPath points here/);
+});
+
+test('the founder\'s own settings.json from before Security stays theirs after the climb', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}', '.claude/settings.json': '{"permissions":{"allow":["Bash(ls)"]}}' });
+  execFileSync('git', ['init', '-q'], { cwd: dir });
+  boss(['adopt', '--apply'], dir);
+  boss(['adopt', '--apply', '--mode', 'quickstart'], dir);
+  const m = JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8'));
+  assert.ok(m.theirs.files.includes('.claude/settings.json'));
 });

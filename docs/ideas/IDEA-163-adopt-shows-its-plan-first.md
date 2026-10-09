@@ -142,6 +142,12 @@ no new record type. Code findings carry their paths, so they come back at the br
       Probed on a hand-made floor-1 stamp: nothing crashes; `status`/`map` said *You are here: undefined*
       (fixed: `whereLabel`). Found building it: detection ran only without `--mode`, so `--mode mvp` on a
       live repo lost *shipped before* and held the after-you-ship skills — detection now always runs.
+- **Pre-land review of Security (2026-10-08), fixed:** `unlock` on floor 1 laid Quickstart down and kept
+  `floor: 1` — it now refuses and points at the climb; the climb reported Security's own `settings.json`
+  and `.gitignore` as the founder's — Security now records which were already theirs and the climb reads
+  that; the preview's pre-commit line now asks the installer (`installCommitGuard(..., { dry })`), so
+  `core.hooksPath` is said, not promised over; the climb keeps `createdAt`; Security runs no hook
+  migrations (it registers no hooks, so a migration could only delete one).
 - [ ] `boss sync` on a Security project keeps its deny/ask and secrets script current (today: no layers → nothing).
 - [ ] `boss remove` on a Security project: says what it keeps (deny/ask, by design) and takes the shim,
       script and `.gitignore` block.

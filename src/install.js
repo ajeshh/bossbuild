@@ -12,7 +12,7 @@ import { stageVars, applyStage, readStageManifest, recordIgnoreOffered, applySta
 import { readStamp, writeStamp, registerProject, STAMP } from './registry.js';
 import { stampManaged, computeSettingsMerge } from './sync.js';
 import { earnedGroups, describeUntil, holdAtAdopt } from './earned.js';
-import { modeWord, skillsLine } from './modes.js';
+import { modeWord, skillsLine, whereLabel } from './modes.js';
 import { readiness, renderReadiness } from './readiness.js';
 import { dim, bold, ok, warn, shellArg } from './ui.js';
 import { fail, failNotAProject } from './fail.js';
@@ -51,7 +51,7 @@ const ROLE_SHIFT = {
 
 function previewUnlock(stamp) {
   const next = STAGE_ORDER[STAGE_ORDER.indexOf(stamp.stage) + 1];
-  const here = stamp.mode || stamp.stage;
+  const here = whereLabel(stamp);
   if (!next) return console.log(`\n  ${bold(here)} is the top rung — nothing left to unlock.\n`);
   let nextName = modeWord(next);
   try { nextName = readStageManifest(next).name || nextName; } catch { /* unauthored rung */ }
@@ -87,11 +87,7 @@ function planSecurity(targetDir) {
   try { before = JSON.parse(readFileSync(join(targetDir, settings.rel), 'utf8')); } catch { /* none yet */ }
   const perms = (o, k) => (o?.permissions?.[k] || []).length;
   const scriptTheirs = existsSync(join(targetDir, SECRETS_SCRIPT));
-  let preCommit = 'none';
-  try {
-    const hooksDir = execSync('git rev-parse --git-path hooks', { cwd: targetDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-    preCommit = existsSync(resolve(targetDir, hooksDir, 'pre-commit')) ? 'theirs' : 'free';
-  } catch { preCommit = 'no-git'; }
+  const preCommit = installCommitGuard(targetDir, { dry: true, assumeScript: true });
   return {
     settings,
     deny: settings.merged ? perms(settings.merged, 'deny') - perms(before, 'deny') : 0,
@@ -112,9 +108,13 @@ function securityLines(plan) {
     for (const m of plan.settings.migrated || []) out.push(['', `${warn('−')} and removes ${m}`]);
   }
   out.push([SECRETS_SCRIPT.split(sep).join('/'), plan.scriptTheirs ? 'you already have one — yours is kept' : 'the secrets check, one file']);
-  out.push(['.git/hooks', plan.preCommit === 'free' ? 'a pre-commit hook that runs it before each commit (shared by every worktree of this repo)'
-    : plan.preCommit === 'theirs' ? 'left alone — you have a pre-commit hook; BOSS says how to call the check from it'
-      : 'skipped — not a git repo']);
+  const g = plan.preCommit;
+  out.push([g.state === 'hooks-path' ? g.path : '.git/hooks',
+    g.state === 'would-install' ? 'a pre-commit hook that runs it before each commit (shared by every worktree of this repo)'
+      : g.state === 'current' ? 'already there from BOSS'
+        : g.state === 'theirs' ? 'left alone — you have a pre-commit hook; BOSS says how to call the check from it'
+          : g.state === 'hooks-path' ? 'left alone — core.hooksPath points here; BOSS says how to call the check'
+            : 'skipped — not a git repo']);
   out.push(['.gitignore', plan.ignoreRules.length ? `${plan.ignoreRules.length} rule(s) in a marked block — what stays on your machine${plan.ignoreExisted ? '' : ' (a new file)'}` : 'nothing to add — you have every rule']);
   out.push(['.boss/manifest.json', 'floor 1, Security — and the commit it started from']);
   out.push([BOSS_HOME === join(homedir(), '.boss') ? '~/.boss' : BOSS_HOME, 'this project registered, so `boss list` finds it']);
@@ -142,7 +142,16 @@ function applySecurity({ targetDir, name, nameFrom, detected }) {
     installedLayers: [], agents: [], skills: [], hooks: [], loops: [],
     createdAt, adopted: true,
     ...(baseline ? { adoptedFrom: baseline.sha } : {}),
-    theirs: { files: plan.scriptTheirs ? [SECRETS_SCRIPT.split(sep).join('/')] : [], skills: [] },
+    // What was already the founder's among the files Security touches — a later climb reads this,
+    // never its own collisions, to say what is theirs (pre-land review, IDEA-163).
+    theirs: {
+      files: [
+        ...(plan.scriptTheirs ? [SECRETS_SCRIPT] : []),
+        ...(plan.settingsExisted ? [plan.settings.rel] : []),
+        ...(plan.ignoreExisted ? ['.gitignore'] : []),
+      ].map((r) => r.split(sep).join('/')),
+      skills: [],
+    },
   });
   registerProject({ name, path: targetDir, floor: 1, bossVersion: bossVersion(), createdAt });
 
@@ -282,6 +291,9 @@ export function cmdUnlock(args) {
   const layer = args[0];
   const stamp = readStamp(process.cwd());
   if (!stamp) return failNotAProject();
+  // Modes live only in the Boardroom (DEC-024). From Security, unlock laid Quickstart down and left the
+  // project marked floor 1, past adopt's guard for the founder's own files (pre-land review, IDEA-163).
+  if (stamp.floor === 1) return fail('this project is on the Security floor, which has no modes. `boss adopt --mode <quickstart|mvp>` shows the plan for the whole of BOSS; add --apply to take it.');
   // No mode given: BOSS knows the next rung, so it names it and shows its bar instead of failing with
   // the syntax (PROG-004: a missing argument names the obvious one). A preview — nothing installs.
   if (!layer) return previewUnlock(stamp);
@@ -592,9 +604,12 @@ export function cmdAdopt(args) {
   // theirs, never BOSS's: stamping them as managed recorded their bytes as an unedited BOSS file, and
   // the next `boss sync --apply` overwrote their own tester.md and smoke/SKILL.md (IDEA-163). A later
   // mode's collision with an earlier mode's fresh copy is BOSS's own file and is still stamped.
-  const ledger = readLedger(targetDir);   // on a climb from Security, BOSS's own files are not theirs
+  // On a climb from Security, the files Security wrote are BOSS's; what was theirs then is in its stamp.
+  const ledger = readLedger(targetDir);
+  const securityWrote = new Set(prior && prior.floor === 1 ? [SECRETS_SCRIPT, join('.claude', 'settings.json'), '.gitignore'] : []);
+  const priorTheirs = new Set(((prior && prior.theirs) || {}).files || []);
   const collided = [...new Set(chain.flatMap((s) => planStageSafe(s, targetDir).skipped))].map((f) => relative(targetDir, f))
-    .filter((r) => !ledger[r]);
+    .filter((r) => !ledger[r] && (!securityWrote.has(r) || priorTheirs.has(r.split(sep).join('/'))));
   const skillsDir = join('.claude', 'skills');
   const theirSkills = collided.filter((r) => dirname(r) === skillsDir).map((r) => basename(r));
   const theirs = collided.filter((r) => dirname(r) !== skillsDir);   // native separators, like the ledger's join()
@@ -668,7 +683,7 @@ export function cmdAdopt(args) {
     name, bossVersion: bossVersion(), stage: stageId, mode: manifest.name,
     installedLayers: chain, agents: [...u.agents], skills: [...u.skills].filter((sk) => !heldSkills.includes(sk)),
     hooks: [...u.hooks], loops: [...u.loops],
-    createdAt: new Date().toISOString(), adopted: true,
+    createdAt: (prior && prior.createdAt) || new Date().toISOString(), adopted: true,
     ...(prior && prior.adoptedFrom ? { adoptedFrom: prior.adoptedFrom } : baseline ? { adoptedFrom: baseline.sha } : {}),
     floor: 5,   // the Boardroom: the whole of BOSS, where modes live (DEC-024)
     // What the repo already had where BOSS ships a file: theirs, so `boss sync` leaves it alone.

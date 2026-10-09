@@ -45,8 +45,8 @@ const gitIn = (dir, ...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8'
  * Lay down the pre-commit shim if the slot is free. Returns { state, path }:
  * installed | current | no-script | no-git | hooks-path | theirs.
  */
-export function installCommitGuard(projectDir) {
-  if (!existsSync(join(projectDir, SCRIPT))) return { state: 'no-script' };
+export function installCommitGuard(projectDir, { dry = false, assumeScript = false } = {}) {
+  if (!assumeScript && !existsSync(join(projectDir, SCRIPT))) return { state: 'no-script' };
   try { gitIn(projectDir, 'rev-parse', '--git-dir'); } catch { return { state: 'no-git' }; }
   let hooksPath = '';
   try { hooksPath = gitIn(projectDir, 'config', '--get', 'core.hooksPath'); } catch { /* unset */ }
@@ -59,6 +59,9 @@ export function installCommitGuard(projectDir) {
     if (!cur.includes(SHIM_MARK)) return { state: 'theirs', path };
     if (cur === SHIM) return { state: 'current', path };
   }
+  // `dry`: what this call WOULD do, written nowhere — the adopt preview reads it (IDEA-163), so it can
+  // never promise a hook that core.hooksPath or an existing hook would stop.
+  if (dry) return { state: 'would-install', path };
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, SHIM);
   chmodSync(path, 0o755);
