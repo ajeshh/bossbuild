@@ -57,7 +57,20 @@ app's reality… its the missing link of how the 3 senses come together to creat
 
 - **Product** holds why and where; **design** brings it to visible life; **engineering** holds how. The
   **story** is what all three agree to; the **code** is that agreement made real; **acceptance**
-  (product, and design for what it owns) closes the loop. Done means accepted, not written.
+  closes the loop, and it is joint: any of the three can reject reality against the story. Done means
+  accepted, not written.
+- **Joint responsibility, both ways** (Ajesh, correcting the first draft): *"product and design and eng
+  all can reject reality. its the joint responsibility for all. but at the end of the day its like did
+  the eng follow thru and understand. and its a joint responsibility to ensuring its clear. so that
+  nothing gets lost in translation."* Each sense speaks its own language (value, experience, systems);
+  the story is the one artifact all three read.
+- **It's Ajesh's theory**, which they want to grow: *"this is my theory and how i see the pattern and
+  organizational psychology… i think its pretty big revelation."* Its claim: **truth in a product is a
+  social agreement made checkable.** Kin it builds on: boundary objects (Star & Griesemer, 1989),
+  shared mental models (Cannon-Bowers, Salas & Converse, 1993), BDD's three amigos (Dinwiddie).
+- **Did the agent follow through, and did it understand?** An agent says yes to both. *Teach-back*
+  (from health literacy): the agent restates each promise in product's and design's terms before
+  building, so the senses check its understanding, not only its output. Open: a candidate word or step.
 - **What one agent playing all three breaks:** the senses collapse into one, and whoever built it also
   accepts it. The loop has nothing to close on.
 - **What this program restores:** the story → promises drawn from discovery, the spec and the design;
@@ -76,6 +89,16 @@ in. A sketch, spelling not settled: `@feature` (file → feature), `@promise <id
 <feature#promise>` (test → promise), `@relies <feature#promise>` (a dependent feature), `@about
 <feature>` (a doc → what it depends on), `@source <url>` (research), and `@confirmed`, written only by
 the tool: the fingerprint each link was last checked against.
+
+**A language for people, in every language** (Ajesh: *"a proper language that any engineer, designer,
+or product could use… not just wait for the AI to write it… a language that can live in all existing
+programming languages"*). It rides on comments and notes, so it lives in any programming language
+(`//`, `#`, `--`), in Markdown (`<!-- -->`, frontmatter), in stories and tickets, in BDD scenarios'
+own @-tags, in a design file's component descriptions, in a PR description. Nothing compiles or runs
+differently. Each sense writes it and reads it; agents draft it from the records but don't own it.
+
+**Its name — open** (Ajesh: *"We should also create a name for this language"*). Candidates in the
+2026-10-08 session; none checked for collisions yet.
 
 **How it grows:** settle early only what's dear to reverse — the promise id (`feature#slug`, stable
 through renames, held by the target) and the shape of the `@confirmed` mark, since both get written
