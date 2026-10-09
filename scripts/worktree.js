@@ -3,8 +3,16 @@
 //
 //   node scripts/worktree.js                list the open work
 //   node scripts/worktree.js IDEA-142       create the work's worktree, or join it if it exists
+//   node scripts/worktree.js review IDEA-142  which scope review its diff calls for, and the files
 //   node scripts/worktree.js land IDEA-142  rebase it onto the main branch, then fast-forward main
+//        … land IDEA-142 --skip-review "why"  the same, with the skipped review kept as a git note
 //   node scripts/worktree.js done IDEA-142  unlink the records, remove the worktree, drop the branch
+//
+// THE SCOPE REVIEW (IDEA-158): before land, a fresh subagent reads the diff against the record. The
+// diff picks which review (Ajesh, 2026-10-08): records and docs only gets a text review, any other
+// file a code review. A records-only land used to get the code review's question, which had nothing
+// to find. This script does not gate on it, it names the review; skipping one is a choice with a
+// why, kept as a note on the tip (`git log --notes=review`).
 //
 // WHY: chat windows share one checkout, so any of them can commit another's half-done work. That is
 // what CLAUDE.md's never-checkout / never-stash / stage-one-hunk rules hold back by hand. A worktree
@@ -127,15 +135,40 @@ export function createOrJoin(cwd, id) {
   return { joined: false, path, branch, name, linked: linked.length };
 }
 
-export function land(cwd, id) {
+const TEXT = /\.(md|txt)$/i;
+export const REVIEW_ASKS = {
+  text: 'does the change say what the record says, and nothing it doesn’t?',
+  code: 'what got built that no criterion, task or found item names?',
+};
+
+/** The review a diff calls for: text when every changed file is a record or doc, else code. */
+export function reviewFor(path, base) {
+  const files = git(path, 'diff', '--name-only', `${base}...HEAD`).split('\n').filter(Boolean);
+  const code = files.filter((f) => !TEXT.test(f));
+  return { mode: code.length ? 'code' : 'text', files, code };
+}
+
+function workAt(cwd, id) {
   const main = mainCheckout(cwd);
   const name = nameOf(id);
-  const path = join(main, '.claude', 'worktrees', name);
   const open = openWork(main);
   const item = open && open.items.find((i) => i.name === name);
+  return { main, name, open, item, path: join(main, '.claude', 'worktrees', name) };
+}
+
+export function review(cwd, id) {
+  const { name, open, item, path } = workAt(cwd, id);
   if (!item) return { ok: false, why: `no open work named ${name}` };
+  return { ok: true, ...reviewFor(path, open.base) };
+}
+
+export function land(cwd, id, opts = {}) {
+  const { main, name, open, item, path } = workAt(cwd, id);
+  if (!item) return { ok: false, why: `no open work named ${name}` };
+  if (opts.skip !== undefined && !String(opts.skip).trim()) return { ok: false, why: '--skip-review needs a why, in quotes after it' };
   const tracked = git(path, 'status', '--porcelain', '--untracked-files=no');
   if (tracked) return { ok: false, why: `${name} has uncommitted changes — commit them (or drop them) first:\n${tracked}` };
+  const rv = reviewFor(path, open.base);
   const rebase = spawnSync('git', ['rebase', open.base], { cwd: path, encoding: 'utf8' });
   if (rebase.status !== 0) {
     spawnSync('git', ['rebase', '--abort'], { cwd: path });
@@ -151,8 +184,15 @@ export function land(cwd, id) {
         : `${open.base} moved while landing, or can't fast-forward: ${ff.stderr.trim().split('\n')[0]} — run land again.`,
     };
   }
-  return { ok: true, base: open.base, branch: item.branch, ahead: item.ahead };
+  if (opts.skip !== undefined) {
+    git(main, 'notes', '--ref=review', 'add', '-f', '-m', `${rv.mode} review skipped: ${String(opts.skip).trim()}`, item.branch);
+  }
+  return { ok: true, base: open.base, branch: item.branch, ahead: item.ahead, review: rv, skipped: opts.skip };
 }
+
+const reviewLine = (rv) => rv.mode === 'text'
+  ? `text review: ${rv.files.length} file${rv.files.length === 1 ? '' : 's'}, records and docs only`
+  : `code review: ${rv.code.length} of ${rv.files.length} file${rv.files.length === 1 ? '' : 's'} not records or docs`;
 
 export function done(cwd, id) {
   const main = mainCheckout(cwd);
@@ -189,10 +229,22 @@ function main(argv) {
     for (const i of open.items) console.log(`  ${open.current === i.name ? '▸' : ' '} ${describe(i)}  ${i.path}`);
     return 0;
   }
+  if (a === 'review') {
+    const r = review(cwd, b);
+    if (!r.ok) { console.log(`No review: ${r.why}`); return 1; }
+    console.log(`${b} calls for a ${reviewLine(r)}.\n  Ask: ${REVIEW_ASKS[r.mode]}`);
+    for (const f of r.files) console.log(`  ${r.code.includes(f) ? 'code' : 'text'}  ${f}`);
+    return 0;
+  }
   if (a === 'land') {
-    const r = land(cwd, b);
-    console.log(r.ok ? `Landed ${r.branch} on ${r.base}. \`node scripts/worktree.js done ${b}\` when you're finished with it.` : `Not landed: ${r.why}`);
-    return r.ok ? 0 : 1;
+    const i = argv.indexOf('--skip-review');
+    const r = land(cwd, b, i === -1 ? {} : { skip: argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : '' });
+    if (!r.ok) { console.log(`Not landed: ${r.why}`); return 1; }
+    console.log(`Landed ${r.branch} on ${r.base}. \`node scripts/worktree.js done ${b}\` when you're finished with it.`);
+    console.log(r.skipped !== undefined
+      ? `  Skipped the ${reviewLine(r.review)}. Why: ${String(r.skipped).trim()} (kept as a note, \`git log --notes=review\`).`
+      : `  The diff called for a ${reviewLine(r.review)}.`);
+    return 0;
   }
   if (a === 'done') {
     const r = done(cwd, b);

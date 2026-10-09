@@ -81,6 +81,42 @@ test('land fast-forwards main; a dirty file in the main checkout stops it with n
   assert.equal(g('log', '-1', '--format=%s'), 'seven', 'main did not move');
 });
 
+// IDEA-158: a records-only land got the code review's question, which had nothing to find.
+test('the diff picks the review: text for records and docs only, code for anything else', { skip }, () => {
+  const { d } = mainRepo();
+  run(d, 'IDEA-7');
+  const wt = join(d, '.claude', 'worktrees', 'idea-7');
+  const commit = (p, s) => { writeFileSync(join(wt, p), s); execFileSync('git', ['add', p], { cwd: wt }); execFileSync('git', ['commit', '-qm', p], { cwd: wt }); };
+  commit('IDEA-7.md', 'a record\n');
+  const text = run(d, 'review', 'IDEA-7');
+  assert.equal(text.status, 0, text.stdout + text.stderr);
+  assert.match(text.stdout, /calls for a text review: 1 file, records and docs only/);
+  assert.match(text.stdout, /say what the record says/);
+  commit('tool.js', 'export {}\n');
+  const code = run(d, 'review', 'IDEA-7');
+  assert.match(code.stdout, /calls for a code review: 1 of 2 files not records or docs/);
+  assert.match(code.stdout, /code {2}tool\.js/);
+  const landed = run(d, 'land', 'IDEA-7');
+  assert.equal(landed.status, 0, landed.stdout + landed.stderr);
+  assert.match(landed.stdout, /The diff called for a code review/);
+});
+
+test('skipping the review needs a why, and the why is kept as a note on the tip', { skip }, () => {
+  const { d, g } = mainRepo();
+  run(d, 'IDEA-7');
+  const wt = join(d, '.claude', 'worktrees', 'idea-7');
+  writeFileSync(join(wt, 'IDEA-7.md'), 'a record\n');
+  execFileSync('git', ['add', 'IDEA-7.md'], { cwd: wt }); execFileSync('git', ['commit', '-qm', 'seven'], { cwd: wt });
+  const bare = run(d, 'land', 'IDEA-7', '--skip-review');
+  assert.equal(bare.status, 1);
+  assert.match(bare.stdout, /needs a why/);
+  assert.equal(g('log', '-1', '--format=%s'), 'init', 'nothing landed without a why');
+  const ok = run(d, 'land', 'IDEA-7', '--skip-review', 'one record, nothing to find');
+  assert.equal(ok.status, 0, ok.stdout + ok.stderr);
+  assert.match(ok.stdout, /Skipped the text review.*Why: one record, nothing to find/);
+  assert.equal(g('notes', '--ref=review', 'show', 'HEAD'), 'text review skipped: one record, nothing to find');
+});
+
 test('done removes the links, never their targets, then the worktree and its merged branch', { skip }, () => {
   const { d, g } = mainRepo();
   run(d, 'IDEA-7');

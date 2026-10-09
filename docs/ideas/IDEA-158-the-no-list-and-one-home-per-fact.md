@@ -62,13 +62,20 @@ become case logs (53 KB, 19 KB, 10 KB). → T2.
 - [ ] ~50 EVID and ~140 RVW citations still sit in older CHANGELOG entries (the 2026-10-04 research rule
   removed 13 quotes; the rest was left for a pass "when no peer is mid-release on the file"). Carried
   here from the retired memory — it was a task living in memory, the thing T2 stops.
-- [ ] **The scope review needs modes** (Ajesh, 2026-10-08: *"maybe a text review or a code review, or
+- [x] **The scope review needs modes** (Ajesh, 2026-10-08: *"maybe a text review or a code review, or
   bypass options"*). Rule 7 runs one review for every land; a change that is only a record and an INDEX
   row (IDEA-170's) got the same line as a code change. Shape it: a text review (does it say what the
   record says, nothing it doesn't), a code review (what got built unasked), and a named bypass, recorded
   when used. **Decided (Ajesh, 2026-10-08): the diff picks by default**, so only records and docs
   changed means a text review and any code means a code review. The bypass is always a deliberate choice,
-  so a review is never skipped by accident.
+  so a review is never skipped by accident. Done 2026-10-08 in `scripts/worktree.js`: `review <ID>` names
+  the mode and lists each file as text or code (`.md`/`.txt` is text, anything else is code); `land` says
+  which review the diff called for; `land <ID> --skip-review "why"` refuses without a why and keeps it as
+  a note on the tip (`git log --notes=review`). Kept as a nudge, not a gate: no bug reached a user, so
+  `land` names the review and never refuses for want of one.
+- [ ] Does the founder's `/log` scope check (its done step, `stages/L1-mvp/.../log/SKILL.md`) get the same
+  two modes? It reviews a FEAT's diff, which is nearly always code, so the case is weaker there; left
+  for when a founder's docs-only FEAT is seen.
 
 ## Log
 

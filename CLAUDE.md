@@ -16,7 +16,7 @@
    **The CHANGELOG never shows research** (Ajesh, 2026-10-04): no founder's or user's words, quoted or paraphrased; no EVID, interview or session content, grades or counts; no RVW verdicts or their sources. Product terms only — *"a founder couldn't tell where they were"* is the most it says. It is public and ships to every founder.
 6. **Test the CLI before claiming done**: a throwaway in `/tmp` with `BOSS_HOME=$(mktemp -d)`, exercise it, delete both. Without `BOSS_HOME`, prune the `~/.boss/registry.json` row by hand.
    For a lived-in project, `npm run demo` (IDEA-149): Kettlewick outside the repo with its own `BOSS_HOME`; `source $TMPDIR/boss-kettlewick/env.sh`, `--fresh` rebuilds.
-7. **Small, reversible steps.** One concern per change. Don't break the working `boss` CLI. Before `land`, a fresh subagent reads the diff against the record and names what no task names (IDEA-158); you decide what stays.
+7. **Small, reversible steps.** One concern per change. Don't break the working `boss` CLI. Before `land`, a fresh subagent reads the diff against the record (IDEA-158); `worktree.js review <ID>` says which review the diff calls for. Records and docs only: does it say what the record says, and nothing more? Any code: what got built that no task names? You decide what stays. Skipping is `land <ID> --skip-review "why"`, kept as a git note.
 8. **Reproduce before you fix or gate.** If the test passes on the old code, there is no bug: record that, ship nothing.
 
 ## Operating conditions of this tree
