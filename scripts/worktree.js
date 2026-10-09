@@ -135,7 +135,8 @@ export function createOrJoin(cwd, id) {
   return { joined: false, path, branch, name, linked: linked.length };
 }
 
-const TEXT = /\.(md|txt)$/i;
+// Text is a record or a doc. A prompt under stages/ is what ships to a founder, so it is code here.
+const isText = (f) => /\.(md|txt)$/i.test(f) && !f.startsWith('stages/');
 export const REVIEW_ASKS = {
   text: 'does the change say what the record says, and nothing it doesn’t?',
   code: 'what got built that no criterion, task or found item names?',
@@ -144,7 +145,7 @@ export const REVIEW_ASKS = {
 /** The review a diff calls for: text when every changed file is a record or doc, else code. */
 export function reviewFor(path, base) {
   const files = git(path, 'diff', '--name-only', `${base}...HEAD`).split('\n').filter(Boolean);
-  const code = files.filter((f) => !TEXT.test(f));
+  const code = files.filter((f) => !isText(f));
   return { mode: code.length ? 'code' : 'text', files, code };
 }
 
@@ -185,7 +186,9 @@ export function land(cwd, id, opts = {}) {
     };
   }
   if (opts.skip !== undefined) {
-    git(main, 'notes', '--ref=review', 'add', '-f', '-m', `${rv.mode} review skipped: ${String(opts.skip).trim()}`, item.branch);
+    // main has already moved: a note that fails to write is a warning, never a failed land
+    try { git(main, 'notes', '--ref=review', 'add', '-f', '-m', `${rv.mode} review skipped: ${String(opts.skip).trim()}`, item.branch); }
+    catch (e) { return { ok: true, base: open.base, branch: item.branch, ahead: item.ahead, review: rv, skipped: opts.skip, noteFailed: e.message.split('\n')[0] }; }
   }
   return { ok: true, base: open.base, branch: item.branch, ahead: item.ahead, review: rv, skipped: opts.skip };
 }
@@ -244,6 +247,7 @@ function main(argv) {
     console.log(r.skipped !== undefined
       ? `  Skipped the ${reviewLine(r.review)}. Why: ${String(r.skipped).trim()} (kept as a note, \`git log --notes=review\`).`
       : `  The diff called for a ${reviewLine(r.review)}.`);
+    if (r.noteFailed) console.log(`  The skip's note didn't write (${r.noteFailed}); the land stands. Add it: git notes --ref=review add -m "…" ${r.branch}`);
     return 0;
   }
   if (a === 'done') {

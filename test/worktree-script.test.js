@@ -92,9 +92,14 @@ test('the diff picks the review: text for records and docs only, code for anythi
   assert.equal(text.status, 0, text.stdout + text.stderr);
   assert.match(text.stdout, /calls for a text review: 1 file, records and docs only/);
   assert.match(text.stdout, /say what the record says/);
+  commit('SKILL.md', 'a shipped prompt\n');
+  execFileSync('git', ['mv', 'SKILL.md', 'stages-skill.md'], { cwd: wt });
+  mkdirSync(join(wt, 'stages'), { recursive: true });
+  execFileSync('git', ['mv', 'stages-skill.md', 'stages/SKILL.md'], { cwd: wt }); execFileSync('git', ['commit', '-qm', 'ship it'], { cwd: wt });
+  assert.match(run(d, 'review', 'IDEA-7').stdout, /code review: 1 of 2 files.*\n.*\n.*\n {2}code {2}stages\/SKILL\.md/s, 'a shipped prompt is code');
   commit('tool.js', 'export {}\n');
   const code = run(d, 'review', 'IDEA-7');
-  assert.match(code.stdout, /calls for a code review: 1 of 2 files not records or docs/);
+  assert.match(code.stdout, /calls for a code review: 2 of 3 files not records or docs/);
   assert.match(code.stdout, /code {2}tool\.js/);
   const landed = run(d, 'land', 'IDEA-7');
   assert.equal(landed.status, 0, landed.stdout + landed.stderr);

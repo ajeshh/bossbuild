@@ -69,10 +69,15 @@ become case logs (53 KB, 19 KB, 10 KB). → T2.
   when used. **Decided (Ajesh, 2026-10-08): the diff picks by default**, so only records and docs
   changed means a text review and any code means a code review. The bypass is always a deliberate choice,
   so a review is never skipped by accident. Done 2026-10-08 in `scripts/worktree.js`: `review <ID>` names
-  the mode and lists each file as text or code (`.md`/`.txt` is text, anything else is code); `land` says
+  the mode and lists each file as text or code (`.md`/`.txt` is text, except under `stages/`, whose prompts ship to founders; anything else is code); `land` says
   which review the diff called for; `land <ID> --skip-review "why"` refuses without a why and keeps it as
   a note on the tip (`git log --notes=review`). Kept as a nudge, not a gate: no bug reached a user, so
   `land` names the review and never refuses for want of one.
+  The scope review (a fresh agent, diff and record only) named as unasked: the `review` command (kept,
+  it is how the mode is known before landing), every `.md` counting as text (fixed: `stages/` prompts
+  are code), `notes add -f` overwriting (kept, one note per tip). Its bugs: a note that failed after main
+  moved reported a failed land (fixed: a warning); `land --skip-review "why" ID` with the id last, and a
+  why starting `--`, are not parsed (left, the id comes first as in every other command).
 - [ ] Does the founder's `/log` scope check (its done step, `stages/L1-mvp/.../log/SKILL.md`) get the same
   two modes? It reviews a FEAT's diff, which is nearly always code, so the case is weaker there; left
   for when a founder's docs-only FEAT is seen.
