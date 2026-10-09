@@ -5,7 +5,7 @@ kind: capability
 owner: product-lead
 status: exploring
 created: 2026-10-08
-relates: IDEA-005, IDEA-073, IDEA-118, IDEA-162, IDEA-153
+relates: IDEA-005, IDEA-073, IDEA-118, IDEA-162, IDEA-153, IDEA-172, IDEA-174, DEC-024
 proof: test/adopt.test.js
 proof_note: S1 (the preview) ships with its test; S2 and choosing parts are still open
 gist: `boss adopt` says what it found and what it would change before it changes anything, and an adopted repo's own record layout is read instead of ignored.
@@ -134,7 +134,9 @@ live, `theirs` (sync never overwrites the founder's files), the monorepo and nam
 **Security as the bare `--apply`**. Everything still open below waits for PROG-006's floors (Lobby,
 Mailroom, Office, Studio, `boss up`), because several of these may dissolve or change shape there:
 
-- **The parts export and `--take`** — PROG-006's `--floor` calls it; the floors decide what a part is.
+- **`--take`** — the parts list itself is now **IDEA-174** (PROG-006 Q13, Ajesh), started from this record's
+  parts table and the `planStageSafe` seam; `--take` stays here and reuses that list. Security is **IDEA-172**
+  (shipped, built under this record).
 - **Agent overlap by trigger words** — Studio is where the build agents arrive; how it holds a generic
   agent against a repo's specialist is Studio's question first.
 - **The layout map beyond records** (devlog, RESUME, worktrees) and **"couldn't look"** — the Office is
