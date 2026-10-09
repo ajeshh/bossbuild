@@ -5,7 +5,7 @@
 
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, delimiter, basename, dirname, relative, sep } from 'node:path';
-import { execSync, execFileSync } from 'node:child_process';
+import { execSync } from 'node:child_process';
 import { homedir } from 'node:os';
 import { bossVersion, STAGE_ORDER, resolveStageId, BOSS_HOME } from './paths.js';
 import { stageVars, applyStage, readStageManifest, recordIgnoreOffered, applyStageSafe, planStageSafe, gitignoreRulesToAdd, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock } from './scaffold.js';
@@ -20,7 +20,7 @@ import { commitGuardLine } from './hooks.js';
 import { installCommitGuard } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
 import { recordFiles } from '../stages/L0-quickstart/template/.claude/hooks/lib/record-files.js';
 import { writeFileAtomic } from './atomic.js';
-import { detectStage, inferSourceGlobs, unreadRecords } from './detect.js';
+import { detectStage, inferSourceGlobs, unreadRecords, projectName } from './detect.js';
 import { parseArgs } from './args.js';
 
 
@@ -61,27 +61,6 @@ function previewUnlock(stamp) {
     for (const line of renderReadiness(bar, { bold, dim, ok, warn }, { preview: true })) console.log(line);
   }
   console.log(`\n  ${bold(`boss unlock ${modeWord(next)}`)} ${dim('when you are — it never blocks.')}\n`);
-}
-
-// What to call the project. The folder name was wrong in a worktree (`dhun-boss` baked into every
-// template and the registry, IDEA-163): the git remote's repo name first, then the main checkout's
-// folder (the common git dir's parent), then this folder. `package.json` never — a monorepo has none
-// at the root, or several.
-function projectName(dir) {
-  const run = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-  try {
-    const url = run('remote', 'get-url', 'origin');
-    const m = /([^/:]+?)(?:\.git)?\/?$/.exec(url);
-    if (m && m[1]) return { name: m[1], from: 'the git remote' };
-  } catch { /* no remote */ }
-  try {
-    const common = resolve(dir, run('rev-parse', '--git-common-dir'));
-    if (basename(common) === '.git') {
-      const main = basename(dirname(common));
-      if (main && main !== basename(dir)) return { name: main, from: 'the main checkout, not this worktree' };
-    }
-  } catch { /* not a git repo */ }
-  return { name: basename(dir), from: 'this folder' };
 }
 
 // The commit adopt started from — the reconcile's baseline (IDEA-163). Git already keeps the before;

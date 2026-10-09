@@ -19,7 +19,8 @@
 // expensive direction, so the tie goes to less.
 
 import { readdirSync, existsSync, statSync, readFileSync } from 'node:fs';
-import { join, extname } from 'node:path';
+import { join, extname, basename, dirname, resolve } from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 // Directories that are never the founder's own work. Skipping these is what keeps the walk cheap
 // and stops `node_modules` from making every repo look enormous.
@@ -251,4 +252,26 @@ export function unreadRecords(dir, maxDepth = 4) {
   };
   walk(join(dir, 'docs'), 'docs', 0);
   return [...groups].map(([pattern, count]) => ({ pattern, count, dir: pattern.replace(/\/[A-Z]+-\*.*$/, '') }));
+}
+
+// What to call the project. The folder name was wrong in a worktree (`dhun-boss` baked into every
+// template and the registry, IDEA-163): the git remote's repo name first, then the main checkout's
+// folder (the common git dir's parent), then this folder. `package.json` never — a monorepo has none
+// at the root, or several. `remote` is the origin URL when there is one (PROG-006 reads it to ask
+// whether the repo is the user's).
+export function projectName(dir) {
+  const run = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  try {
+    const url = run('remote', 'get-url', 'origin');
+    const m = /([^/:]+?)(?:\.git)?\/?$/.exec(url);
+    if (m && m[1]) return { name: m[1], from: 'the git remote', remote: url };
+  } catch { /* no remote */ }
+  try {
+    const common = resolve(dir, run('rev-parse', '--git-common-dir'));
+    if (basename(common) === '.git') {
+      const main = basename(dirname(common));
+      if (main && main !== basename(dir)) return { name: main, from: 'the main checkout, not this worktree' };
+    }
+  } catch { /* not a git repo */ }
+  return { name: basename(dir), from: 'this folder' };
 }

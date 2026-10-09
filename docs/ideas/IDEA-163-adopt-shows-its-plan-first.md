@@ -9,7 +9,7 @@ relates: IDEA-005, IDEA-073, IDEA-118, IDEA-162, IDEA-153
 proof: test/adopt.test.js
 proof_note: S1 (the preview) ships with its test; S2 and choosing parts are still open
 gist: `boss adopt` says what it found and what it would change before it changes anything, and an adopted repo's own record layout is read instead of ignored.
-next: land (waits on the 0.332.0 stamp on main); then agent overlap and .gitattributes; the Basement once DEC-024 is on main
+next: land (waits on the 0.332.0 stamp on main); then agent overlap and .gitattributes; Security once DEC-024 is on main
 ---
 
 # IDEA-163 — Adopt shows its plan first
@@ -128,7 +128,7 @@ no new record type. Code findings carry their paths, so they come back at the br
 
 ## Tasks
 
-- [ ] **The Basement is the bare `adopt --apply`** (DEC-024, Q7): deny/ask rules, the secrets pre-commit
+- [ ] **Security (floor 1) is the bare `adopt --apply`** (DEC-024, Q7): deny/ask rules, the secrets pre-commit
       check, the `.gitignore` block — nothing else. The plan is built from named parts; `--take <part>`
       adds one; the preview shows the plan for what was asked. Lands after DEC-024 reaches main.
       **The seam with PROG-006 (agreed 2026-10-08):** IDEA-163 exports the parts — each a name plus the
@@ -343,3 +343,8 @@ showed every side effect, the baseline, all 32 folder FEATs. Still wrong — eac
   **Split:** IDEA-163 builds the adopt side — the Basement as the bare `--apply`, the parts as named sets
   in the plan, `--take`, the preview showing the floor's plan. PROG-006 owns the floor presets, `room:`,
   the registry fields and `boss up`.
+  *Corrected before landing (DEC-024, `work/prog-006` abe05999): the safety floor is **Security, floor 1**
+  (where the project gets its badge); the flag is `--floor <name>`; the stamp stores `floor: 0–5`
+  (0 Lobby · 1 Security · 2 Mailroom · 3 Office · 4 Studio · 5 Boardroom; existing projects are 5).
+  PROG-006 asks at the door only when git says the repo is someone else's — it reuses
+  `projectName()` (`src/detect.js`), which returns the origin URL as `remote`.*
