@@ -159,7 +159,7 @@ karnā*, to ratify (Platts). Its other side, **kacha** (*kaccā*; one h, Ajesh: 
 promise's life — drafted is kacha; proven and accepted is pakka; it goes kacha again when the other
 side moves — and it is ripening fruit, so the language carries its own homage to growing things. In
 speech: *is it pakka?*, *pakka it*, *it went kacha when the spec changed*. Spelled *pakka*, never the
-colonial-era English *pukka*. A quick registry check found the plain `pakka` name used only by small,
+colonial-era English *pukka*. Ajesh's reference for the pair is the **kacha player** of Indian street games: the little one who joins the big kids, plays fully, and can't be out. Kacha promises play the same way — seen by everyone, never failing the build — and only pakka ones play for keeps (told from tradition; links session notes, § F). A quick registry check found the plain `pakka` name used only by small,
 dormant or unrelated packages, and a `-lang` domain free; **not a trademark search** (E5).
 
 **One rule: every word is something a tool checks.** A word no tool reads is a comment and doesn't get
@@ -170,7 +170,7 @@ feature), `&about <feature>` (a doc → what it depends on), `&cites <url>` (res
 written only by the tool: the fingerprint each link was last checked against. **"Promise" stays the
 spoken word**; the tag is `&keeps`, which also steers clear of JavaScript's `Promise`.
 
-**The line shape: `&word target !flags : plain words`.** Settled 2026-10-08:
+**The line shape: `&word target (flags) : plain words`.** Settled 2026-10-08:
 
 - **`&` starts every line** (Ajesh: *"I love &!!! HECK YES. I usually use yes and... so this is
   perfect."*). It's on every keyboard with no dead key; it opens no picker in the tools people write in
@@ -185,6 +185,16 @@ spoken word**; the tag is `&keeps`, which also steers clear of JavaScript's `Pro
 - **Where it lives:** any comment in code, doc blocks included (`&` is no doc tag); bare lines or a
   ```` ```pakka ```` fence in Markdown, stories, tickets and PRs; a component's description in a design
   file; `# &proves …` above a BDD scenario. Open below: frontmatter, commit messages, JSON.
+- **Flags go in parentheses**, `(money)`, `(destructive)`, `(private)` (Ajesh, 2026-10-08): to engineers
+  `!` means *not*, so `!destructive` read as "not destructive".
+- **`&` is a form of pakka** (Ajesh: *"& may just represent a form of pakka"*). Every `&` line is a small
+  piece of the agreement and the verb says which piece; the word itself appears once, as **`&pakka
+  product design engineering`**, the joint acceptance: every voice said yes.
+- **It keeps the docs and ties them together** (Ajesh: *"its not to replace the docs but help keep it in
+  sync better"*). PRDs, design notes, research and prompts stay and keep growing; an `&` line marks what
+  must hold and points back where it came from, and agents carry lines from a prompt into the code.
+  **A promise needs a home that lasts:** a line met only in a prompt is written into its record (the PRD
+  or spec) and the code links to that — one home per promise, every other mention a link.
 
 **A language for people, in every language** (Ajesh: *"a proper language that any engineer, designer,
 or product could use… not just wait for the AI to write it… a language that can live in all existing
@@ -213,7 +223,7 @@ and easily expandable where the language and style and semantics and mannerism g
 rules come from how HTML, CSS, HTTP headers, Go directives and Markdown grew, what worked and what
 didn't (research in the links session notes, § F):
 
-1. **The head never grows a new shape.** `&word target !flags :` stays as it is; style and manner grow
+1. **The head never grows a new shape.** `&word target (flags) :` stays as it is; style and manner grow
    in the plain-words tail and in new words, never in new syntax.
 2. **Core words are bare, lowercase and reserved; a team's own words carry a hyphen** (`&pantry-sla`),
    declared once in a dictionary file with what checks them, so a future core word can never clash with
@@ -383,11 +393,6 @@ forward."*
 - **Naming outside tools in the public essay.** The standing rule says tools we learn from are named by
   their shape in anything public; research papers are cited by author. Does the essay keep that rule, or
   is it the exception, since its job is to prove the approach?
-- **Do flags keep `!`?** To engineers `!` means *not*, so `!destructive` can read as "not destructive".
-  Commit conventions already use `!` for "breaking", which argues for keeping it; `(destructive)` is the
-  plain alternative.
-- **Is `&pakka` the word for joint acceptance** (`&pakka product design support`), in place of
-  `&accepted`, the candidate in the essay tab? The language's name would be the word for the moment every voice says yes.
 - **Where it lives, three gaps:** whole-doc links in Markdown frontmatter (a `pakka:` key?); commit
   messages (do git's own trailers count too?); JSON, which has no comments (a neighbour file says
   `&about config.json`?).
@@ -424,3 +429,8 @@ forward."*
   grows (the grammar-growth proposal E2 asked for; E3's spec carries it). Words respelled as verbs
   (`&belongs`, `&keeps`, `&signed`, `&cites`); `@` and `^` weighed and dropped (§ The language). Three drafts of the values kept in the links
   session notes, § F.
+- **2026-10-08** — E1: the essay restructured into two parts in one doc named Pakka — Part 1, two
+  stories (the docs that lie; three senses that make truth) meeting in one promise; Part 2, Pakka v1 and
+  the invitation; testing is one payoff of three, not the ending. The example app is now Stockpot. Flags
+  in parentheses; `&pakka` is the joint-acceptance word; Pakka keeps the docs and ties them together.
+  The previous version is saved locally (links session notes).
