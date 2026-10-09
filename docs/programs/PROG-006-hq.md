@@ -21,8 +21,10 @@ The orientation pain is on record (EVID-001). That warrants the *orientation* ha
 is warranted by Ajesh's own machine (Q3, answered).
 
 **Members:** every record with `program: PROG-006` — `boss board PROG-006`.
-[[IDEA-164]] the HQ dashboard · [[IDEA-165]] the Lobby and the Mailroom · [[IDEA-166]] the Office ·
-[[IDEA-167]] the Studio · [[IDEA-168]] the Boardroom · IDEA-171 rooms side by side at the top (deferred).
+Every floor is its own record (Ajesh, 2026-10-08: *"all the floors shd be their own idea"*):
+[[IDEA-165]] Lobby (0) · IDEA-172 Security (1) · IDEA-173 Mailroom (2) · [[IDEA-166]] Office (3) ·
+[[IDEA-167]] Studio (4) · [[IDEA-168]] Boardroom (5). Beside them: [[IDEA-164]] the HQ dashboard ·
+IDEA-174 the parts list every floor is made of · IDEA-171 rooms side by side at the top (deferred).
 
 ## The model — DEC-024
 
@@ -68,7 +70,7 @@ floors hold, so it is built once there is something to read.
 
 1. **The Lobby and the floor field** — [[IDEA-165]]: the registry row's *what* and *next*, `floor:` on
    the stamp and the row, the door's ownership check. `boss list` shows the floor meanwhile.
-2. **The Mailroom** — [[IDEA-165]]: inbox and capture as a preset; HQ's machine-wide inbox delivering
+2. **The parts list, then the Mailroom** — IDEA-174, IDEA-173: inbox and capture as a preset; HQ's machine-wide inbox delivering
    into it.
 3. **The Office** — [[IDEA-166]]: a project whose RESUME keeps itself.
 4. **The Studio** — [[IDEA-167]].
@@ -127,7 +129,8 @@ and `boss up`. IDEA-163 builds Security only after DEC-024 lands on main.
 
 - **Q11.** What signal names each threshold for `boss up` (Mailroom→Office, Office→Studio,
   Studio→Boardroom)? Modes already read readiness (`src/readiness.js`); which of it carries over?
-- **Q13. Who builds the parts list now?** Floors 2–4 are presets over IDEA-163's parts (DEC-024 rule 1),
+- **Q13. ✅ Answered (Ajesh, 2026-10-08): a new idea in PROG-006** — IDEA-174, the parts list.
+  Was: who builds the parts list now? Floors 2–4 are presets over IDEA-163's parts (DEC-024 rule 1),
   but the parts export and `--take` are in IDEA-163's Paused list. Either PROG-006 builds the parts
   export as part of floor 2, or the first floors are written as file lists and become part lists when
   IDEA-163 re-opens. Ajesh's call.
