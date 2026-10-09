@@ -71,6 +71,50 @@ The second language carries them further:
 
 Gap on record: no study measures mutation testing against agents weakening their own tests.
 
+### Does AI + TDD work? (research 2026-10-08)
+
+Ajesh, who worked in a TDD environment: *"this is bringing more of TDD and BDD but in a way that works
+in AI… does AI and TDD work, and this proves it can?"* Full reports, names and links:
+`docs/research/sessions/SESSION-2026-10-08-tdd-with-agents.md` (local).
+
+**The answer the evidence gives:** TDD as a ritual the agent performs — no. TDD's guarantees built into
+what the agent can and can't touch — yes, piece by piece.
+
+- **Agent-run TDD showed no gain.** A practitioner trial found no quality or mutation-score advantage,
+  3–8.5× the tokens, and agents faking the red step; its author stopped asking agents to test first.
+  On a large benchmark, prompting agents for more of their own tests didn't change solve rates (Chen et
+  al., 2026).
+- **Tests the model didn't write do help.** Human-written tests in the prompt raised pass rates, more on
+  small tasks than large (Mathews & Nagappan, 2024). Users approving model-proposed tests judged the
+  code correctly 0.84 of the time vs 0.40 (Fakhoury, Lahiri et al., 2024).
+- **Tests written from the code copy its bugs:** 14% of faults caught vs 25% when written independently
+  (Konstantinou, Tambon & Papadakis, 2026).
+- **A large company's production system already gates on planted breaks:** an engineer writes a
+  plain-text concern, a model plants realistic faults for it, a test is kept only if it catches one;
+  engineers accepted 73%. But only ~36% of the accepted tests were judged on the stated concern.
+- **The arrangement here is unmeasured end to end.** No completed study isolates "a person states or
+  approves, the agent writes the code." T3 would be first-hand evidence.
+
+**What it changes in the design:**
+
+1. **The person approves; they don't author tests.** They write one promise line and approve the
+   agent's tests, the arrangement with measured support. Typing expected outputs did worse.
+2. **Independence is structural, not a prompt.** The test-writing agent runs in a separate context that
+   sees the promise lines and the contract, never the implementation.
+3. **Promises and tests are read-only to the coding agent,** with an explicit exit: *"this promise
+   conflicts with the code — a person decides."* Read-only beat hidden tests; instructions alone failed.
+4. **Every planted break names the promise it breaks,** and the reviewer checks that link, not only that
+   the test is strong (the 36% on-concern lesson). Breaks are plausible wrong implementations of the
+   promise, not random operator flips; no-op breaks are filtered first.
+5. **The red step moves from the agent's habits to the system.** Never prescribe red-green-refactor to
+   an agent; the planted break is the red, done mechanically, so it can't be faked.
+6. **Promises are listed one by one.** Left to find properties themselves, the best model tested 21%
+   of the documented ones (Vikram et al., 2023).
+7. **Show people only filtered work.** Approve tests that already catch their promise's break; raw
+   candidates are noisy.
+
+Still unexamined anywhere found: tests owned by a dependent feature, run in the providing feature's suite.
+
 ## Checks, by strength
 
 1. **A machine checks the truth.** Compiler and tests — code only.
