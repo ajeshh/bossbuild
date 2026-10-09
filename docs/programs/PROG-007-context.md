@@ -159,7 +159,15 @@ karnā*, to ratify (Platts). Its other side, **kacha** (*kaccā*; one h, Ajesh: 
 promise's life — drafted is kacha; proven and accepted is pakka; it goes kacha again when the other
 side moves — and it is ripening fruit, so the language carries its own homage to growing things. In
 speech: *is it pakka?*, *pakka it*, *it went kacha when the spec changed*. Spelled *pakka*, never the
-colonial-era English *pukka*. Ajesh's reference for the pair is the **kacha player** of Indian street games: the little one who joins the big kids, plays fully, and can't be out. Kacha promises play the same way — seen by everyone, never failing the build — and only pakka ones play for keeps (told from tradition; links session notes, § F). A quick registry check found the plain `pakka` name used only by small,
+colonial-era English *pukka*.
+
+**The kacha player** (Ajesh's reference, from Indian street games, told from tradition; links session
+notes, § F): the little one who joins the big kids' game, plays fully, and can't be out. It names a rule:
+a promise never fails the build *for being kacha* (unsigned, unproven, gone stale); it shows, everywhere.
+A broken contract still fails the compile (route 1) — that is the code breaking, not the promise being
+young. Only pakka promises play for keeps.
+
+A quick registry check found the plain `pakka` name used only by small,
 dormant or unrelated packages, and a `-lang` domain free; **not a trademark search** (E5).
 
 **One rule: every word is something a tool checks.** A word no tool reads is a comment and doesn't get
@@ -175,25 +183,29 @@ spoken word**; the tag is `&keeps`, which also steers clear of JavaScript's `Pro
 - **`&` starts every line** (Ajesh: *"I love &!!! HECK YES. I usually use yes and... so this is
   perfect."*). It's on every keyboard with no dead key; it opens no picker in the tools people write in
   (`@` does, nearly everywhere); it isn't a comment character in any major language; it renders inert
-  in Markdown (tested on a public code host, as were `^`, `+`, `=`); and, as far as we found, no culture has claimed it the way people
-  took `@` and topics took `#`. Its meanings are the language's: *and* (every voice together), *yes,
+  in Markdown (tested on a public code host, as were `^`, `+`, `=`); and, as far as we found, no
+  culture has claimed it the way people took `@` and topics took `#`. Its meanings are the language's: *and* (every voice together), *yes,
   and* (the improv rule), and to engineers *a reference to* (a link that stays true). `@` was dropped
   because it opens people-pickers and doc-comment linters flag it as an unknown tag; `^` because it is a
-  dead key on French, German, Spanish, Portuguese and Nordic keyboards. (Tests and sources: links session notes, § F.)
+  dead key on French, German, Spanish, Portuguese and Nordic keyboards. (Tests and sources: links
+  session notes, § F.)
 - **Each line is a sentence about the thing it's written on.** Words are verbs (`keeps`, `proves`,
   `relies`, `shows`), so the file is the subject.
 - **Where it lives:** any comment in code, doc blocks included (`&` is no doc tag); bare lines or a
   ```` ```pakka ```` fence in Markdown, stories, tickets and PRs; a component's description in a design
   file; `# &proves …` above a BDD scenario. Open below: frontmatter, commit messages, JSON.
 - **Flags go in parentheses**, `(money)`, `(destructive)`, `(private)` (Ajesh, 2026-10-08): to engineers
-  `!` means *not*, so `!destructive` read as "not destructive".
+  `!` means *not*, so `!destructive` read as "not destructive". (Commit conventions use `!` for
+  "breaking"; that habit lost to plain reading.)
 - **`&` is a form of pakka** (Ajesh: *"& may just represent a form of pakka"*). Every `&` line is a small
-  piece of the agreement and the verb says which piece; the word itself appears once, as **`&pakka
-  product design engineering`**, the joint acceptance: every voice said yes.
+  piece of the agreement and the verb says which piece. Among the `&` words, *pakka* appears once:
+  **`&pakka product design engineering`**, the joint acceptance, after the build — every voice that
+  holds the promise accepted reality against the story (the voices named are examples, not a fixed
+  three). It differs from `&signed <who>`, one person accepting the promise's *wording* before the build.
 - **It keeps the docs and ties them together** (Ajesh: *"its not to replace the docs but help keep it in
   sync better"*). PRDs, design notes, research and prompts stay and keep growing; an `&` line marks what
-  must hold and points back where it came from, and agents carry lines from a prompt into the code.
-  **A promise needs a home that lasts:** a line met only in a prompt is written into its record (the PRD
+  must hold and points back where it came from, and agents are to carry lines from a prompt into the code (designed, not built or tested yet).
+  **A promise needs a home that lasts** (proposed in this session, Ajesh agreed 2026-10-08): a line met only in a prompt is written into its record (the PRD
   or spec) and the code links to that — one home per promise, every other mention a link.
 
 **A language for people, in every language** (Ajesh: *"a proper language that any engineer, designer,
@@ -209,7 +221,7 @@ fuse into one question: *what if the story lived in the code, in a small languag
 read, every tool can check, and the running program never sees?* That's the birth of the language.
 
 **The dictionary draft** (about twenty words, core vs candidate; the line shape above; examples in code, Markdown, stories, BDD, design files and PRs; add and strip) lives in
-the essay's second tab for review. Rules added there: it reads fine without the tool, like Markdown;
+the essay's third tab, *Language reference*, for review. Rules added there: it reads fine without the tool, like Markdown;
 adding is one line and removing is one command that leaves files byte-for-byte the same.
 
 **How it grows:** settle early only what's dear to reverse — the promise id (`feature#slug`, stable
@@ -363,9 +375,9 @@ forward."*
 - **Separable by design.** Built inside BOSS first, shaped so it can leave: zero-dependency like the
   CLI, its own module boundary, and a link format that doesn't require BOSS's records to mean anything.
   A design constraint on every member, not a task yet.
-- **Told as a story, with its proof.** The essay (a shared doc, internal first) tells how context is
-  usually kept, what the AI-era attempts left hanging, how BOSS began and iterated, and where it goes,
-  citing the research where a claim needs it. The full notes stay in the research sessions.
+- **Told as a story, with its proof.** The essay (a shared doc named *Pakka*, internal first) is two
+  stories that meet — the docs that lie, and three senses that make truth — then Pakka v1 and the
+  invitation, citing the research where a claim needs it. The full notes stay in the research sessions.
 
 ## Where this sits
 
@@ -401,9 +413,10 @@ forward."*
 
 ## Tasks
 
-- [ ] **E1 — The essay, told as a story.** How context is usually kept → the AI-era attempts and where
-  they leave you → how BOSS began (records, one home per fact) and iterated (resume computed, the
-  handoff ledger) → what this program adds → where it goes. Citations where a claim needs proof.
+- [ ] **E1 — The essay, told as a story.** Restructured 2026-10-08 (Ajesh: *"2 stories coming together into
+  one conclusion"*): Part 1, two stories meeting in one promise (cold open, the docs that lie, three
+  senses that make truth, where they meet, Pakka is born, rewind); Part 2, Pakka v1 (how it's written,
+  what it changes, prior art, values, this is v1, try it this afternoon). Waits on Ajesh's read.
 - [x] **E2 — Name the language.** Ajesh: *"it can be a shortform of a full form that feels catchy like
   CSS… easy, hopeful. can be also sanskrit, hindi, gujarati, kutchi. I like kept."* Two rounds of study
   (meanings against dictionaries, clashes against registries, pronunciation worldwide; session notes
@@ -414,7 +427,7 @@ forward."*
 - [ ] **E6 — Respell IDEA-169 in Pakka** (`/** @feature crates */` → `&belongs crates`) when its worktree
   lands; it was open in a peer's worktree on 2026-10-08.
 - [ ] **E3 — The dictionary moves into the repo once named.** One home: the draft lives in the essay's
-  tab for review; when settled it becomes a tracked spec, and the tab points to it.
+  *Language reference* tab for review; when settled it becomes a tracked spec, and the tab points to it.
 - [ ] **E4 — Later: a "how to use the language" page with many examples** (Ajesh: *"eventually this can
   have a how to use this language page with a lot of examples but that is later"*).
 
@@ -432,5 +445,7 @@ forward."*
 - **2026-10-08** — E1: the essay restructured into two parts in one doc named Pakka — Part 1, two
   stories (the docs that lie; three senses that make truth) meeting in one promise; Part 2, Pakka v1 and
   the invitation; testing is one payoff of three, not the ending. The example app is now Stockpot. Flags
-  in parentheses; `&pakka` is the joint-acceptance word; Pakka keeps the docs and ties them together.
+  in parentheses; `&pakka` is the joint-acceptance word; Pakka keeps the docs and ties them together,
+  and a promise met in a prompt gets a lasting home; the kacha player names the never-fail-for-being-young
+  rule. (Stockpot is the essay's made-up app.)
   The previous version is saved locally (links session notes).
