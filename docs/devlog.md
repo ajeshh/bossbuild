@@ -23,6 +23,23 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > mechanism working, not a bug.
 
 
+## 2026-10-08 — IDEA-163: adopt shows its plan first; Security is the bare --apply; paused for the floors
+
+- **Landed (IDEA-163, on main):** `boss adopt` previews and writes only on `--apply`; records its
+  baseline commit; reads records where a repo keeps them (`docs/features/FEAT-*/README.md`, or
+  `layout.records`); `boss id` stops handing out taken numbers; a monorepo reads as the build it is;
+  the project is named from its git remote. **A bare `--apply` now takes Security only** (DEC-024,
+  floor 1) — `--mode` is the whole of BOSS, and climbs from floor 1.
+- **Found and fixed on the way — data loss:** adopt stamped the founder's own same-named files
+  (`tester.md`, `/smoke`) as BOSS's, and the next `sync --apply` replaced them without a backup.
+  Reproduced, fixed forward (`theirs` on the stamp), and repos adopted earlier are covered from git.
+- **Where it came from:** a founder ran adopt on an existing repo (EVID-006, first observed run), then
+  a real install on dhun — BOSS's own ancestor — which found what reading the docs never did.
+- **Surprise:** the work met PROG-006 mid-flight; the parts table became DEC-024's floors, and the
+  parts list moved to IDEA-174. Ajesh paused the rest until the floors are built.
+- **Next:** nothing here until floors 2–4 and `boss up` are on main; then re-read IDEA-163's *Paused*
+  list against them before building any of it.
+
 ## 2026-10-07 — three worktrees landed: IDEA-148, IDEA-154, IDEA-149; the CHANGELOG's double 0.331.0
 
 - **Landed:** Ajesh: *"lets merge everything in"*. Each diff was read against its record by a fresh

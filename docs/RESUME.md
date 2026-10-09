@@ -3,7 +3,7 @@ id: RESUME
 type: resume
 owner: product-lead
 status: active
-updated: 2026-10-07
+updated: 2026-10-08
 ---
 
 # RESUME — BOSS
@@ -30,8 +30,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 ## Priority — Ajesh's order (the reading says what's close; this says what matters)
 
 **Above all, unchanged: publish (npm is behind — `npm run check:published`) and Phase 3 outreach. Both
-are Ajesh's.** The external evidence is n=4 signals / n=3 founders, all `stated-pain`; nobody has been
-observed using BOSS. The mandate holds: compose and **subtract**, never add a skill.
+are Ajesh's.** The external evidence is all `stated-pain` but one: EVID-006 (2026-10-08) is the first
+observed run — a founder adopting BOSS into a repo that already had its own way of working. The mandate holds: compose and **subtract**, never add a skill.
 
 1. **PROG-002 — the ladders still to plant**, for Ajesh to review: data & trust next (B4 holds the order).
 2. **FEAT-039 — the Kettlewick showcase is weak overall; do it better.** Ajesh's words and where the story
@@ -93,6 +93,8 @@ folds them into Parked. What's here has no record.
 - **IDEA-106's kicked-up table** is sorted (2026-09-13); what's left waits on a trigger (#23, #27, #15, #1, #10) — the table is in the record.
 - **`docs/product/JOURNEY.md`** — not written (every row would be `assumed`); at the second flow. (From the 2026-09-14 drift retro.)
 - **The two watchlist markers `check:freshness` flags** — deliberately unstamped (targeted passes, logged); stamp only after a full sweep.
+- **IDEA-163 (adopt) — paused by Ajesh until PROG-006's floors 2–4 and `boss up` are on main**; then
+  re-read its *Paused* list against them before building (PROG-006's Tasks carry the trigger).
 - **`/practice-refresh` boundary not-yet** — a real project past ~10 PRACs with one found stale.
 - **Parked from the comp-read batch** (unpark conditions in the competition record's table):
   assumptions-plural in `boss status` · `waiting_on:` · cohort re-fit · time-per-task-type · the
