@@ -47,6 +47,42 @@ against.
 A dhun measurement (IDEA-169) shows what happens without this: a wiki three times the size of the code,
 mostly unchanged since May, 9 of its 13 code references dead. Nobody was careless; nothing could tell.
 
+## Three senses make truth
+
+Ajesh, 2026-10-08 (from their balanced-team years; their wording to correct): *"the product manager
+and designer and engineer come together to create truth. the product gives the vision of where we are
+or need to go, the designer brings it to visual life, the user story is the contract of all 3 agreeing
+of what needs to be built and the code is that truth and the contract that is being coded into an
+app's reality… its the missing link of how the 3 senses come together to create truth."*
+
+- **Product** holds why and where; **design** brings it to visible life; **engineering** holds how. The
+  **story** is what all three agree to; the **code** is that agreement made real; **acceptance**
+  (product, and design for what it owns) closes the loop. Done means accepted, not written.
+- **What one agent playing all three breaks:** the senses collapse into one, and whoever built it also
+  accepts it. The loop has nothing to close on.
+- **What this program restores:** the story → promises drawn from discovery, the spec and the design;
+  engineering → the agent builds against the contract, the compiler holds the shape; acceptance → a
+  person approves what matters, planted breaks prove the tests, anything changed waits to be accepted
+  again; "accepted until something changes" → every link remembers what it was confirmed against.
+- **Design is a sense, not a step.** Promises aren't only product's: what a person must always see, or
+  never lose, is design's promise, drawn from the design records the same way. Open: which design
+  records carry promises today (tokens? the five states in `/design-review`?).
+
+## The language
+
+**One rule: every word is something a tool checks.** A word no tool reads is a comment and doesn't get
+in. A sketch, spelling not settled: `@feature` (file → feature), `@promise <id>` (on the contract),
+`@from <record#anchor>` (promise → the spec line it came from), `@approved <who>`, `@proves
+<feature#promise>` (test → promise), `@relies <feature#promise>` (a dependent feature), `@about
+<feature>` (a doc → what it depends on), `@source <url>` (research), and `@confirmed`, written only by
+the tool: the fingerprint each link was last checked against.
+
+**How it grows:** settle early only what's dear to reverse — the promise id (`feature#slug`, stable
+through renames, held by the target) and the shape of the `@confirmed` mark, since both get written
+into many files. Every other word earns its place the second time it's needed, and only if a tool
+will check it. The essay walks one promise through all of it (spec → contract → test → planted break
+→ dependent feature → card → a change that lights up the links).
+
 ## Testing: promises, not lines
 
 Ajesh, 2026-10-08: *"how can this improve how testing happens… changing fundamental the weakness of
