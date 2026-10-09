@@ -107,7 +107,7 @@ check. **Not a skill:** the check rides links that already exist.
 ## Prior art (T0, 2026-10-08)
 
 Three reads at source; the full reports, tables and every URL are in
-`docs/research/SESSION-2026-10-08-links-that-stay-true.md` (local). What they change:
+`docs/research/sessions/SESSION-2026-10-08-links-that-stay-true.md` (local). What they change:
 
 **Where this stands in the field.** Personal note and wiki tools keep a link
 *resolving* through renames, or transclude the target live, or expire trust on a timer; none detects
@@ -193,6 +193,10 @@ you write one* table · the E/P/W marks.
 - [ ] **T2 — The general form on BOSS's own records.** Add a confirmed-against version to the links of
   one program's records, change a record one of them depends on, and see that the right record is
   flagged and nothing else.
+- [ ] **T3 — A promise proves its test.** On T1's feature: write each promise line, have an agent write
+  tests from the promise lines alone (not the code), then plant a break of each promise and count which
+  tests fail. Then let an agent loosen one assertion and check the test↔promise link flags it. PROG-007
+  § Testing.
 
 - [ ] **T1 — One feature, by hand, in a throwaway dhun branch.** Tag one feature's files, write its
   contract file, render its card by hand. Give a fresh agent a change that crosses into that feature,

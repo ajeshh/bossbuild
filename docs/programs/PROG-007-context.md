@@ -30,6 +30,12 @@ that survives the session) · IDEA-158 (one home per fact) · IDEA-162 (resume c
 
 ## What ties them
 
+**In one line** (Ajesh, 2026-10-08, sharpened): *code gets a second language — signals in comments
+and types that tools and agents read and the running program never sees.* Not secret: written in plain
+sight, never executed. Its words so far: `@feature` tags (where a file belongs), contract types (what
+is promised), promise lines (what it must never do), links stamped with what they were confirmed
+against.
+
 **Context is woven from its sources, never a copy kept by hand.** Every member is one consequence:
 
 - **One home per fact** (IDEA-158): a fact in two places drifts.
@@ -40,6 +46,30 @@ that survives the session) · IDEA-158 (one home per fact) · IDEA-162 (resume c
 
 A dhun measurement (IDEA-169) shows what happens without this: a wiki three times the size of the code,
 mostly unchanged since May, 9 of its 13 code references dead. Nobody was careless; nothing could tell.
+
+## Testing: promises, not lines
+
+Ajesh, 2026-10-08: *"how can this improve how testing happens… changing fundamental the weakness of
+letting AI write your tests or badly written or under written tests?"*
+
+The weakness: tests written from the code pass with the code's bugs; agents under pressure special-case
+or edit tests (about half the time when tests contradicted the spec, in one measured setting); line
+coverage hides it (one suite: 100% coverage, 4% mutation score). IDEA-154 T1 and T4 already put the
+seeds in BOSS: a sanctioned stop when a test and the FEAT disagree, and each criterion naming its test.
+The second language carries them further:
+
+1. **Tests are written from promises, not from code.** The writer, person or agent, reads the promise
+   line in the contract, never the implementation.
+2. **Promise coverage over line coverage.** Every promise names its test or reads *unchecked*.
+3. **A test counts only if breaking its promise breaks it.** Confirmation for a test link is a planted
+   break of the promise (a mutation) that makes the test fail.
+4. **A change on either side is an event.** The test↔promise link is stamped like any other: the
+   promise moves → the test is flagged; the test moves (an assertion loosened) → flagged, and a person
+   who didn't loosen it re-confirms.
+5. **A feature that relies on a promise owns a test of it,** run in the providing feature's suite
+   (consumer-driven contracts).
+
+Gap on record: no study measures mutation testing against agents weakening their own tests.
 
 ## Checks, by strength
 
@@ -128,6 +158,6 @@ forward."*
 ## Log
 
 - **2026-10-08** — graduated from IDEA-169's general form. Prior art read the same day (three reads; full
-  reports local in `docs/research/SESSION-2026-10-08-links-that-stay-true.md`). Members: IDEA-169,
+  reports local in `docs/research/sessions/SESSION-2026-10-08-links-that-stay-true.md`). Members: IDEA-169,
   IDEA-154. Weighed as an ecosystem under PROG-002 and placed here instead (§ Where this sits). Delivery
   order proposed in answer to the overview finding; T1 decides it.
