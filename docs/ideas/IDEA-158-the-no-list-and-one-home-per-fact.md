@@ -62,6 +62,11 @@ become case logs (53 KB, 19 KB, 10 KB). → T2.
 - [ ] ~50 EVID and ~140 RVW citations still sit in older CHANGELOG entries (the 2026-10-04 research rule
   removed 13 quotes; the rest was left for a pass "when no peer is mid-release on the file"). Carried
   here from the retired memory — it was a task living in memory, the thing T2 stops.
+- [ ] **The scope review needs modes** (Ajesh, 2026-10-08: *"maybe a text review or a code review, or
+  bypass options"*). Rule 7 runs one review for every land; a change that is only a record and an INDEX
+  row (IDEA-170's) got the same line as a code change. Shape it: a text review (does it say what the
+  record says, nothing it doesn't), a code review (what got built unasked), and a named bypass, recorded
+  when used. Open: does the diff pick the mode, or the person landing it?
 
 ## Log
 
