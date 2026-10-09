@@ -47,8 +47,11 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   of your own files it would append to and how (`CLAUDE.md`, `AGENTS.md`, `.gitignore`,
   `.claude/settings.json`, a pre-commit check), and where you keep your records — the ones it already
   reads, and any it will read from a folder of your own. It also says how to take less.
-  Nothing is written until `boss adopt --apply`, the same way `boss sync` and `boss remove` already
-  work. If you script adopt, add `--apply`. Adopt also records the commit it started from, so what you
+  Nothing is written until you say `--apply`, the same way `boss sync` and `boss remove` already
+  work. **`boss adopt --apply` on its own now takes only the safety floor**: deny and ask rules for the
+  AI, a check for keys before each commit, and a `.gitignore` block — no skills, agents or docs, and
+  your `CLAUDE.md` untouched. `boss adopt --apply --mode <quickstart|mvp>` takes the whole of BOSS, as
+  adopt used to; it also works later, from the safety floor. If you script adopt, add `--apply --mode`. Adopt also records the commit it started from, so what you
   had stays something you can compare against; the preview asks you to commit first if you haven't. The
   preview also names the one line adopt removes from `.claude/settings.json` (`defaultMode: "auto"`,
   which does nothing in a project file), and lists the records it found where it already looks. It reads

@@ -99,7 +99,8 @@ nothing else. (In a project, `/welcome` asks you this and tunes itself; you can 
   over: `cd` into it and run **`boss adopt`**. It reads how far along you already are — a build
   manifest, source files, tests, CI, a deploy config — and prints the plan before it writes a file:
   the mode that matches, what it would add, which of your files it would append to, and what it
-  can't see. **`boss adopt --apply`** lays it down. *Non-destructive throughout:* your files are untouched, and an existing
+  can't see. **`boss adopt --apply`** takes the safety floor only (deny/ask rules, the secrets check, a
+  `.gitignore` block); **`boss adopt --apply --mode <m>`** takes the whole of BOSS. *Non-destructive throughout:* your files are untouched, and an existing
   `CLAUDE.md` / `AGENTS.md` gets a marked block appended rather than replaced. It **caps its guess at
   MVP** on purpose (V1 is a design-system and db commitment — your call), so if it reads low,
   `boss unlock <mode>` is one command; `--mode <m>` overrides it outright. Then run **`/read-repo`**

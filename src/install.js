@@ -3,11 +3,11 @@
 // already in). They share a job and their helpers, so they share a module (IDEA-160 Q3). The file
 // copying itself is scaffold.js's; this is the part a founder reads.
 
-import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
+import { mkdirSync, existsSync, writeFileSync, readFileSync, cpSync } from 'node:fs';
 import { join, resolve, delimiter, basename, dirname, relative, sep } from 'node:path';
 import { execSync } from 'node:child_process';
 import { homedir } from 'node:os';
-import { bossVersion, STAGE_ORDER, resolveStageId, BOSS_HOME } from './paths.js';
+import { bossVersion, STAGE_ORDER, resolveStageId, BOSS_HOME, STAGES_DIR } from './paths.js';
 import { stageVars, applyStage, readStageManifest, recordIgnoreOffered, applyStageSafe, planStageSafe, gitignoreRulesToAdd, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock } from './scaffold.js';
 import { readStamp, writeStamp, registerProject, STAMP } from './registry.js';
 import { stampManaged, computeSettingsMerge } from './sync.js';
@@ -20,6 +20,7 @@ import { commitGuardLine } from './hooks.js';
 import { installCommitGuard } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
 import { recordFiles } from '../stages/L0-quickstart/template/.claude/hooks/lib/record-files.js';
 import { writeFileAtomic } from './atomic.js';
+import { recordManaged, readLedger } from './managed.js';
 import { detectStage, inferSourceGlobs, unreadRecords, projectName } from './detect.js';
 import { parseArgs } from './args.js';
 
@@ -73,11 +74,94 @@ function gitBaseline(dir) {
   } catch { return null; }
 }
 
+// SECURITY — floor 1 of DEC-024, the bare `adopt --apply`: the safety floor and nothing else. Deny
+// and ask rules for the AI (no hooks registered), the secrets pre-commit check, the `.gitignore`
+// block, a stamp at `floor: 1` and a registry row. Every floor above stands on it. One plan, read
+// by the preview and carried out by the apply, so what the preview promises is what lands.
+const SECURITY_LAYER = 'L0-quickstart';
+const SECRETS_SCRIPT = join('.claude', 'hooks', 'lib', 'commit-secrets.js');
+
+function planSecurity(targetDir) {
+  const settings = computeSettingsMerge(targetDir, [SECURITY_LAYER], { hooks: false });
+  let before = {};
+  try { before = JSON.parse(readFileSync(join(targetDir, settings.rel), 'utf8')); } catch { /* none yet */ }
+  const perms = (o, k) => (o?.permissions?.[k] || []).length;
+  const scriptTheirs = existsSync(join(targetDir, SECRETS_SCRIPT));
+  let preCommit = 'none';
+  try {
+    const hooksDir = execSync('git rev-parse --git-path hooks', { cwd: targetDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    preCommit = existsSync(resolve(targetDir, hooksDir, 'pre-commit')) ? 'theirs' : 'free';
+  } catch { preCommit = 'no-git'; }
+  return {
+    settings,
+    deny: settings.merged ? perms(settings.merged, 'deny') - perms(before, 'deny') : 0,
+    ask: settings.merged ? perms(settings.merged, 'ask') - perms(before, 'ask') : 0,
+    settingsExisted: existsSync(join(targetDir, settings.rel)),
+    scriptTheirs,
+    preCommit,
+    ignoreRules: gitignoreRulesToAdd([SECURITY_LAYER], targetDir),
+    ignoreExisted: existsSync(join(targetDir, '.gitignore')),
+  };
+}
+
+function securityLines(plan) {
+  const out = [];
+  if (plan.settings.unparseable) out.push(['.claude/settings.json', `can't be read, so left alone: ${plan.settings.unparseable}`]);
+  else {
+    out.push(['.claude/settings.json', `${plan.deny} deny and ${plan.ask} ask rule(s) for the AI${plan.settingsExisted ? '; your permissions and hooks kept' : ' (a new file)'}`]);
+    for (const m of plan.settings.migrated || []) out.push(['', `${warn('−')} and removes ${m}`]);
+  }
+  out.push([SECRETS_SCRIPT.split(sep).join('/'), plan.scriptTheirs ? 'you already have one — yours is kept' : 'the secrets check, one file']);
+  out.push(['.git/hooks', plan.preCommit === 'free' ? 'a pre-commit hook that runs it before each commit (shared by every worktree of this repo)'
+    : plan.preCommit === 'theirs' ? 'left alone — you have a pre-commit hook; BOSS says how to call the check from it'
+      : 'skipped — not a git repo']);
+  out.push(['.gitignore', plan.ignoreRules.length ? `${plan.ignoreRules.length} rule(s) in a marked block — what stays on your machine${plan.ignoreExisted ? '' : ' (a new file)'}` : 'nothing to add — you have every rule']);
+  out.push(['.boss/manifest.json', 'floor 1, Security — and the commit it started from']);
+  out.push([BOSS_HOME === join(homedir(), '.boss') ? '~/.boss' : BOSS_HOME, 'this project registered, so `boss list` finds it']);
+  return out;
+}
+
+function applySecurity({ targetDir, name, nameFrom, detected }) {
+  const plan = planSecurity(targetDir);
+  const baseline = gitBaseline(targetDir);
+  if (!plan.scriptTheirs) {
+    mkdirSync(dirname(join(targetDir, SECRETS_SCRIPT)), { recursive: true });
+    cpSync(join(STAGES_DIR, SECURITY_LAYER, 'template', SECRETS_SCRIPT), join(targetDir, SECRETS_SCRIPT));
+    recordManaged(targetDir, [{ rel: SECRETS_SCRIPT, text: readFileSync(join(targetDir, SECRETS_SCRIPT), 'utf8') }]);
+  }
+  if (plan.settings.unparseable) console.log(`  ${warn('!')} ${plan.settings.unparseable}`);
+  for (const m of plan.settings.migrated || []) console.log(`  ${warn('−')} .claude/settings.json: removed ${m}`);
+  if (plan.settings.changed) {
+    mkdirSync(join(targetDir, '.claude'), { recursive: true });
+    writeFileAtomic(join(targetDir, plan.settings.rel), JSON.stringify(plan.settings.merged, null, 2) + '\n');
+  }
+  const ignored = appendGitignoreBlock([SECURITY_LAYER], targetDir);
+  const createdAt = new Date().toISOString();
+  writeStamp(targetDir, {
+    name, bossVersion: bossVersion(), floor: 1,
+    installedLayers: [], agents: [], skills: [], hooks: [], loops: [],
+    createdAt, adopted: true,
+    ...(baseline ? { adoptedFrom: baseline.sha } : {}),
+    theirs: { files: plan.scriptTheirs ? [SECRETS_SCRIPT.split(sep).join('/')] : [], skills: [] },
+  });
+  registerProject({ name, path: targetDir, floor: 1, bossVersion: bossVersion(), createdAt });
+
+  console.log(`\n  ${ok('✦')} ${bold(name)} is on the Security floor ${dim(`(named from ${nameFrom}, BOSS ${bossVersion()})`)}`);
+  console.log(`    ${plan.deny} deny and ${plan.ask} ask rule(s) for the AI · ${ignored.applied ? `.gitignore merged (${ignored.added.length} rule(s) added)` : '.gitignore already had them'}`);
+  commitGuardLine(installCommitGuard(targetDir));
+  console.log(`    ${dim('Nothing else: no skills, agents or docs, and your CLAUDE.md is untouched.')}`);
+  console.log(`\n  ${bold('Going further')}`);
+  const m = detected ? modeWord(detected.stage) : 'quickstart';
+  console.log(`    boss adopt --mode ${m}     ${dim(`the whole of BOSS — this repo reads as ${m}. Shows the plan; --apply takes it.`)}`);
+  console.log(`    boss remove             ${dim('previews taking Security back out')}\n`);
+}
+
 // The plan `boss adopt --apply` would carry out, computed by the same steps and written nowhere.
 // It answers the three things someone with a working repo asks first: where do I stand, what
 // do you add, and what of mine do you touch. Then what BOSS can't see, and how to take less.
-function previewAdopt({ targetDir, name, nameFrom, stageId, manifest, chain, detected, shippedBefore, named }) {
+function previewAdopt({ security, targetDir, name, nameFrom, stageId, manifest, chain, detected, shippedBefore, named }) {
   const rel = (f) => relative(targetDir, f).split(sep).join('/');
+  const ledger = readLedger(targetDir);
   const planned = new Set();
   const kept = new Set();
   const deferred = [];
@@ -87,7 +171,7 @@ function previewAdopt({ targetDir, name, nameFrom, stageId, manifest, chain, det
     const r = planStageSafe(s, targetDir, { skipSkills: hold.skip });
     // A later mode meets an earlier one's file on disk in a real run; here it isn't, so dedupe.
     r.copied.map(rel).forEach((f) => planned.add(f));
-    r.skipped.map(rel).forEach((f) => kept.add(f));
+    r.skipped.filter((f) => !ledger[relative(targetDir, f)]).map(rel).forEach((f) => kept.add(f));   // BOSS's own (from Security) aren't yours
     for (const [group, sk] of Object.entries(hold.deferred)) deferred.push({ s, group, sk, until: (m.earned || {})[group] });
   }
   planned.delete('claude-append.md'); // folded into CLAUDE.md, never left behind
@@ -106,14 +190,29 @@ function previewAdopt({ targetDir, name, nameFrom, stageId, manifest, chain, det
 
   console.log(`\n  ${bold('Where you stand')}`);
   console.log(`    called ${bold(name)} ${dim(`— from ${nameFrom}`)}`);
-  console.log(`    ${manifest.name} mode${named ? dim(' — the mode you named') : ''}`);
+  console.log(security ? `    reads as ${manifest.name} ${dim('— the mode the whole of BOSS would start at')}` : `    ${manifest.name} mode${named ? dim(' — the mode you named') : ''}`);
   if (detected) console.log(`    ${dim('read from your repo:')} ${detected.why.join(' · ')}`);
   if (detected && detected.beyond) console.log(`    ${warn('▸')} this looks past MVP — shipped and tested. ${dim("BOSS won't climb past MVP on its own; `boss unlock v1` later if you want it.")}`);
   const base = gitBaseline(targetDir);
   if (!base) console.log(`    ${warn('!')} not a git repo with a commit yet — there is nothing to compare against later. ${dim('Commit first.')}`);
   else if (base.dirty) console.log(`    ${warn('!')} ${base.dirty} uncommitted change(s). ${dim(`Commit first: adopt records the commit it starts from (${base.sha.slice(0, 7)}) as the before.`)}`);
   else console.log(`    ${dim(`Starts from ${base.sha.slice(0, 7)} — what you had, to compare against later.`)}`);
-  console.log(`    ${dim('The full read — what you built and what is missing — is /read-repo, once BOSS is in.')}`);
+  if (!security) console.log(`    ${dim('The full read — what you built and what is missing — is /read-repo, once BOSS is in.')}`);
+
+  if (security) {
+    const sec = planSecurity(targetDir);
+    const pad = (x, n) => x + ' '.repeat(Math.max(1, n - x.length));
+    console.log(`\n  ${bold('What Security lays down')} ${dim('— the safety floor every floor of BOSS stands on')}`);
+    const lines = securityLines(sec);
+    const w = Math.max(...lines.map(([f]) => f.length)) + 2;
+    for (const [f, what] of lines) console.log(`    ${pad(f, w)}${what}`);
+    console.log(`    ${dim('Nothing else: no skills, agents or docs, and your CLAUDE.md is untouched.')}`);
+    const m = detected ? modeWord(detected.stage) : 'quickstart';
+    console.log(`\n  ${bold('Going further')}`);
+    console.log(`    boss adopt --mode ${m}     ${dim(`the plan for the whole of BOSS — this repo reads as ${m}`)}`);
+    console.log(`\n  ${bold('boss adopt --apply')} takes Security.\n`);
+    return;
+  }
 
   console.log(`\n  ${bold('What it adds')} ${dim(`— ${files.length} new file(s); none of yours is replaced`)}`);
   if (skills.length) line(`${skills.length} skills`, skillsLine(skills).replace(/ \(`boss map`\)$/, ''));
@@ -442,7 +541,11 @@ export function cmdNew(args) {
 export function cmdAdopt(args) {
   const flags = parseArgs(args);
   const targetDir = process.cwd();
-  if (existsSync(join(targetDir, STAMP))) {
+  // A project on the Security floor (DEC-024) climbs to the whole of BOSS through this door with
+  // `--mode`; any other stamp means adopt has already run here.
+  const prior = existsSync(join(targetDir, STAMP)) ? (() => { try { return readStamp(targetDir); } catch { return null; } })() : null;
+  if (existsSync(join(targetDir, STAMP)) && !(prior && prior.floor === 1 && flags.mode)) {
+    if (prior && prior.floor === 1) return fail('this project is on the Security floor. `boss adopt --mode <quickstart|mvp>` previews the whole of BOSS from here; add --apply to take it.');
     return fail('already a BOSS project (.boss/manifest.json here). Use `boss sync` to update or `boss unlock <mode>` to add a mode.');
   }
   // Read how far along the repo already is, unless the founder named a mode. Adopting a
@@ -450,7 +553,9 @@ export function cmdAdopt(args) {
   // default did that every time and told the founder to figure the mode out themselves. The
   // detection is deliberately cheap and SHOWN (see src/detect.js) — it caps at MVP and never
   // auto-climbs to V1, because ceremony added is ceremony sync cannot yet remove.
-  const detected = flags.mode ? null : detectStage(targetDir);
+  // Always read: `--mode` picks the mode, but whether the repo has already shipped still decides which
+  // skills are held (IDEA-118) — skipping detection under --mode lost that.
+  const detected = detectStage(targetDir);
   const stageId = flags.mode ? resolveStageId(flags.mode) : detected.stage;
   if (!stageId) return fail(`unknown mode '${flags.mode}'. options: ${STAGE_ORDER.map(modeWord).join(' | ')}`);
   let manifest;
@@ -475,15 +580,21 @@ export function cmdAdopt(args) {
   // — counts as shipped; a model call in the source counts as calling a model), and the opt-in
   // hooks stay off until `boss hooks enable`. Adopt used to lay down all of both (IDEA-118).
   const shippedBefore = Boolean(detected && detected.beyond);
+  // DEC-024: a bare adopt takes Security — the safety floor and nothing else. `--mode` is the whole of
+  // BOSS at that mode (modes live only in the Boardroom).
+  const security = !flags.mode;
   // Preview first, like `boss sync` and `boss remove`: adopt was the one door that wrote on its
   // first run, into a repo that already had its own way of working (IDEA-163, EVID-006).
-  if (!flags.apply) return previewAdopt({ targetDir, name, nameFrom, stageId, manifest, chain, detected, shippedBefore, named: Boolean(flags.mode) });
+  if (security && flags.apply) return applySecurity({ targetDir, name, nameFrom, detected });
+  if (!flags.apply) return previewAdopt({ security, targetDir, name, nameFrom, stageId, manifest, chain, detected, shippedBefore, named: Boolean(flags.mode) });
   const baseline = gitBaseline(targetDir);   // read before anything is written
   // The founder's files a template path collides with, read before anything is written. They are
   // theirs, never BOSS's: stamping them as managed recorded their bytes as an unedited BOSS file, and
   // the next `boss sync --apply` overwrote their own tester.md and smoke/SKILL.md (IDEA-163). A later
   // mode's collision with an earlier mode's fresh copy is BOSS's own file and is still stamped.
-  const collided = [...new Set(chain.flatMap((s) => planStageSafe(s, targetDir).skipped))].map((f) => relative(targetDir, f));
+  const ledger = readLedger(targetDir);   // on a climb from Security, BOSS's own files are not theirs
+  const collided = [...new Set(chain.flatMap((s) => planStageSafe(s, targetDir).skipped))].map((f) => relative(targetDir, f))
+    .filter((r) => !ledger[r]);
   const skillsDir = join('.claude', 'skills');
   const theirSkills = collided.filter((r) => dirname(r) === skillsDir).map((r) => basename(r));
   const theirs = collided.filter((r) => dirname(r) !== skillsDir);   // native separators, like the ledger's join()
@@ -558,7 +669,8 @@ export function cmdAdopt(args) {
     installedLayers: chain, agents: [...u.agents], skills: [...u.skills].filter((sk) => !heldSkills.includes(sk)),
     hooks: [...u.hooks], loops: [...u.loops],
     createdAt: new Date().toISOString(), adopted: true,
-    ...(baseline ? { adoptedFrom: baseline.sha } : {}),
+    ...(prior && prior.adoptedFrom ? { adoptedFrom: prior.adoptedFrom } : baseline ? { adoptedFrom: baseline.sha } : {}),
+    floor: 5,   // the Boardroom: the whole of BOSS, where modes live (DEC-024)
     // What the repo already had where BOSS ships a file: theirs, so `boss sync` leaves it alone.
     // Always written, empty or not: an absent `theirs` is how sync knows a repo predates it.
     theirs: { files: theirs.map((r) => r.split(sep).join('/')), skills: theirSkills },
@@ -598,7 +710,7 @@ export function cmdAdopt(args) {
 
   // 5. Register as a normal (not self-hosted) project — rides the usual sync loop.
   registerProject({
-    name, path: targetDir, stage: stageId, mode: manifest.name,
+    name, path: targetDir, stage: stageId, mode: manifest.name, floor: 5,
     bossVersion: bossVersion(), createdAt: stamp.createdAt,
   });
 
@@ -625,7 +737,7 @@ export function cmdAdopt(args) {
   // trust anxiety. Nothing of yours is ever written; say that, and only count collisions when there
   // were some.
   const preserved = [
-    skipped.length ? `${skipped.length} of yours kept as-is` : null,
+    theirs.length + theirSkills.length ? `${theirs.length + theirSkills.length} of yours kept as-is` : null,
     claudePreexisted ? 'CLAUDE.md preserved (BOSS block appended)' : null,
     ignored.applied ? `.gitignore merged (${ignored.added.length} rule(s) added)` : null,
   ].filter(Boolean);

@@ -56,7 +56,7 @@ import { collectBoard, computeNext, readingFor } from './board.js';
 import { stateWords } from '../stages/L0-quickstart/template/.claude/hooks/lib/resume-reading.js';
 import { readPrograms } from './programs.js';
 import { renderLadder } from './map.js';
-import { modeWord, skillsLine } from './modes.js';
+import { modeWord, skillsLine, whereLabel } from './modes.js';
 import { driftLine } from './records.js';
 import { readiness } from './readiness.js';
 import { failNotAProject } from './fail.js';
@@ -362,7 +362,14 @@ export async function cmdStatus(args) {
   // you're building right now, and whether you're moving (EVID-001 — a founder can't
   // tell any of these three today). Composed from the board projection; degrades
   // silently if the board can't be read.
-  console.log(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
+  console.log(`  ▸ ${bold('You are here:')} ${whereLabel(stamp)}`);
+  // The Security floor (DEC-024) has no ladder, no records and no skills to orient by: say what it
+  // holds and the one way further, and stop.
+  if (stamp.floor === 1) {
+    console.log(`    ${dim('the safety floor: deny/ask rules for the AI, the secrets check, the .gitignore block.')}`);
+    console.log(`    ${dim('The whole of BOSS: `boss adopt --mode quickstart` (or mvp) shows the plan; --apply takes it.')}\n`);
+    return;
+  }
   console.log(`    ${renderLadder(stamp.installedLayers, stamp.stage)}`);
   printFocusAndHeadway(process.cwd(), { adopted: stamp.adopted === true });
   for (const g of newlyEarned(process.cwd(), stamp)) {

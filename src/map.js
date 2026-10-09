@@ -7,7 +7,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { STAGE_ORDER } from './paths.js';
-import { loadModes, packageSkillMd, skillGloss, modeWord } from './modes.js';
+import { loadModes, packageSkillMd, skillGloss, modeWord, whereLabel } from './modes.js';
 import { dim, bold } from './ui.js';
 // `hasShipped` lives in earned.js now — the fold and the lay-down read the same predicate.
 import { hasShipped, stillDeferred, newlyEarned, describeEarned } from './earned.js';
@@ -85,7 +85,7 @@ function renderMap(projectDir, stamp, opts = {}) {
   const lines = [];
   lines.push('');
   lines.push(`  ${bold(stamp.name + ' · map')}`);
-  lines.push(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
+  lines.push(`  ▸ ${bold('You are here:')} ${whereLabel(stamp)}`);
   lines.push(`    ${renderLadder(installed, deepest)}`);
   lines.push('');
 

@@ -19,8 +19,8 @@ export const HELP = {
   },
   adopt: {
     usage: 'boss adopt [--apply] [--mode <m>] [--ai]',
-    what: 'Bring BOSS into an already-started repo, non-destructively. Bare, it shows the plan and writes nothing: where you stand, what it adds, which of your files it appends to, what it can\'t see. --apply does it. --mode picks a lighter or heavier set.',
-    examples: ['boss adopt                  # the plan; nothing written', 'boss adopt --apply', 'boss adopt --apply --mode quickstart   # the smallest set'],
+    what: 'Bring BOSS into an already-started repo, non-destructively. Bare, it shows the plan and writes nothing. --apply takes the safety floor (deny/ask rules for the AI, the secrets check, a .gitignore block); --apply --mode <m> takes the whole of BOSS at that mode.',
+    examples: ['boss adopt                  # the plan; nothing written', 'boss adopt --apply          # the safety floor only', 'boss adopt --apply --mode mvp   # the whole of BOSS at MVP'],
     see: ['new', 'unlock'],
   },
   unlock: {

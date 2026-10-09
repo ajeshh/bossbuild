@@ -32,7 +32,9 @@ people come through the second one:**
 
 - **`boss adopt`**, in a repo you already started — BOSS reads how far along you are and shows the
   plan before it writes a file: the mode that matches, what it would add, which of your files it
-  would append to, and what it can't see. `boss adopt --apply` lays it down, non-destructively. Then `/read-repo` reads the actual code and tells you
+  would append to, and what it can't see. `boss adopt --apply` takes the safety floor only (deny/ask
+  rules for the AI, a secrets check before each commit, a `.gitignore` block); `boss adopt --apply
+  --mode <m>` takes the whole of BOSS at that mode, non-destructively. Then `/read-repo` reads the actual code and tells you
   where you stand: what it can see, what it can't, and what you could do this week. Your files are
   untouched; `boss remove` takes it all back out.
 - **`boss new my-app`** — scaffolds a project at the lightest level (Quickstart) in five seconds.
@@ -165,7 +167,8 @@ npm uninstall -g bossbuild && npm i -g oyeboss
 # ── already building something? start here ──────────────────────────────
 cd my-existing-repo
 boss adopt                      # the plan: where you stand, what it adds, what of yours it touches
-boss adopt --apply              # lays it down; nothing of yours is overwritten
+boss adopt --apply              # the safety floor only: deny/ask rules, the secrets check, .gitignore
+boss adopt --apply --mode mvp   # the whole of BOSS at MVP; nothing of yours is overwritten
 claude
 > /read-repo                    # BOSS reads YOUR code and says where you stand — position, not a grade
 
@@ -197,11 +200,12 @@ clean exit is what makes the entrance safe to try. (`boss remove --global` for t
 
 **Already started building?** You don't have to start over. `cd` into your existing repo and run
 `boss adopt` — it **reads how far along you already are** (a build manifest, source files, tests, CI,
-a deploy config) and shows you the plan before it writes anything; `--apply` carries it out, starting you at the mode that matches instead of
-assuming you're at square one. It lays BOSS down *non-destructively*: your files are untouched, and
+a deploy config) and shows you the plan before it writes anything. `--apply` alone takes the safety
+floor; `--apply --mode <m>` takes the whole of BOSS, at the mode the preview says your repo reads as
+instead of assuming you're at square one. It lays BOSS down *non-destructively*: your files are untouched, and
 an existing `CLAUDE.md` gets a marked block appended, never replaced. It caps its own guess at MVP —
 V1 means committing to a design system and a db discipline, and that's your call, not a Dockerfile's.
-`--mode <m>` overrides it outright. Then run `/read-repo` inside Claude to have BOSS read the repo
+Then run `/read-repo` inside Claude to have BOSS read the repo
 properly and tailor the scaffold to it.
 
 After that:

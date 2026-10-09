@@ -503,7 +503,7 @@ function cmdList(args = []) {
     // direction that matters, so it gets its own mark rather than being folded into current.
     const ahead = p.pin && cmpVersion(p.pin, current) > 0;
     const mark = behind ? `  ${warn('⟳')}` : ahead ? `  ${dim('↑')}` : '';
-    console.log(`    ${p.name.padEnd(20)} ${(p.mode || p.stage || '?').padEnd(12)} BOSS@${p.pin || '?'}${mark}`);
+    console.log(`    ${p.name.padEnd(20)} ${(p.floor === 1 ? 'Security' : p.mode || p.stage || '?').padEnd(12)} BOSS@${p.pin || '?'}${mark}`);
     console.log(`    ${''.padEnd(20)} ${p.path}`);
   }
 

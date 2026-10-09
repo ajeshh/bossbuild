@@ -51,6 +51,13 @@ export const STANDING_COMMANDS = [
 ];
 
 // The mode word a user types into `boss unlock` (strips the L#- level prefix).
+// Where a project stands, in one word for "You are here". A project on the Security floor (DEC-024,
+// `floor: 1`) has no mode — modes live only in the Boardroom — and used to read "undefined".
+export function whereLabel(stamp) {
+  if (stamp && stamp.floor === 1) return 'Security';
+  return (stamp && (stamp.mode || stamp.stage)) || 'unknown';
+}
+
 export function modeWord(stageId) {
   return stageId.replace(/^l\d+-/i, '');
 }

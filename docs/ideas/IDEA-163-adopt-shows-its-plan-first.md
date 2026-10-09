@@ -9,7 +9,7 @@ relates: IDEA-005, IDEA-073, IDEA-118, IDEA-162, IDEA-153
 proof: test/adopt.test.js
 proof_note: S1 (the preview) ships with its test; S2 and choosing parts are still open
 gist: `boss adopt` says what it found and what it would change before it changes anything, and an adopted repo's own record layout is read instead of ignored.
-next: land (waits on the 0.332.0 stamp on main); then agent overlap and .gitattributes; Security once DEC-024 is on main
+next: the parts export and --take (the seam PROG-006's --floor calls); then agent overlap and .gitattributes
 ---
 
 # IDEA-163 — Adopt shows its plan first
@@ -128,13 +128,23 @@ no new record type. Code findings carry their paths, so they come back at the br
 
 ## Tasks
 
-- [ ] **Security (floor 1) is the bare `adopt --apply`** (DEC-024, Q7): deny/ask rules, the secrets pre-commit
+- [x] **Security (floor 1) is the bare `adopt --apply`** (DEC-024, Q7) — shipped 2026-10-08, with the climb (`adopt --mode` from floor 1). `--take` and the parts export are still open: deny/ask rules, the secrets pre-commit
       check, the `.gitignore` block — nothing else. The plan is built from named parts; `--take <part>`
       adds one; the preview shows the plan for what was asked. Lands after DEC-024 reaches main.
       **The seam with PROG-006 (agreed 2026-10-08):** IDEA-163 exports the parts — each a name plus the
       files, hooks and settings it lays down, read from `stages/` (never copies) — and adopt's plan and
       preview take a list of part names. PROG-006 adds `--room <floor>` (floor → its parts → this plan)
       and owns `room:`'s stored value (name or level key, Ajesh to decide). Nothing here depends on it.
+      **Security slice (2026-10-08, DEC-024 on main):** bare `--apply` merges deny/ask (no hooks), lays
+      `commit-secrets.js` + the pre-commit shim, the `.gitignore` block, a stamp with `floor: 1`, and a
+      registry row — nothing else. `--mode <m>` stays the whole of BOSS at that mode (modes live only in
+      the Boardroom). The bare preview shows the Security plan and names the mode the repo reads as.
+      Probed on a hand-made floor-1 stamp: nothing crashes; `status`/`map` said *You are here: undefined*
+      (fixed: `whereLabel`). Found building it: detection ran only without `--mode`, so `--mode mvp` on a
+      live repo lost *shipped before* and held the after-you-ship skills — detection now always runs.
+- [ ] `boss sync` on a Security project keeps its deny/ask and secrets script current (today: no layers → nothing).
+- [ ] `boss remove` on a Security project: says what it keeps (deny/ask, by design) and takes the shim,
+      script and `.gitignore` block.
 
 - [x] S1: `boss adopt` previews; `--apply` writes. Callers moved: `scripts/demo.js`, tests, README,
       GUIDE, `web/index.html`, `web/start.html`, help. The preview's file count equals what `--apply` adds.

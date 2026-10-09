@@ -23,7 +23,7 @@ import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { STAGE_ORDER } from './paths.js';
-import { loadModes, packageSkillMd, skillGloss, STANDING_COMMANDS } from './modes.js';
+import { loadModes, packageSkillMd, skillGloss, STANDING_COMMANDS, whereLabel } from './modes.js';
 import { HELP, SYMBOLS, WAYFINDING, wayfindingKind } from './help.js';
 import { GLOSSARY } from './glossary.js';
 import { bossVersion } from './paths.js';
@@ -377,7 +377,7 @@ ${stylesheet()}
     below is one you actually have right now. Rebuild it any time with
     <code>boss help --html</code>.</p>
   ${ladderHtml(installed, deepest)}
-  <p class="stamp">You are here: <b>${esc(stamp.mode || stamp.stage)}</b>, with
+  <p class="stamp">You are here: <b>${esc(whereLabel(stamp))}</b>, with
     ${(stamp.skills || []).length} skills and ${(stamp.agents || []).length} agents.
     BOSS pinned <b>${esc(stamp.bossVersion || '—')}</b>, installed <b>${esc(V)}</b>${
     stampedAt ? `, generated ${esc(stampedAt)}` : ''}.</p>

@@ -47,7 +47,7 @@ function repoWithClaudeMd() {
     'src/b.ts': 'export const b = 2;\n',
   });
   execFileSync('git', ['init', '-q'], { cwd: dir });
-  boss(['adopt', '--apply'], dir);
+  boss(['adopt', '--apply', '--mode', 'quickstart'], dir);
   return dir;
 }
 
@@ -107,7 +107,7 @@ test("adopt does not overwrite a founder's own Claude Code settings", () => {
   mkdirSync(join(dir, '.claude', 'hooks'), { recursive: true });
   writeFileSync(join(dir, '.claude', 'hooks', 'mine.js'), 'process.exit(0)\n');
   execFileSync('git', ['init', '-q'], { cwd: dir });
-  boss(['adopt', '--apply'], dir);
+  boss(['adopt', '--apply', '--mode', 'quickstart'], dir);
   const s = JSON.parse(readFileSync(join(dir, '.claude', 'settings.json'), 'utf8'));
   assert.deepEqual(s.permissions.allow, ['Bash(npm test)'], 'their allow rules must survive');
   assert.equal(s.env.MY_FLAG, '1', 'their env must survive');
@@ -127,7 +127,7 @@ test('adopt at MVP holds the earned groups and the opt-in hooks like unlock does
   };
   for (let i = 0; i < 7; i++) files[`src/m${i}.js`] = `export const f${i} = ${i}\n`;
   const dir = project(files);
-  const out = boss(['adopt', '--apply'], dir);
+  const out = boss(['adopt', '--apply', '--mode', 'mvp'], dir);
   assert.match(out, /MVP mode/);
   const skills = readdirSync(join(dir, '.claude', 'skills'));
   // shipped before adoption → the after-you-ship verbs are on disk, not folded away from a live app
@@ -151,8 +151,8 @@ test('adopt at MVP holds the earned groups and the opt-in hooks like unlock does
 
 test('a small repo adopts at Quickstart and the why line names what it found and the bar', () => {
   const dir = project({ 'package.json': '{"name":"x"}', 'src/a.js': '1\n', 'test/a.test.js': '1\n', 'vercel.json': '{}' });
-  const out = boss(['adopt', '--apply'], dir);
-  assert.match(out, /Quickstart mode/);
+  const out = boss(['adopt'], dir);
+  assert.match(out, /reads as Quickstart/);
   assert.match(out, /2 source file\(s\) — MVP starts at 5 with a build manifest · package\.json · tests · deploy config \(vercel\.json\)/);
 });
 
@@ -170,7 +170,7 @@ test('bare adopt writes nothing and says what it would add, change and not see',
     'docs/design/FEAT-001-review.md': '# a review named after a FEAT is not a record\n',
   });
   const before = readdirSync(dir).sort();
-  const out = boss(['adopt'], dir);
+  const out = boss(['adopt', '--mode', 'quickstart'], dir);
   assert.deepEqual(readdirSync(dir).sort(), before, 'nothing written');
   assert.equal(readFileSync(join(dir, 'CLAUDE.md'), 'utf8'), '# my rules\n');
   assert.match(out, /Nothing is written yet/);
@@ -184,8 +184,8 @@ test('bare adopt writes nothing and says what it would add, change and not see',
 
 test('the preview promises the files --apply lays down', () => {
   const dir = project({ 'package.json': '{"name":"myapp"}', 'src/a.js': 'export const a = 1;\n' });
-  const promised = Number(/What it adds — (\d+) new file/.exec(boss(['adopt'], dir))[1]);
-  const added = Number(/(\d+) file\(s\) added/.exec(boss(['adopt', '--apply'], dir))[1]);
+  const promised = Number(/What it adds — (\d+) new file/.exec(boss(['adopt', '--mode', 'quickstart'], dir))[1]);
+  const added = Number(/(\d+) file\(s\) added/.exec(boss(['adopt', '--apply', '--mode', 'quickstart'], dir))[1]);
   assert.equal(added, promised);
 });
 
@@ -206,7 +206,7 @@ test('a repo that keeps FEATs in a folder per record: adopt notes the folder, an
     'package.json': '{"name":"myapp"}',
     'docs/specs/FEAT-001-login/README.md': '---\nid: FEAT-001\nstatus: building\n---\n# FEAT-001 — Login\n\n## Acceptance criteria\n- [ ] a user can sign in\n',
   });
-  boss(['adopt', '--apply'], dir);
+  boss(['adopt', '--apply', '--mode', 'quickstart'], dir);
   const cfg = JSON.parse(readFileSync(join(dir, '.boss', 'config.json'), 'utf8'));
   assert.deepEqual(cfg.layout, { records: ['docs/specs'] });
   assert.match(boss(['board', '--next'], dir), /FEAT-001/, 'the board sees the FEAT in build');
@@ -260,7 +260,7 @@ test('the preview says records found where BOSS looks, and a RESUME named after 
     'docs/ideas/IDEA-002-b.md': '---\nid: IDEA-002\nstatus: exploring\n---\n# B\n',
     'docs/pm/labs/IDEA-009-RESUME.md': '---\nid: IDEA-009-RESUME\ntype: resume\n---\n# resume\n',
   });
-  const out = boss(['adopt'], dir);
+  const out = boss(['adopt', '--mode', 'quickstart'], dir);
   assert.match(out, /docs\/ideas\/IDEA-\*\.md \(2\) — found where BOSS looks/);
   assert.doesNotMatch(out, /docs\/pm\/labs/);
 });
@@ -291,15 +291,15 @@ test('docs/features/FEAT-*/README.md is read with no setting — found where BOS
     'package.json': '{"name":"myapp"}',
     'docs/features/FEAT-001-login/README.md': '---\nid: FEAT-001\nstatus: building\n---\n# FEAT-001 — Login\n\n## Acceptance criteria\n- [ ] sign in\n',
   });
-  assert.match(boss(['adopt'], dir), /docs\/features\/FEAT-\*\/README\.md \(1\) — found where BOSS looks/);
-  boss(['adopt', '--apply'], dir);
+  assert.match(boss(['adopt', '--mode', 'quickstart'], dir), /docs\/features\/FEAT-\*\/README\.md \(1\) — found where BOSS looks/);
+  boss(['adopt', '--apply', '--mode', 'quickstart'], dir);
   assert.equal(JSON.parse(readFileSync(join(dir, '.boss', 'config.json'), 'utf8')).layout, undefined, 'no setting needed');
   assert.match(boss(['board', '--next'], dir), /FEAT-001/);
 });
 
 test('a clean adopt records theirs as empty, so sync never guesses from git', () => {
   const dir = project({ 'package.json': '{"name":"myapp"}' });
-  boss(['adopt', '--apply'], dir);
+  boss(['adopt', '--apply', '--mode', 'quickstart'], dir);
   assert.deepEqual(JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8')).theirs, { files: [], skills: [] });
 });
 
@@ -309,9 +309,9 @@ test('a monorepo with its manifests a level down reads as a real build, and its 
   files['dhun/src-tauri/src/main.rs'] = 'fn main() {}\n';
   const dir = project(files);
   const out = boss(['adopt'], dir);
-  assert.match(out, /MVP mode/);
+  assert.match(out, /reads as MVP/);
   assert.match(out, /dhun\/package\.json \+ dhun\/src-tauri\/Cargo\.toml/);
-  boss(['adopt', '--apply'], dir);
+  boss(['adopt', '--apply', '--mode', 'mvp'], dir);
   const cfg = JSON.parse(readFileSync(join(dir, '.boss', 'config.json'), 'utf8'));
   assert.deepEqual(cfg.sourceGlobs, ['dhun/src/**', 'dhun/src-tauri/src/**']);
 });
@@ -328,4 +328,38 @@ test('the project is named from the git remote, and from the main checkout insid
   try {
     assert.match(boss(['adopt'], wt), new RegExp(`called ${basename(dir)} — from the main checkout`));
   } finally { rmSync(wt, { recursive: true, force: true }); }
+});
+
+// --- DEC-024 — a bare `adopt --apply` takes Security, and nothing else -------------------------------
+test('bare adopt --apply lays down Security only: rules, the secrets check, the .gitignore block, floor 1', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}', 'CLAUDE.md': '# my rules\n', '.claude/settings.json': '{"permissions":{"allow":["Bash(npm test)"]}}' });
+  execFileSync('git', ['init', '-q'], { cwd: dir });
+  const preview = boss(['adopt'], dir);
+  assert.match(preview, /What Security lays down/);
+  assert.match(preview, /boss adopt --apply takes Security/);
+  const out = boss(['adopt', '--apply'], dir);
+  assert.match(out, /is on the Security floor/);
+  assert.equal(readFileSync(join(dir, 'CLAUDE.md'), 'utf8'), '# my rules\n', 'CLAUDE.md untouched');
+  const settings = JSON.parse(readFileSync(join(dir, '.claude/settings.json'), 'utf8'));
+  assert.ok(settings.permissions.deny.length > 0 && settings.permissions.ask.length > 0);
+  assert.deepEqual(settings.permissions.allow, ['Bash(npm test)']);
+  assert.equal(settings.hooks, undefined, 'Security registers no hooks');
+  assert.ok(readFileSync(join(dir, '.gitignore'), 'utf8').includes('.boss/brain/relationship.md'));
+  assert.ok(readFileSync(join(dir, '.git/hooks/pre-commit'), 'utf8').length > 0, 'the secrets check is wired');
+  assert.deepEqual(readdirSync(join(dir, '.claude')).sort(), ['hooks', 'settings.json'], 'no skills, no agents');
+  assert.equal(JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8')).floor, 1);
+  assert.match(boss(['status'], dir), /You are here: Security/);
+});
+
+test('from Security, adopt --mode climbs to the whole of BOSS, and Security\'s own files are not called yours', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}' });
+  execFileSync('git', ['init', '-q'], { cwd: dir });
+  boss(['adopt', '--apply'], dir);
+  assert.match(boss(['adopt'], dir), /on the Security floor/, 'a bare adopt again says where it stands');
+  assert.doesNotMatch(boss(['adopt', '--mode', 'quickstart'], dir), /kept as-is[^\n]*commit-secrets/);
+  boss(['adopt', '--apply', '--mode', 'quickstart'], dir);
+  const m = JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8'));
+  assert.equal(m.floor, 5);
+  assert.ok(!m.theirs.files.some((f) => f.includes('commit-secrets')), 'BOSS\'s secrets script is BOSS\'s');
+  assert.ok(readdirSync(join(dir, '.claude', 'skills')).length > 0);
 });

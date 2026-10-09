@@ -268,7 +268,8 @@ function applyHookMigrations(merged) {
 
 // Merge BOSS-owned hook registrations from the installed layers into the project's
 // settings.json. Returns { changed, merged, rel } — caller writes `merged` on apply.
-export function computeSettingsMerge(projectDir, layers) {
+// `hooks: false` merges the deny/ask rules only — the Security floor (DEC-024) registers no hooks.
+export function computeSettingsMerge(projectDir, layers, { hooks = true } = {}) {
   const rel = join('.claude', 'settings.json');
   const dest = join(projectDir, rel);
   // Unparseable → skip it and say so, never merge into {} and write that back: that erased a
@@ -301,7 +302,7 @@ export function computeSettingsMerge(projectDir, layers) {
     changed = true;
   }
   for (const stageId of layers) {
-    for (const [event, tEntries] of Object.entries(templateHooks(stageId))) {
+    for (const [event, tEntries] of Object.entries(hooks ? templateHooks(stageId) : {})) {
       merged.hooks ||= {};
       merged.hooks[event] ||= [];
       const present = eventCommands(merged.hooks[event]);
