@@ -45,6 +45,8 @@ Ajesh: *"the bottom level is the mailroom like in a big corp."* Level 2, above S
 - [ ] Registry schema: *what*, *next* and `floor` on a row without breaking `boss list` or older rows.
 - [ ] `floor:` on the stamp; every existing project reads as `5` with no migration (DEC-024 rule 5).
 - [ ] The door's ownership check (PROG-006 Q12).
+  Reuse IDEA-163's `projectName(dir)` (`src/detect.js`, on work/idea-163): it returns
+  `{ name, from, remote? }`, pure; parse the owner from `remote`. Don't read the remote a second time.
 - [ ] The Mailroom preset, as a list of IDEA-163 part names.
 - [ ] `~/.boss/inbox/` and the assign step.
 
