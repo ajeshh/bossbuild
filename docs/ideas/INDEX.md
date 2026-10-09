@@ -208,6 +208,8 @@ BOSS's own backlog, dogfooding its own ID system.
 | [IDEA-172](IDEA-172-security.md) | Security — level 1, the badge: deny/ask rules for the AI, the secrets check, the .gitignore block | shipped — built under IDEA-163, its own floor record 2026-10-08 | 2026-10-08 · PROG-006 · DEC-024 · a bare `adopt --apply` lays it down |
 | [IDEA-173](IDEA-173-the-mailroom.md) | The Mailroom — level 2: a project's inbox, idea capture, and notes delivered from HQ | seedling | 2026-10-08 · PROG-006 · split from IDEA-165 · waits on the parts list |
 | [IDEA-174](IDEA-174-the-parts-list.md) | The parts list — BOSS as named parts; every floor is a list of them and adopt plans from the same list | seedling | 2026-10-08 · PROG-006 · Ajesh: *"it needs to be a new idea in prog-006"* · was IDEA-163's next step, now paused |
+| [IDEA-175](IDEA-175-larder-before-and-after.md) | Larder, before and after — the essay's pantry app built small and twice, by the book and in Pakka, so the language is tried and changed on something we control first | seedling | 2026-10-08 · Ajesh: *"build out an app that is short n sweet… and show a before and after pakka"* · PROG-007 · IDEA-169 T1/T3 run here |
+| [IDEA-176](IDEA-176-pakkas-public-home.md) | Pakka's public home — README, docs, the Larder example, Pakka in every kind of doc (PRD, marketing, design, engineering), instructions any AI agent can follow | seedling | 2026-10-08 · Ajesh: *"its both in boss but can be seperate… a public offering"* · PROG-007 · gated on the name being cleared (E5) |
 
 Canvas for BOSS itself: [CANVAS.md](CANVAS.md).
 

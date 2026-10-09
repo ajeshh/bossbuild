@@ -21,6 +21,8 @@ then, after the weighing below, *"Yes lets grad to program."*
 |---|---|
 | IDEA-169 | Feature contracts computed from the code, and the general form: links that record what they were confirmed against |
 | IDEA-154 | Its open T2: subtract what's always loaded |
+| IDEA-175 | Larder, before and after: the testbed, built twice, before any live app or BOSS |
+| IDEA-176 | Pakka's public home: README, docs, examples in every kind of doc, instructions for any agent |
 
 **Lineage — shipped, not moved:** IDEA-020/FEAT-020 (JIT working context with a lifecycle) · IDEA-078
 (compaction is the unit) · IDEA-080 (durable memory ships as a pointer — answered no) · IDEA-085 (the

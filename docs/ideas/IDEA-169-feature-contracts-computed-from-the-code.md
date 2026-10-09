@@ -200,7 +200,7 @@ you write one* table · the E/P/W marks.
   agent, let an agent try to loosen one assertion and check the test↔promise link flags it. PROG-007
   § Testing, *Does AI + TDD work?*
 
-- [ ] **T1 — One feature, by hand, in a throwaway dhun branch.** Tag one feature's files, write its
+- [ ] **T1 — One feature, by hand, in a throwaway dhun branch.** *Runs on Larder first (IDEA-175 L4); a live app only after.* Tag one feature's files, write its
   contract file, render its card by hand. Give a fresh agent a change that crosses into that feature,
   and run it once per route from PROG-007 § How context reaches an agent: (a) nothing, search only;
   (b) the index preloaded; (c) the card arriving when the agent first opens a tagged file; (d) the
