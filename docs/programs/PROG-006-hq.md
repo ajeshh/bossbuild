@@ -22,7 +22,7 @@ is warranted by Ajesh's own machine (Q3, answered).
 
 **Members:** every record with `program: PROG-006` — `boss board PROG-006`.
 [[IDEA-164]] the HQ dashboard · [[IDEA-165]] the Lobby and the Mailroom · [[IDEA-166]] the Office ·
-[[IDEA-167]] the Studio · [[IDEA-168]] the Boardroom.
+[[IDEA-167]] the Studio · [[IDEA-168]] the Boardroom · IDEA-171 rooms side by side at the top (deferred).
 
 ## The model — DEC-024
 
