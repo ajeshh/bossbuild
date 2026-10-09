@@ -117,12 +117,20 @@ and `boss up`. IDEA-163 builds Security only after DEC-024 lands on main.
   boss in a new or existing project"*), through IDEA-163's preview.
 - [ ] IDEA-067's status moves when the Studio ships, pointing to DEC-024.
 - [ ] `boss up` replaces the interim climb `adopt --apply --mode` from floor 1 (IDEA-163's exception).
+- [ ] **When floors 2–4 and `boss up` are on main, re-open IDEA-163** (paused 2026-10-08 by Ajesh:
+  *"lets pause before the ladder system is complete because it may help cure a lot of adopt and change
+  the shape of adopt moving forward"*). Re-read its Paused section against the floors and drop what
+  they cured; tell the adopt session.
 - [ ] `whereLabel` covers every floor: 0 (Lobby) and 2–4, beside IDEA-163's 1 and today's 5.
 
 ## Open questions
 
 - **Q11.** What signal names each threshold for `boss up` (Mailroom→Office, Office→Studio,
   Studio→Boardroom)? Modes already read readiness (`src/readiness.js`); which of it carries over?
+- **Q13. Who builds the parts list now?** Floors 2–4 are presets over IDEA-163's parts (DEC-024 rule 1),
+  but the parts export and `--take` are in IDEA-163's Paused list. Either PROG-006 builds the parts
+  export as part of floor 2, or the first floors are written as file lists and become part lists when
+  IDEA-163 re-opens. Ajesh's call.
 - **Q12.** How does the door tell the repo is someone else's — remote owner vs the `gh` login, an org
   remote, no write access? And what does it do with no `gh` and no remote?
 

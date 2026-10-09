@@ -5,6 +5,8 @@ kind: capability
 owner: product-lead
 status: deferred — re-open when the first real co-op or commons founder arrives, or BOSS decides to run itself as a commons
 created: 2026-10-08
+proof: none
+proof_note: deferred with a written re-open trigger; done would be a second room's preset beside the Boardroom's, which no file holds yet
 program: PROG-006
 relates: DEC-024, DEC-009, DEC-011, IDEA-067, IDEA-168, IDEA-163
 gist: The top floor holds rooms side by side — the Boardroom for a venture, and later a council room for a co-op or a commons for shared work — each a package of parts, so purpose sits beside the ladder instead of on it.
