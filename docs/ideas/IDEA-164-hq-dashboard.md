@@ -21,12 +21,12 @@ where it stands. With dhun and others on the same machine, there is no way to lo
 
 | On the card | Read from |
 |---|---|
-| What this is | the project's venture `gist:`, else the Mailroom row's ([[IDEA-165]]) |
+| What this is | the project's venture `gist:`, else the Lobby row's ([[IDEA-165]]) |
 | Where it stands | `boss board --json` in that project, else RESUME, else git |
-| What's next | the board's `next:` (IDEA-162), else RESUME, else the Mailroom row |
+| What's next | the board's `next:` (IDEA-162), else RESUME, else the Lobby row |
 | Last touched | git: last commit, branch, uncommitted changes, open worktrees |
 | Which window | Claude Code sessions (`~/.claude/projects/<path>/`, last active); VS Code's open folders |
-| Room | which of Mailroom · Office · Studio · Boardroom it lives in |
+| Floor | its level, 0–5: Lobby · Security · Mailroom · Office · Studio · Boardroom |
 
 ## Rungs
 
@@ -36,7 +36,7 @@ where it stands. With dhun and others on the same machine, there is no way to lo
 3. **Window awareness** — which Claude session and which editor window is on which project. The newest
    part; nothing does it today. Read-only, local files only.
 4. **The menubar app** — native, its own repo, reading only `boss hq --json`, with a global hotkey to
-   drop a note into the Mailroom. Only if rung 2 gets used.
+   drop a note into `~/.boss/inbox/` for delivery to a project's Mailroom. Only if rung 2 gets used.
 
 ## Rules
 

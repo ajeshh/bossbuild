@@ -52,8 +52,6 @@ svg .earth { fill: var(--earth); }
 svg .groundline { stroke: var(--ground); stroke-width: 2; }
 svg .shaft { fill: var(--paper); stroke: var(--structure); stroke-width: 1.5; }
 svg .car { fill: var(--point); }
-svg .lobby { fill: none; stroke: var(--structure); stroke-width: 1.5; stroke-dasharray: 5 4; }
-svg .lobby.lit { fill: var(--point); stroke-dasharray: none; }
 svg .roof { fill: none; stroke: var(--structure); stroke-width: 1.5; }
 svg .door { fill: var(--point); }
 figcaption { font-size: 0.85rem; color: var(--slate); margin-top: 0.6rem; }
@@ -92,40 +90,40 @@ button:focus-visible { outline: 3px solid var(--point); outline-offset: 2px; }
       <h1>The building</h1>
     </div>
     <p class="lede">Most people building with AI don't have one project. They have six: a real one, two side projects, a client's repo, something from last spring, and a thing they started on Sunday. The hard part isn't building any one of them. It's remembering which is which, where each one stands, and what you meant to do next.</p>
-    <p>And until now, BOSS came one way: the whole of it. A side project you wanted to keep track of got the same mentors, canvas and customer interviews as a startup. So we drew BOSS as a building. Every project lives on the floor that holds as much BOSS as it wants, and HQ shows all of them at once.</p>
-    <p class="status">Decided 2026-10-08 (DEC-024, PROG-006). Nothing on this page has shipped yet. The Mailroom is built first.</p>
+    <p>And until now, BOSS came one way: the whole of it. A side project you wanted to keep track of got the same mentors, canvas and customer interviews as a startup. So we drew BOSS as a building. Every project signs in at the Lobby, then lives on the floor that holds as much BOSS as it wants. HQ shows all of them at once.</p>
+    <p class="status">Decided 2026-10-08 (DEC-024, PROG-006). Nothing on this page has shipped yet. The Lobby is built first.</p>
   </header>
 
   <figure>
     <div class="section-svg">
-      <svg id="building" viewBox="0 0 640 470" role="img" aria-labelledby="bt">
-        <title id="bt">A cross-section of the building: the Basement below ground; the Mailroom, Office, Studio and Boardroom stacked above it; an elevator up the right side; the Lobby outside the front door.</title>
-        <rect class="earth" x="0" y="350" width="640" height="120"></rect>
-        <line class="groundline" x1="0" y1="350" x2="640" y2="350"></line>
-        <path class="roof" d="M170 70 L370 30 L570 70"></path>
+      <svg id="building" viewBox="0 0 600 420" role="img" aria-labelledby="bt">
+        <title id="bt">A cross-section of the building. On the ground floor, the Lobby by the front door and Security beside it. Above them, the Mailroom, Office, Studio and Boardroom. An elevator runs up the right side.</title>
+        <rect class="earth" x="0" y="370" width="600" height="50"></rect>
+        <line class="groundline" x1="0" y1="370" x2="600" y2="370"></line>
+        <path class="roof" d="M40 70 L290 28 L540 70"></path>
 
-        <g data-floor="boardroom"><rect class="floor" x="170" y="70" width="330" height="70"></rect>
-          <text class="label" x="186" y="100">Boardroom</text><text class="say" x="186" y="122">the whole venture</text></g>
-        <g data-floor="studio"><rect class="floor" x="170" y="140" width="330" height="70"></rect>
-          <text class="label" x="186" y="170">Studio</text><text class="say" x="186" y="192">help me build it</text></g>
-        <g data-floor="office"><rect class="floor" x="170" y="210" width="330" height="70"></rect>
-          <text class="label" x="186" y="240">Office</text><text class="say" x="186" y="262">help me hold the context</text></g>
-        <g data-floor="mailroom"><rect class="floor" x="170" y="280" width="330" height="70"></rect>
-          <text class="label" x="186" y="310">Mailroom</text><text class="say" x="186" y="332">hey, track this</text></g>
-        <g data-floor="basement"><rect class="floor" x="170" y="360" width="330" height="70"></rect>
-          <text class="label" x="186" y="390">Basement</text><text class="say" x="186" y="412">the safety floor, under all of it</text></g>
+        <g data-floor="boardroom"><rect class="floor" x="40" y="70" width="430" height="60"></rect>
+          <text class="label" x="58" y="97">Boardroom</text><text class="say" x="58" y="117">5 · the whole venture</text></g>
+        <g data-floor="studio"><rect class="floor" x="40" y="130" width="430" height="60"></rect>
+          <text class="label" x="58" y="157">Studio</text><text class="say" x="58" y="177">4 · help me build it</text></g>
+        <g data-floor="office"><rect class="floor" x="40" y="190" width="430" height="60"></rect>
+          <text class="label" x="58" y="217">Office</text><text class="say" x="58" y="237">3 · remember where I left off</text></g>
+        <g data-floor="mailroom"><rect class="floor" x="40" y="250" width="430" height="60"></rect>
+          <text class="label" x="58" y="277">Mailroom</text><text class="say" x="58" y="297">2 · catch my notes and ideas</text></g>
+        <g data-floor="lobby"><rect class="floor" x="40" y="310" width="215" height="60"></rect>
+          <text class="label" x="58" y="337">Lobby</text><text class="say" x="58" y="357">0 · sign in</text></g>
+        <g data-floor="security"><rect class="floor" x="255" y="310" width="215" height="60"></rect>
+          <text class="label" x="273" y="337">Security</text><text class="say" x="273" y="357">1 · get your badge</text></g>
 
-        <rect class="shaft" x="500" y="70" width="70" height="360"></rect>
-        <rect class="car" x="512" y="292" width="46" height="46" rx="2"></rect>
-        <text class="say" x="535" y="455" text-anchor="middle">boss up</text>
+        <rect class="shaft" x="470" y="70" width="70" height="300"></rect>
+        <rect class="car" x="482" y="318" width="46" height="46" rx="2"></rect>
+        <text class="say" x="505" y="395" text-anchor="middle">boss up</text>
 
-        <rect class="door" x="164" y="314" width="8" height="36"></rect>
-        <g data-floor="lobby"><rect class="lobby" x="20" y="270" width="130" height="80" rx="3"></rect>
-          <text class="label" x="34" y="300">Lobby</text><text class="say" x="34" y="320">seen, not touched</text><text class="say" x="34" y="338">outside the building</text></g>
-        <text class="say" x="168" y="368" text-anchor="end">the door</text>
+        <rect class="door" x="34" y="334" width="8" height="36"></rect>
+        <text class="say" x="38" y="395" text-anchor="middle">the door</text>
       </svg>
     </div>
-    <figcaption>Each floor carries every floor below it. You come in through the door, and the elevator takes a project up when you decide it's ready.</figcaption>
+    <figcaption>Each level carries every level below it. You come in through the door, sign in at the Lobby, get your badge at Security, and take the elevator to the floor you came for.</figcaption>
   </figure>
 
   <section class="picker" aria-live="polite">
@@ -135,58 +133,62 @@ button:focus-visible { outline: 3px solid var(--point); outline-offset: 2px; }
 
   <section class="floors">
     <article class="floor-card" id="lobby">
-      <div class="floor-head"><h2>Lobby</h2><span class="level">outside</span></div>
-      <p class="say-line">"This one isn't mine, but I still need to keep track of it."</p>
+      <div class="floor-head"><h2>Lobby</h2><span class="level">0 · reception</span></div>
+      <p class="say-line">"This is dhun. It's a music app. Next, fix the playback bug."</p>
       <div class="rows">
-        <div class="row"><h3>For</h3><div>A client's repo, your employer's, an open-source project you contribute to.</div></div>
-        <div class="row"><h3>You get</h3><div>A card in HQ: what it is, what's next, when you last touched it. Git supplies the rest. Nothing is written into the repo.</div></div>
-        <div class="row"><h3>Why</h3><div>You need to find your way back to it, but it isn't yours to change. A tool that drops files into someone else's repo has overstepped.</div></div>
-        <div class="row"><h3>Why it's enough</h3><div>The problem here is memory. One line of <em>what</em> and one line of <em>next</em> answer "what was I doing in there?"</div></div>
+        <div class="row"><h3>For</h3><div>Every project. You sign in here on the way to any floor. Some projects stay: a repo that isn't yours, or one you only want to remember.</div></div>
+        <div class="row"><h3>You get</h3><div>A card in HQ with the project's name, what it is, and what's next. Git fills in when you last touched it. Nothing is written into the repo.</div></div>
+        <div class="row"><h3>Why</h3><div>Most of the forgetting is these three lines. Opening a folder after three weeks, the first question is "what was this, and what was I about to do?"</div></div>
+        <div class="row"><h3>Why it's enough</h3><div>For a project you only need to find your way back to, a name, one line of what and one line of next is the whole job. And a repo that belongs to someone else stays untouched.</div></div>
       </div>
     </article>
 
-    <article class="floor-card" id="basement">
-      <div class="floor-head"><h2>Basement</h2><span class="level">0 · under every floor</span></div>
-      <p class="say-line">You don't choose it. Every floor stands on it.</p>
+    <article class="floor-card" id="security">
+      <div class="floor-head"><h2>Security</h2><span class="level">1 · your badge</span></div>
+      <p class="say-line">Every floor above needs the badge.</p>
       <div class="rows">
         <div class="row"><h3>You get</h3><div><ul>
           <li>Rules for the AI: what it must never run, and what it asks you before running.</li>
           <li>A secrets check on every commit, whoever makes it.</li>
           <li>A <code>.gitignore</code> block that keeps keys and local files out of the repo.</li>
         </ul></div></div>
-        <div class="row"><h3>Why</h3><div>AI writes fast. A key committed once stays in the history and in every clone, even after you delete the line. If you're going to build with AI, set up the right container first.</div></div>
-        <div class="row"><h3>Why it's enough</h3><div>These are the mistakes you can't take back. Everything else in BOSS can wait until you want it. This can't.</div></div>
+        <div class="row"><h3>Why</h3><div>AI writes fast. A key committed once stays in the history and in every clone, even after you delete the line. If an AI is going to work in the repo, set up the right container first.</div></div>
+        <div class="row"><h3>Why it's enough</h3><div>These are the mistakes you can't take back. Everything else in BOSS can wait until you want it. This can't. A project can stop here: safe, and nothing more.</div></div>
       </div>
     </article>
 
     <article class="floor-card" id="mailroom">
-      <div class="floor-head"><h2>Mailroom</h2><span class="level">1</span></div>
-      <p class="say-line">"Hey, track this."</p>
+      <div class="floor-head"><h2>Mailroom</h2><span class="level">2</span></div>
+      <p class="say-line">"Catch my notes and ideas for this."</p>
       <div class="rows">
-        <div class="row"><h3>For</h3><div>The side project you touch once a month. The experiment you might come back to.</div></div>
-        <div class="row"><h3>You get</h3><div>The Basement, plus a card in HQ with <em>what this is</em> and <em>what's next</em>.</div></div>
-        <div class="row"><h3>Why</h3><div>For most side projects the problem isn't tooling. It's opening the folder after three weeks and not knowing why.</div></div>
-        <div class="row"><h3>Why it's enough</h3><div>Two lines and a safe repo. The card keeps you oriented, and nothing else gets in the way of a project that only wants to exist.</div></div>
+        <div class="row"><h3>For</h3><div>A project that collects things before it builds them: links, screenshots, half-ideas, a note you jotted at midnight.</div></div>
+        <div class="row"><h3>You get</h3><div><ul>
+          <li>An inbox: drop in a file, a link or a paste, and it gets kept and sorted.</li>
+          <li>A place for ideas, each with its own record that grows as you add to it.</li>
+          <li>Delivery from HQ: a note you jotted with no project in mind lands here when you assign it.</li>
+        </ul></div></div>
+        <div class="row"><h3>Why</h3><div>Ideas arrive at bad times and in the wrong place. The Mailroom gives them one address per project.</div></div>
+        <div class="row"><h3>Why it's enough</h3><div>Catching is its own job. A project that's still mostly ideas doesn't need anything more yet.</div></div>
       </div>
     </article>
 
     <article class="floor-card" id="office">
-      <div class="floor-head"><h2>Office</h2><span class="level">2</span></div>
-      <p class="say-line">"Help me hold the context."</p>
+      <div class="floor-head"><h2>Office</h2><span class="level">3</span></div>
+      <p class="say-line">"Remember where I left off."</p>
       <div class="rows">
         <div class="row"><h3>For</h3><div>A project you come back to every week or so, with an AI session open.</div></div>
         <div class="row"><h3>You get</h3><div><ul>
           <li>Working rules the AI reads at the start of every session.</li>
           <li>A resume of where you left off, read when a session opens and written when it closes.</li>
-          <li>A place for ideas and the decisions you made, with why.</li>
+          <li>A record of the decisions you made, and why.</li>
         </ul></div></div>
-        <div class="row"><h3>Why</h3><div>The AI forgets everything between sessions, and so do you. The Office is where the project remembers for both of you.</div></div>
+        <div class="row"><h3>Why</h3><div>The AI forgets everything between sessions, and so do you. The Mailroom catches things; the Office remembers them, for both of you.</div></div>
         <div class="row"><h3>Why it's enough</h3><div>For a project you keep returning to, continuity is the whole problem. Here the HQ card updates itself, because every session ends by writing where you are.</div></div>
       </div>
     </article>
 
     <article class="floor-card" id="studio">
-      <div class="floor-head"><h2>Studio</h2><span class="level">3</span></div>
+      <div class="floor-head"><h2>Studio</h2><span class="level">4</span></div>
       <p class="say-line">"Help me build it. Skip the venture talk."</p>
       <div class="rows">
         <div class="row"><h3>For</h3><div>A tool, an open-source project, a gift, a thing for your friends. Anything you want built well that doesn't have to be a business.</div></div>
@@ -201,7 +203,7 @@ button:focus-visible { outline: 3px solid var(--point); outline-offset: 2px; }
     </article>
 
     <article class="floor-card" id="boardroom">
-      <div class="floor-head"><h2>Boardroom</h2><span class="level">4</span></div>
+      <div class="floor-head"><h2>Boardroom</h2><span class="level">5</span></div>
       <p class="say-line">"This is a venture. Give me the whole thing."</p>
       <div class="rows">
         <div class="row"><h3>For</h3><div>A project that needs users, customers or money to work.</div></div>
@@ -219,13 +221,14 @@ button:focus-visible { outline: 3px solid var(--point); outline-offset: 2px; }
 
   <section class="stack">
     <h2>The door and the elevator</h2>
-    <p>You come in through one door. <code>boss adopt</code> brings in a folder you already have; <code>boss new</code> starts one. Either way you enter at the Basement and ride to the floor you came for. Nothing puts you on the top floor by default.</p>
+    <p>You come in through one door. <code>boss adopt</code> brings in a folder you already have; <code>boss new</code> starts one. Either way you sign in at the Lobby, pass Security, and ride straight to the floor you came for. Nothing puts you on the top floor by default.</p>
+    <p>BOSS assumes the repo is yours. If git says it belongs to someone else, the door asks before writing anything, and offers to keep the project in the Lobby.</p>
     <p>Later, <code>boss up</code> is the elevator. It shows you what the next floor adds before it adds anything. When BOSS sees a project reaching a threshold, it says so once. Going up is your call.</p>
   </section>
 
   <section class="stack">
     <h2>A floor is a home, not a rank</h2>
-    <p>A side project that lives in the Mailroom forever has done nothing wrong. HQ shows the projects you're working on loudly and lets the rest rest. No red badges, no streaks, no nudging upward. And if a project is done, putting it down is a choice BOSS offers, not a failure it counts.</p>
+    <p>A side project that stays in the Lobby forever has done nothing wrong. HQ shows the projects you're working on loudly and lets the rest rest. No red badges, no streaks, no nudging upward. And if a project is done, putting it down is a choice BOSS offers, not a failure it counts.</p>
   </section>
 
   <section class="stack">
@@ -237,12 +240,13 @@ button:focus-visible { outline: 3px solid var(--point); outline-offset: 2px; }
 <script>
 (function () {
   var steps = [
-    { q: "Is this repo yours to change?", no: "lobby" },
-    { q: "Will you build in it with an AI session?", no: "mailroom" },
+    { q: "Will an AI work in this repo?", no: "lobby" },
+    { q: "Do you want it to catch notes, links and ideas for this project?", no: "security" },
+    { q: "Will you come back to it across many sessions?", no: "mailroom" },
     { q: "Do you want help building it: specs, tests, shipping?", no: "office" },
     { q: "Is it a venture? Are you after users, customers or money?", no: "studio", yes: "boardroom" }
   ];
-  var names = { lobby: "the Lobby", mailroom: "the Mailroom", office: "the Office", studio: "the Studio", boardroom: "the Boardroom" };
+  var names = { lobby: "the Lobby", security: "Security", mailroom: "the Mailroom", office: "the Office", studio: "the Studio", boardroom: "the Boardroom" };
   var pick = document.getElementById("pick");
   var svg = document.getElementById("building");
 
@@ -270,7 +274,7 @@ button:focus-visible { outline: 3px solid var(--point); outline-offset: 2px; }
   function done(floor, trail) {
     pick.innerHTML = "";
     var a = document.createElement("p"); a.className = "answer";
-    a.innerHTML = "Start in <strong>" + names[floor] + "</strong>." + (floor === "lobby" ? " It stays outside the building, so nothing is written into the repo." : " You can take the elevator up any time.");
+    a.innerHTML = "Go to <strong>" + names[floor] + "</strong>." + (floor === "lobby" ? " Nothing is written into the repo, and you can go up any time." : floor === "security" ? " You have your badge, and nothing else. Go up when you want more." : " You can take the elevator up any time.");
     var row = document.createElement("div"); row.className = "btns";
     var go = document.createElement("a"); go.href = "#" + floor; go.textContent = "Read about " + names[floor]; go.style.alignSelf = "center"; go.style.color = "var(--structure)";
     row.appendChild(button("Start over", function () { ask(0, []); }));
