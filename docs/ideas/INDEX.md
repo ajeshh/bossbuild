@@ -203,6 +203,7 @@ BOSS's own backlog, dogfooding its own ID system.
 | [IDEA-167](IDEA-167-the-studio.md) | The Studio — the Office plus the building agents and skills, no venture half | seedling | 2026-10-08 · PROG-006 · the floors answer IDEA-067 (DEC-024) |
 | [IDEA-168](IDEA-168-the-boardroom.md) | The Boardroom — the whole of BOSS, and how a project moves up into it | seedling | 2026-10-08 · PROG-006 · modes live only here (DEC-024) |
 | [IDEA-169](IDEA-169-feature-contracts-computed-from-the-code.md) | Feature contracts, computed from the code — a short per-feature contract other features read instead of its code; tagged files, a types-only contract the compiler checks, a generated card | seedling | 2026-10-08 · Ajesh: *"its like an internal wiki of all the key features… so its just in time context?"* · a large app's wiki measured: build docs outgrew the code and went stale |
+| [IDEA-170](IDEA-170-bitsy.md) | Bitsy — an 8-bit B who fell off the sign, climbs the six floors, picks up one thing per floor and becomes the boss; the character is the mark, BOSS stays the product name | seedling | 2026-10-08 · Ajesh: *"a lovable character which just grows its legends"* · name decided, USPTO checked by Ajesh · the founder's floor stays chosen, not earned (no XP, no streaks) · relates DEC-024, IDEA-053 |
 
 Canvas for BOSS itself: [CANVAS.md](CANVAS.md).
 
